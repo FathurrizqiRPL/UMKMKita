@@ -1,0 +1,724 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #fbfbfe;
+    color: #15182b;
+    font-family: "DM Sans", sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ================================
+   TOPBAR
+================================ */
+
+.topbar {
+    height: 78px;
+    border-bottom: 1px solid #e8e8f0;
+    background: rgba(255, 255, 255, 0.96);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5%;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(12px);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: #171a2c;
+}
+
+.brand span {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    background: #5848e8;
+    color: #fff;
+    border-radius: 12px;
+    margin-right: 8px;
+}
+
+.brand b {
+    color: #5848e8;
+}
+
+.topbar nav {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+}
+
+.topbar nav a,
+.logout-btn {
+    font: inherit;
+    color: #575c70;
+    text-decoration: none;
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+.topbar nav a:hover,
+.logout-btn:hover {
+    color: #5848e8;
+}
+
+.logout-btn {
+    font-weight: 700;
+}
+
+/* ================================
+   PAGE
+================================ */
+
+.edit-page {
+    padding: 55px 24px 90px;
+}
+
+.edit-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* ================================
+   BACK LINK
+================================ */
+
+.edit-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: #5848e8;
+    font-size: 14px;
+    font-weight: 700;
+    transition: 0.2s ease;
+}
+
+.edit-back-link:hover {
+    transform: translateX(-3px);
+}
+
+/* ================================
+   HEADING
+================================ */
+
+.edit-heading {
+    margin: 42px 0 35px;
+}
+
+.edit-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: #efedff;
+    color: #5848e8;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+.edit-heading h1 {
+    margin: 16px 0 13px;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: clamp(38px, 5vw, 58px);
+    line-height: 1.05;
+    letter-spacing: -2.5px;
+}
+
+.edit-heading h1 em {
+    color: #5848e8;
+    font-style: normal;
+}
+
+.edit-heading p {
+    max-width: 650px;
+    margin: 0;
+    color: #71768a;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* ================================
+   ERROR
+================================ */
+
+.edit-alert-error {
+    margin-bottom: 22px;
+    padding: 15px 18px;
+    border: 1px solid #f0cccc;
+    border-radius: 14px;
+    background: #fff1f1;
+    color: #a33a3a;
+}
+
+.edit-alert-error ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.edit-alert-error li {
+    margin: 4px 0;
+    font-size: 13px;
+}
+
+/* ================================
+   FORM
+================================ */
+
+.edit-form {
+    display: grid;
+    gap: 18px;
+}
+
+.edit-card {
+    display: grid;
+    gap: 20px;
+    padding: 28px;
+    background: #fff;
+    border: 1px solid #e5e5ee;
+    border-radius: 22px;
+    box-shadow: 0 10px 35px rgba(37, 30, 90, 0.025);
+}
+
+.edit-card-title {
+    margin-bottom: 2px;
+}
+
+.edit-card-title span {
+    display: block;
+    margin-bottom: 7px;
+    color: #5848e8;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+.edit-card-title h2 {
+    margin: 0;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 22px;
+}
+
+/* ================================
+   LABEL
+================================ */
+
+.edit-field {
+    display: block;
+    color: #414558;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.edit-field > span {
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* ================================
+   INPUT
+================================ */
+
+.edit-form input,
+.edit-form select,
+.edit-form textarea {
+    width: 100%;
+    border: 1px solid #dddde8;
+    border-radius: 12px;
+    padding: 13px 14px;
+    outline: none;
+    background: #fff;
+    color: #15182b;
+    font: inherit;
+    transition: 0.2s ease;
+}
+
+.edit-form input,
+.edit-form select {
+    height: 50px;
+}
+
+.edit-form textarea {
+    min-height: 130px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.edit-form input:focus,
+.edit-form select:focus,
+.edit-form textarea:focus {
+    border-color: #5848e8;
+    box-shadow: 0 0 0 4px rgba(88, 72, 232, 0.09);
+}
+
+/* ================================
+   TWO COLUMN
+================================ */
+
+.edit-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+/* ================================
+   FILE INPUT
+================================ */
+
+.edit-file {
+    display: block;
+}
+
+.edit-file > span {
+    display: block;
+    margin-bottom: 8px;
+    color: #414558;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.edit-file input[type="file"] {
+    height: auto;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.edit-file input[type="file"]::file-selector-button {
+    margin-right: 10px;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 8px;
+    background: #efedff;
+    color: #5848e8;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* ================================
+   SUBMIT
+================================ */
+
+.edit-submit {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+.edit-submit-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    min-height: 50px;
+    padding: 13px 20px;
+    border: 0;
+    border-radius: 12px;
+    background: #5848e8;
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(88, 72, 232, 0.16);
+    transition: 0.2s ease;
+}
+
+.edit-submit-button:hover {
+    background: #4637cc;
+    transform: translateY(-1px);
+}
+
+/* ================================
+   CREATE UMKM FORM
+================================ */
+
+.form-page {
+    min-height: calc(100vh - 78px);
+    padding: 54px 24px 96px;
+    background:
+        radial-gradient(circle at 82% 7%, rgba(154, 117, 255, 0.16), transparent 28%),
+        radial-gradient(circle at 6% 42%, rgba(88, 72, 232, 0.08), transparent 25%),
+        #faf9ff;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 920px;
+    margin: 0 auto;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #5848e8;
+    font-size: 14px;
+    font-weight: 700;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.back-link:hover {
+    color: #3f31bb;
+    transform: translateX(-4px);
+}
+
+.form-heading {
+    position: relative;
+    margin: 42px 0 34px;
+    padding: 34px 38px 36px;
+    overflow: hidden;
+    border-radius: 24px;
+    background: linear-gradient(132deg, #2e246f 0%, #5848e8 58%, #8068f3 100%);
+    color: #fff;
+    box-shadow: 0 20px 44px rgba(70, 55, 204, 0.2);
+}
+
+.form-heading::after {
+    content: "";
+    position: absolute;
+    right: -64px;
+    bottom: -92px;
+    width: 240px;
+    height: 240px;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: 50%;
+    box-shadow: 0 0 0 22px rgba(255, 255, 255, 0.06), 0 0 0 44px rgba(255, 255, 255, 0.04);
+}
+
+.eyebrow {
+    display: inline-flex;
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    color: #eeeaff;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+.form-heading h1 {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: 18px 0 14px;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: clamp(36px, 5vw, 60px);
+    line-height: 1.06;
+    letter-spacing: -2px;
+}
+
+.form-heading h1 em {
+    color: #d9d0ff;
+    font-style: normal;
+}
+
+.form-heading p {
+    position: relative;
+    z-index: 1;
+    max-width: 610px;
+    margin: 0;
+    color: #e6e1ff;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.alert-error {
+    margin-bottom: 20px;
+    padding: 16px 18px;
+    border: 1px solid #f0cccc;
+    border-radius: 14px;
+    background: #fff1f1;
+    color: #a33a3a;
+}
+
+.alert-error ul {
+    margin: 7px 0 0;
+    padding-left: 20px;
+}
+
+.alert-error li {
+    margin: 4px 0;
+    font-size: 13px;
+}
+
+.main-form {
+    display: grid;
+    gap: 18px;
+}
+
+.form-card {
+    position: relative;
+    display: grid;
+    gap: 20px;
+    padding: 30px;
+    border: 1px solid #e5e0fb;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 14px 35px rgba(48, 36, 118, 0.06);
+}
+
+.form-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 30px;
+    width: 58px;
+    height: 4px;
+    border-radius: 0 0 4px 4px;
+    background: #8068f3;
+}
+
+.step-number {
+    display: inline-grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: #efedff;
+    color: #5848e8;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+}
+
+.form-card h2 {
+    margin: -8px 0 0;
+    color: #171a2c;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 22px;
+}
+
+.form-card h2 + p {
+    margin: -14px 0 0;
+    color: #77738f;
+    font-size: 14px;
+}
+
+.form-card label {
+    display: block;
+    color: #414558;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.form-card input,
+.form-card select,
+.form-card textarea {
+    width: 100%;
+    margin-top: 8px;
+    border: 1px solid #ddd9eb;
+    border-radius: 11px;
+    padding: 13px 14px;
+    outline: none;
+    background: #fff;
+    color: #15182b;
+    font: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.form-card input,
+.form-card select {
+    height: 50px;
+}
+
+.form-card textarea {
+    min-height: 130px;
+    resize: vertical;
+    line-height: 1.6;
+}
+
+.form-card input:focus,
+.form-card select:focus,
+.form-card textarea:focus {
+    border-color: #6b58ed;
+    background: #fdfcff;
+    box-shadow: 0 0 0 4px rgba(88, 72, 232, 0.11);
+}
+
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-card input[type="file"] {
+    height: auto;
+    padding: 10px;
+    cursor: pointer;
+    color: #77738f;
+}
+
+.form-card input[type="file"]::file-selector-button {
+    margin-right: 10px;
+    padding: 8px 12px;
+    border: 0;
+    border-radius: 8px;
+    background: #efedff;
+    color: #5848e8;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.form-submit {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 2px;
+}
+
+.primary-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 52px;
+    padding: 14px 22px;
+    border: 0;
+    border-radius: 12px;
+    background: #5848e8;
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 12px 24px rgba(88, 72, 232, 0.2);
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.primary-btn span {
+    font-size: 19px;
+    line-height: 0;
+}
+
+.primary-btn:hover {
+    background: #4637cc;
+    box-shadow: 0 15px 28px rgba(88, 72, 232, 0.28);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 700px) {
+    .form-page {
+        min-height: calc(100vh - 68px);
+        padding: 34px 16px 60px;
+    }
+
+    .form-heading {
+        margin: 34px 0 26px;
+        padding: 26px 22px 28px;
+        border-radius: 19px;
+    }
+
+    .form-heading h1 {
+        font-size: 36px;
+        letter-spacing: -1.5px;
+    }
+
+    .form-heading p {
+        font-size: 14px;
+    }
+
+    .form-card {
+        padding: 25px 20px;
+        border-radius: 17px;
+    }
+
+    .form-card::before {
+        left: 20px;
+    }
+
+    .two-col {
+        grid-template-columns: 1fr;
+    }
+
+    .form-submit {
+        justify-content: stretch;
+    }
+
+    .primary-btn {
+        width: 100%;
+    }
+}
+
+/* ================================
+   MOBILE
+================================ */
+
+@media (max-width: 700px) {
+
+    .topbar {
+        height: 68px;
+        padding: 0 18px;
+    }
+
+    .brand {
+        font-size: 19px;
+    }
+
+    .brand span {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+    }
+
+    .topbar nav {
+        gap: 12px;
+    }
+
+    .topbar nav a {
+        display: none;
+    }
+
+    .edit-page {
+        padding: 35px 16px 60px;
+    }
+
+    .edit-heading {
+        margin: 35px 0 28px;
+    }
+
+    .edit-heading h1 {
+        font-size: 36px;
+        letter-spacing: -1.5px;
+    }
+
+    .edit-heading p {
+        font-size: 15px;
+    }
+
+    .edit-card {
+        padding: 21px;
+        border-radius: 18px;
+    }
+
+    .edit-two-col {
+        grid-template-columns: 1fr;
+    }
+
+    .edit-submit {
+        justify-content: stretch;
+    }
+
+    .edit-submit-button {
+        width: 100%;
+    }
+}
