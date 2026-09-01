@@ -37,7 +37,7 @@
 |------|-------|--------|
 | **Fathurrizqi Hidayat** | Project Lead & Full Stack Developer | [GitHub](https://github.com/FathurrizqiRPL) |
 | **Harun** | Frontend Developer | [GitHub](https://github.com/Runtax-html) |
-| **[Lutfi Daffa Nursyafaat]** | Backend Developer | [GitHub](https://github.com/[username3]) |
+| **Luthfi Daffa Nur Syafaat** | Backend Developer | [GitHub](https://github.com/[username3]) |
 
 
 ---
@@ -66,7 +66,7 @@
 
 | Fitur | Deskripsi | Keunggulan |
 |----------|--------------|---------------|
-| **[Nama Fitur 1]** | [Deskripsi singkat fitur] | [Mengapa fitur ini penting/unik] |
+| ** Create Website ** | pemilik umkm dapat mempromosikan usaha nya memalui website | untuk mengefesiensi budget pemilik umkm, di fitur ini kami memberikan solusi dengan menyediakan teamplate pembuatan website dengan gratis  |
 | **[Nama Fitur 2]** | [Deskripsi singkat fitur] | [Mengapa fitur ini penting/unik] |
 | **[Nama Fitur 3]** | [Deskripsi singkat fitur] | [Mengapa fitur ini penting/unik] |
 | **[Nama Fitur 4]** | [Deskripsi singkat fitur] | [Mengapa fitur ini penting/unik] |
