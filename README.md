@@ -37,9 +37,8 @@
 |------|-------|--------|
 | **Fathurrizqi Hidayat** | Project Lead & Full Stack Developer | [GitHub](https://github.com/FathurrizqiRPL) |
 | **Harun** | Frontend Developer | [GitHub](https://github.com/Runtax-html) |
-| **[Lutfi daffa]** | Backend Developer | [GitHub](https://github.com/[username3]) |
+| **[Lutfi Daffa Nursyafaat]** | Backend Developer | [GitHub](https://github.com/[username3]) |
 | **[Nama Lengkap 4]** | UI/UX Designer | [GitHub](https://github.com/[username4]) |
-| **[Nama Lengkap 4]** | UI/UX Designer | [@username4](https://github.com/[username4]) |
 
 ---
 
