@@ -66,7 +66,7 @@
 
 | Fitur | Deskripsi | Keunggulan |
 |----------|--------------|---------------|
-| ** Create Website ** | pemilik umkm dapat mempromosikan usaha nya memalui website | untuk mengefesiensi budget pemilik umkm, di fitur ini kami memberikan solusi dengan menyediakan teamplate pembuatan website dengan gratis  |
+| **Create Website** | pemilik umkm dapat mempromosikan usaha nya memalui website | untuk mengefesiensi budget pemilik umkm, di fitur ini kami memberikan solusi dengan menyediakan teamplate pembuatan website dengan gratis  |
 | **[Nama Fitur 2]** | [Deskripsi singkat fitur] | [Mengapa fitur ini penting/unik] |
 | **[Nama Fitur 3]** | [Deskripsi singkat fitur] | [Mengapa fitur ini penting/unik] |
 | **[Nama Fitur 4]** | [Deskripsi singkat fitur] | [Mengapa fitur ini penting/unik] |
