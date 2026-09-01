@@ -8,7 +8,9 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $umkms = Umkm::latest()->get();
+        $umkms = Umkm::where('status', 'active')
+            ->latest()
+            ->get();
 
         return view('home', compact('umkms'));
     }

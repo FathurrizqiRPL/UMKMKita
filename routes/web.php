@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UmkmController;
 use App\Http\Controllers\ItemController;
@@ -55,6 +55,16 @@ Route::get('/umkm/produk/edit-semua', [App\Http\Controllers\ItemController::clas
 // Proses simpan perubahannya
 Route::put('/umkm/produk/edit-semua', [App\Http\Controllers\ItemController::class, 'updateSemua'])->name('umkm.update.semua.produk');
 });
+
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+
+    Route::get('/umkms', [AdminController::class, 'umkms'])->name('umkms');
+    Route::patch('/umkms/{umkm}/status', [AdminController::class, 'updateUmkmStatus'])->name('umkms.status');
+
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+});
+
 
 Route::get('/umkm/{slug}', [UmkmController::class, 'show'])->name('umkm.show');
 

@@ -141,6 +141,7 @@ public function destroy(Request $request)
     {
         $umkm = Umkm::with('items')
             ->where('slug', $slug)
+            ->where('status', 'active')
             ->firstOrFail();
 
         return view('umkm.show', compact('umkm'));
