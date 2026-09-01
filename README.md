@@ -36,7 +36,8 @@
 | Nama | Peran | GitHub |
 |------|-------|--------|
 | **Fathurrizqi Hidayat** | Project Lead & Full Stack Developer | [GitHub](https://github.com/[username1]) |
-| **Harun** | Frontend Developer | [GitHub](https://github.com/[username2]) |
+| **Harun** | Frontend Developer | [GitHub](https://github.com/Runtax-html
+) |
 | **[Nama Lengkap 3]** | Backend Developer | [GitHub](https://github.com/[username3]) |
 | **[Nama Lengkap 4]** | UI/UX Designer | [GitHub](https://github.com/[username4]) |
 | **[Nama Lengkap 4]** | UI/UX Designer | [@username4](https://github.com/[username4]) |
@@ -382,7 +383,7 @@ Proyek ini dilisensikan di bawah [MIT License](LICENSE) - lihat file LICENSE unt
 
 <div align="center">
 
-  **Made with ❤️ by [Nama Tim] for ITECHNO CUP 2026**
+  **Made with ❤️ by Terserah Ketua for ITECHNO CUP 2026**
 
   
 </div>
