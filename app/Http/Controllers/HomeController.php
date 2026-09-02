@@ -16,25 +16,28 @@ class HomeController extends Controller
     }
 
     public function radar()
-    {
-        $umkms = Umkm::where('status', 'active')
-            ->whereNotNull('latitude')
-            ->whereNotNull('longitude')
-            ->select([
-                'id',
-                'name',
-                'slug',
-                'category',
-                'description',
-                'address',
-                'landmark',
-                'logo',
-                'cover',
-                'latitude',
-                'longitude',
-            ])
-            ->get();
+{
+    $umkms = Umkm::where('status', 'active')
+        ->whereNotNull('latitude')
+        ->whereNotNull('longitude')
+        ->get();
 
-        return view('radar', compact('umkms'));
-    }
+    $radarUmkms = $umkms->map(function ($umkm) {
+        return [
+            'name' => $umkm->name,
+            'slug' => $umkm->slug,
+            'category' => $umkm->category,
+            'description' => $umkm->description,
+            'address' => $umkm->address,
+            'landmark' => $umkm->landmark,
+            'logo' => $umkm->logo ? asset('storage/' . $umkm->logo) : null,
+            'cover' => $umkm->cover ? asset('storage/' . $umkm->cover) : null,
+            'latitude' => (float) $umkm->latitude,
+            'longitude' => (float) $umkm->longitude,
+            'url' => route('umkm.show', $umkm->slug),
+        ];
+    })->values();
+
+    return view('radar', compact('radarUmkms'));
+}
 }

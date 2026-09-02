@@ -121,23 +121,7 @@
 
 
 <script>
-    window.radarUmkms = @json(
-        $umkms->map(function ($umkm) {
-            return [
-                'name' => $umkm->name,
-                'slug' => $umkm->slug,
-                'category' => $umkm->category,
-                'description' => $umkm->description,
-                'address' => $umkm->address,
-                'landmark' => $umkm->landmark,
-                'logo' => $umkm->logo ? asset('storage/' . $umkm->logo) : null,
-                'cover' => $umkm->cover ? asset('storage/' . $umkm->cover) : null,
-                'latitude' => $umkm->latitude,
-                'longitude' => $umkm->longitude,
-                'url' => route('umkm.show', $umkm->slug),
-            ];
-        })
-    );
+    window.radarUmkms = {{ Illuminate\Support\Js::from($radarUmkms) }};
 </script>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
