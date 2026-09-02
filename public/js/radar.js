@@ -281,24 +281,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function locationError(error) {
         mapLoading.classList.add('hidden');
-
         statusDot.classList.remove('active');
 
-        if (error.code === error.PERMISSION_DENIED) {
+        console.error('Geolocation error:', error.code, error.message);
+
+        if (error.code === 1) {
             locationStatus.textContent = 'Izin lokasi ditolak';
-
-            radarSummary.textContent =
-                'Aktifkan izin lokasi untuk menggunakan radar.';
-        } else if (error.code === error.POSITION_UNAVAILABLE) {
+            radarSummary.textContent = 'Izinkan akses lokasi pada browser.';
+        } else if (error.code === 2) {
             locationStatus.textContent = 'Lokasi tidak tersedia';
-
-            radarSummary.textContent =
-                'Browser belum bisa menentukan posisi kamu.';
+            radarSummary.textContent = 'Perangkat atau browser belum bisa menentukan posisi kamu.';
+        } else if (error.code === 3) {
+            locationStatus.textContent = 'Pencarian lokasi terlalu lama';
+            radarSummary.textContent = 'Coba lagi atau periksa layanan lokasi perangkat.';
         } else {
             locationStatus.textContent = 'Gagal mendeteksi lokasi';
-
-            radarSummary.textContent =
-                'Silakan coba lagi.';
+            radarSummary.textContent = 'Silakan coba lagi.';
         }
     }
 
@@ -327,9 +325,9 @@ document.addEventListener('DOMContentLoaded', function () {
             activateLocation,
             locationError,
             {
-                enableHighAccuracy: true,
-                timeout: 12000,
-                maximumAge: 30000
+                enableHighAccuracy: false,
+                timeout: 30000,
+                maximumAge: 60000
             }
         );
     }
