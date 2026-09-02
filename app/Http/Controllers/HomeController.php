@@ -14,4 +14,27 @@ class HomeController extends Controller
 
         return view('home', compact('umkms'));
     }
+
+    public function radar()
+    {
+        $umkms = Umkm::where('status', 'active')
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->select([
+                'id',
+                'name',
+                'slug',
+                'category',
+                'description',
+                'address',
+                'landmark',
+                'logo',
+                'cover',
+                'latitude',
+                'longitude',
+            ])
+            ->get();
+
+        return view('radar', compact('umkms'));
+    }
 }

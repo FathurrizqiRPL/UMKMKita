@@ -14,13 +14,13 @@ Route::get('/preview-template/{name}', function ($name) {
         'category' => 'Makanan & Minuman',
         'description' => 'Ini adalah contoh deskripsi usaha Kedai Senja untuk melihat hasil preview desain template.',
         'phone' => '081234567890',
-        'cover' => null, 
+        'cover' => null,
         'items' => collect([]) // Collection kosong supaya @forelse di template tidak error
     ];
 
     // Validasi template yang diizinkan
     $allowedTemplates = ['template1', 'template2'];
-    
+
     if (in_array($name, $allowedTemplates)) {
         // Mengarah ke resources/views/templates/template1.blade.php dst
         return view("templates.{$name}", ['umkm' => $dummyUmkm]);
@@ -30,6 +30,8 @@ Route::get('/preview-template/{name}', function ($name) {
 })->name('preview.template');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/radar-umkm', [HomeController::class, 'radar'])->name('radar');
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [UmkmController::class, 'dashboard'])->name('dashboard');

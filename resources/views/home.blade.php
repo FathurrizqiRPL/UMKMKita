@@ -95,6 +95,10 @@
                 Jelajahi UMKM
             </a>
 
+            <a href="{{ route('radar') }}">
+                Radar UMKM
+            </a>
+
             <a href="#tentang">
                 Tentang
             </a>
@@ -152,6 +156,10 @@
 
     <a href="#umkm">
         Jelajahi UMKM
+    </a>
+
+    <a href="{{ route('radar') }}">
+        Radar UMKM
     </a>
 
     <a href="#tentang">
@@ -231,6 +239,10 @@
 
                 <a href="#umkm" class="outline-button">
                     Jelajahi UMKM
+                </a>
+
+                <a href="{{ route('radar') }}" class="outline-button">
+                    📍 Radar UMKM
                 </a>
 
             </div>
@@ -1036,7 +1048,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const backToTopBtn = document.getElementById('backToTop');
     const circle = document.querySelector('.progress-ring__circle');
-    
+
     if (!backToTopBtn || !circle) return;
 
     const radius = circle.r.baseVal.value;
@@ -1050,7 +1062,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
         const scrollFraction = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
         const offset = circumference - (scrollFraction * circumference);
-        
+
         circle.style.strokeDashoffset = offset;
 
         if (scrollTop > 100) {
