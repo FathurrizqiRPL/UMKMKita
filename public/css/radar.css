@@ -35,11 +35,6 @@ button {
     font: inherit;
 }
 
-
-/* ================================
-   NAVBAR
-================================ */
-
 .radar-navbar {
     height: 76px;
     display: flex;
@@ -86,21 +81,11 @@ button {
     color: var(--primary);
 }
 
-
-/* ================================
-   PAGE
-================================ */
-
 .radar-page {
     width: min(1180px, calc(100% - 40px));
     margin: auto;
     padding: 55px 0 90px;
 }
-
-
-/* ================================
-   HEADING
-================================ */
 
 .radar-heading {
     display: flex;
@@ -143,11 +128,6 @@ button {
     line-height: 1.7;
 }
 
-
-/* ================================
-   STATUS
-================================ */
-
 .radar-status-card {
     min-width: 250px;
     display: flex;
@@ -187,11 +167,6 @@ button {
     font-size: 11px;
 }
 
-
-/* ================================
-   MAP
-================================ */
-
 .radar-map-card {
     position: relative;
     overflow: hidden;
@@ -212,22 +187,28 @@ button {
     border-bottom: 1px solid var(--border);
 }
 
-.radar-map-toolbar strong,
-.radar-map-toolbar small {
+.radar-map-info strong,
+.radar-map-info small {
     display: block;
 }
 
-.radar-map-toolbar strong {
+.radar-map-info strong {
     font-size: 14px;
 }
 
-.radar-map-toolbar small {
+.radar-map-info small {
     margin-top: 3px;
     color: var(--muted);
     font-size: 11px;
 }
 
-.radar-map-toolbar button {
+.radar-map-actions {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.radar-map-actions button {
     padding: 10px 14px;
     border: 0;
     border-radius: 10px;
@@ -238,9 +219,35 @@ button {
     cursor: pointer;
 }
 
+.radar-map-actions .manual-button {
+    border: 1px solid #dedcec;
+    background: white;
+}
+
+.radar-map-actions button:hover {
+    background: #e6e2ff;
+}
+
+.radar-map-actions .manual-button:hover {
+    background: #faf9ff;
+}
+
+.manual-location-info {
+    padding: 11px 20px;
+    background: #f4f2ff;
+    border-bottom: 1px solid #dedaf8;
+    color: #5848e8;
+    font-size: 12px;
+    font-weight: 700;
+}
+
 #radarMap {
     width: 100%;
     height: 540px;
+}
+
+#radarMap.manual-location-mode {
+    cursor: crosshair;
 }
 
 .map-loading {
@@ -285,12 +292,9 @@ button {
     }
 }
 
-
-/* ================================
-   LEAFLET POPUP
-================================ */
-
 .leaflet-popup-content-wrapper {
+    overflow: hidden;
+    padding: 0;
     border-radius: 16px;
 }
 
@@ -312,6 +316,16 @@ button {
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+
+.radar-popup-placeholder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    color: #5848e8;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-weight: 800;
 }
 
 .radar-popup-body {
@@ -340,9 +354,16 @@ button {
 }
 
 .radar-popup-address {
-    margin: 0 0 12px;
+    margin: 0 0 7px;
     color: var(--muted);
     font-size: 11px;
+    line-height: 1.5;
+}
+
+.radar-popup-landmark {
+    margin: 0 0 12px;
+    color: #6b6f81;
+    font-size: 10px;
     line-height: 1.5;
 }
 
@@ -355,11 +376,6 @@ button {
     font-size: 11px;
     font-weight: 800;
 }
-
-
-/* ================================
-   CUSTOM PINS
-================================ */
 
 .umkm-pin {
     width: 38px;
@@ -388,11 +404,6 @@ button {
     background: #2979ff;
     box-shadow: 0 0 0 6px rgba(41, 121, 255, .18);
 }
-
-
-/* ================================
-   NEARBY
-================================ */
 
 .nearby-section {
     margin-top: 45px;
@@ -497,11 +508,6 @@ button {
     color: var(--muted);
 }
 
-
-/* ================================
-   MOBILE
-================================ */
-
 @media (max-width: 850px) {
     .radar-heading {
         align-items: flex-start;
@@ -540,12 +546,22 @@ button {
         flex-direction: column;
     }
 
+    .radar-map-actions {
+        width: 100%;
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .radar-map-actions button {
+        width: 100%;
+    }
+
     #radarMap {
         height: 460px;
     }
 
     .map-loading {
-        inset: 108px 0 0;
+        inset: 134px 0 0;
     }
 
     .nearby-grid {

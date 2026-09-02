@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const nearbyEmpty = document.getElementById('nearbyEmpty');
     const mapLoading = document.getElementById('mapLoading');
     const locateAgainButton = document.getElementById('locateAgainButton');
-
+    const manualLocationButton = document.getElementById('manualLocationButton');
+    const manualLocationInfo = document.getElementById('manualLocationInfo');
     const statusDot = document.querySelector('.status-dot');
 
     const map = L.map('radarMap').setView([-2.5, 118], 5);
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let userMarker = null;
     let radiusCircle = null;
     let umkmMarkers = [];
+    let manualLocationMode = false;
 
     function escapeHtml(value) {
         return String(value ?? '')
@@ -33,6 +35,10 @@ document.addEventListener('DOMContentLoaded', function () {
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#039;');
+    }
+
+    function toRad(value) {
+        return value * Math.PI / 180;
     }
 
     function distanceKm(lat1, lng1, lat2, lng2) {
@@ -56,8 +62,12 @@ document.addEventListener('DOMContentLoaded', function () {
         return earthRadius * c;
     }
 
-    function toRad(value) {
-        return value * Math.PI / 180;
+    function formatDistance(distance) {
+        if (distance < 1) {
+            return Math.round(distance * 1000) + ' m';
+        }
+
+        return distance.toFixed(1) + ' km';
     }
 
     function clearUmkmMarkers() {
@@ -126,11 +136,11 @@ document.addEventListener('DOMContentLoaded', function () {
         nearbyEmpty.hidden = true;
 
         nearby.forEach(function (umkm) {
+            const lat = Number(umkm.latitude);
+            const lng = Number(umkm.longitude);
+
             const marker = L.marker(
-                [
-                    Number(umkm.latitude),
-                    Number(umkm.longitude)
-                ],
+                [lat, lng],
                 {
                     icon: createUmkmIcon()
                 }
@@ -140,17 +150,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const popupHtml = `
                 <div class="radar-popup">
-
                     <div class="radar-popup-image">
                         ${
                             image
                                 ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(umkm.name)}">`
-                                : ''
+                                : `<div class="radar-popup-placeholder">UMKMKita</div>`
                         }
                     </div>
 
                     <div class="radar-popup-body">
-
                         <span class="radar-popup-category">
                             ${escapeHtml(umkm.category)}
                         </span>
@@ -167,12 +175,16 @@ document.addEventListener('DOMContentLoaded', function () {
                             ${escapeHtml(umkm.address || 'Alamat belum tersedia')}
                         </p>
 
+                        ${
+                            umkm.landmark
+                                ? `<p class="radar-popup-landmark">Patokan: ${escapeHtml(umkm.landmark)}</p>`
+                                : ''
+                        }
+
                         <a href="${escapeHtml(umkm.url)}" class="radar-popup-button">
                             Lihat Website →
                         </a>
-
                     </div>
-
                 </div>
             `;
 
@@ -186,23 +198,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
             card.innerHTML = `
                 <div class="nearby-card-top">
-
                     <div class="nearby-card-icon">
                         U
                     </div>
 
                     <div>
-
-                        <h3>
-                            ${escapeHtml(umkm.name)}
-                        </h3>
+                        <h3>${escapeHtml(umkm.name)}</h3>
 
                         <span class="nearby-card-category">
                             ${escapeHtml(umkm.category)}
                         </span>
-
                     </div>
-
                 </div>
 
                 <div class="nearby-card-distance">
@@ -211,13 +217,7 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
 
             card.addEventListener('click', function () {
-                map.setView(
-                    [
-                        Number(umkm.latitude),
-                        Number(umkm.longitude)
-                    ],
-                    17
-                );
+                map.setView([lat, lng], 17);
 
                 marker.openPopup();
             });
@@ -226,15 +226,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function formatDistance(distance) {
-        if (distance < 1) {
-            return Math.round(distance * 1000) + ' m';
-        }
-
-        return distance.toFixed(1) + ' km';
-    }
-
-    function activateLocation(position) {
+    function activateLocation(position, source = 'automatic') {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
 
@@ -249,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             ).addTo(map);
 
-            userMarker.bindPopup('Lokasi kamu saat ini');
+            userMarker.bindPopup('Lokasi pencarian kamu');
         }
 
         if (radiusCircle) {
@@ -270,59 +262,93 @@ document.addEventListener('DOMContentLoaded', function () {
 
         map.setView([lat, lng], 14);
 
-        locationStatus.textContent = 'Lokasi berhasil ditemukan';
-
         statusDot.classList.add('active');
 
         mapLoading.classList.add('hidden');
 
+        manualLocationMode = false;
+        manualLocationInfo.hidden = true;
+
+        if (source === 'manual') {
+            locationStatus.textContent = 'Lokasi manual digunakan';
+        } else {
+            locationStatus.textContent = 'Lokasi berhasil ditemukan';
+        }
+
         renderNearby(lat, lng);
     }
 
+    function enableManualLocationMode() {
+        manualLocationMode = true;
+
+        mapLoading.classList.add('hidden');
+
+        locationStatus.textContent = 'Pilih lokasi di peta';
+        radarSummary.textContent = 'Klik titik di peta untuk menentukan lokasi pencarian.';
+
+        statusDot.classList.remove('active');
+
+        manualLocationInfo.hidden = false;
+
+        map.getContainer().classList.add('manual-location-mode');
+    }
+
+    function disableManualLocationMode() {
+        manualLocationMode = false;
+
+        manualLocationInfo.hidden = true;
+
+        map.getContainer().classList.remove('manual-location-mode');
+    }
+
     function locationError(error) {
-        console.error('Geolocation error:', error.code, error.message);
+        console.error(
+            'Geolocation error:',
+            error.code,
+            error.message
+        );
 
         mapLoading.classList.add('hidden');
         statusDot.classList.remove('active');
 
         if (error.code === 1) {
             locationStatus.textContent = 'Izin lokasi ditolak';
-            radarSummary.textContent = 'Izinkan akses lokasi pada browser.';
+            radarSummary.textContent = 'Pilih lokasi secara manual di peta.';
         } else if (error.code === 2) {
             locationStatus.textContent = 'Lokasi tidak tersedia';
-            radarSummary.textContent = 'Perangkat belum bisa menentukan posisi kamu.';
+            radarSummary.textContent = 'Pilih lokasi secara manual di peta.';
         } else if (error.code === 3) {
             locationStatus.textContent = 'Pencarian lokasi terlalu lama';
-            radarSummary.textContent = 'Coba lagi atau periksa layanan lokasi perangkat.';
+            radarSummary.textContent = 'Pilih lokasi secara manual di peta.';
         } else {
             locationStatus.textContent = 'Gagal mendeteksi lokasi';
-            radarSummary.textContent = 'Silakan coba lagi.';
+            radarSummary.textContent = 'Pilih lokasi secara manual di peta.';
         }
+
+        enableManualLocationMode();
     }
 
     function requestLocation() {
+        disableManualLocationMode();
+
         if (!navigator.geolocation) {
-            mapLoading.classList.add('hidden');
+            locationStatus.textContent = 'Browser tidak mendukung lokasi';
+            radarSummary.textContent = 'Pilih lokasi secara manual di peta.';
 
-            locationStatus.textContent =
-                'Browser tidak mendukung lokasi';
-
-            radarSummary.textContent =
-                'Gunakan browser yang mendukung Geolocation API.';
+            enableManualLocationMode();
 
             return;
         }
 
         mapLoading.classList.remove('hidden');
 
-        locationStatus.textContent =
-            'Menunggu izin lokasi...';
-
-        radarSummary.textContent =
-            'Browser akan meminta izin lokasi.';
+        locationStatus.textContent = 'Menunggu lokasi...';
+        radarSummary.textContent = 'Browser sedang mencoba menentukan posisi kamu.';
 
         navigator.geolocation.getCurrentPosition(
-            activateLocation,
+            function (position) {
+                activateLocation(position, 'automatic');
+            },
             locationError,
             {
                 enableHighAccuracy: false,
@@ -336,6 +362,34 @@ document.addEventListener('DOMContentLoaded', function () {
         'click',
         requestLocation
     );
+
+    manualLocationButton.addEventListener(
+        'click',
+        function () {
+            enableManualLocationMode();
+        }
+    );
+
+    map.on('click', function (event) {
+        if (!manualLocationMode) {
+            return;
+        }
+
+        const lat = event.latlng.lat;
+        const lng = event.latlng.lng;
+
+        activateLocation(
+            {
+                coords: {
+                    latitude: lat,
+                    longitude: lng
+                }
+            },
+            'manual'
+        );
+
+        disableManualLocationMode();
+    });
 
     requestLocation();
 });
