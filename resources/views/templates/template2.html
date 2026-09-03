@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kopi Tanah Tinggi — Kopi Arabika Fresh Roasted</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --espresso:#2A1D14;
+    --roast:#6B4226;
+    --honey:#B8843A;
+    --cream:#EFE5D4;
+    --paper:#FAF6EE;
+    --pine:#3F4A34;
+    --ink:#241811;
+    --line: rgba(42,29,20,0.14);
+    --radius-card: 4px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Work Sans', sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.55;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    color:var(--espresso);
+    letter-spacing:-0.01em;
+  }
+  a{text-decoration:none;color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:13px 26px;
+    border:1px solid var(--espresso);
+    border-radius:2px;
+    font-weight:600;
+    font-size:0.95rem;
+    background:var(--espresso);
+    color:var(--paper);
+    cursor:pointer;
+    transition:background .2s ease, color .2s ease;
+  }
+  .btn:hover{background:transparent;color:var(--espresso);}
+  .btn-outline{
+    background:transparent;color:var(--espresso);
+  }
+  .btn-outline:hover{background:var(--espresso);color:var(--paper);}
+  .btn-honey{background:var(--honey);border-color:var(--honey);color:var(--espresso);}
+  .btn-honey:hover{background:transparent;color:var(--honey);}
+
+  /* ---------- Bean divider ---------- */
+  .bean-divider{
+    display:flex;align-items:center;gap:10px;
+    color:var(--honey);
+    margin-bottom:14px;
+  }
+  .bean-divider svg{width:16px;height:16px;flex-shrink:0;}
+  .bean-divider span{
+    font-size:0.8rem;font-weight:600;
+    letter-spacing:0.04em;
+    color:var(--roast);
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 24px;
+    max-width:1160px;margin:0 auto;
+  }
+  .logo{
+    font-family:'Fraunces',serif;
+    font-size:1.4rem;font-weight:600;
+    color:var(--espresso);
+    display:flex;align-items:center;gap:8px;
+  }
+  .logo em{color:var(--honey);font-style:normal;}
+  nav ul{display:flex;gap:34px;list-style:none;}
+  nav ul li a{
+    font-size:0.95rem;font-weight:500;
+    color:var(--roast);
+    position:relative;
+  }
+  nav ul li a:hover{color:var(--espresso);}
+  .nav-cta{display:flex;align-items:center;gap:18px;}
+  .menu-toggle{display:none;background:none;border:none;cursor:pointer;}
+  .menu-toggle span, .menu-toggle::before, .menu-toggle::after{
+    display:block;width:22px;height:2px;background:var(--espresso);margin:5px 0;
+  }
+  @media (max-width:820px){
+    nav ul{
+      position:absolute;top:100%;left:0;right:0;
+      flex-direction:column;gap:0;
+      background:var(--paper);
+      border-bottom:1px solid var(--line);
+      max-height:0;overflow:hidden;
+      transition:max-height .25s ease;
+    }
+    nav ul.open{max-height:320px;}
+    nav ul li{border-top:1px solid var(--line);}
+    nav ul li a{display:block;padding:16px 24px;}
+    .menu-toggle{display:block;}
+    .nav-cta .btn{display:none;}
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:var(--espresso);
+    color:var(--paper);
+    overflow:hidden;
+    position:relative;
+  }
+  .hero .wrap{
+    display:grid;grid-template-columns:1.05fr 0.95fr;
+    gap:60px;align-items:center;
+    padding-top:76px;padding-bottom:76px;
+    position:relative;z-index:2;
+  }
+  .hero-eyebrow{
+    display:inline-block;
+    font-size:0.82rem;font-weight:600;
+    color:var(--honey);
+    border:1px solid rgba(184,132,58,0.5);
+    padding:6px 14px;
+    border-radius:20px;
+    margin-bottom:20px;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem, 4vw, 3.1rem);
+    color:var(--paper);
+    line-height:1.12;
+    margin-bottom:20px;
+    max-width:14ch;
+  }
+  .hero p{
+    font-size:1.05rem;
+    color:rgba(250,246,238,0.78);
+    max-width:42ch;
+    margin-bottom:30px;
+  }
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
+  .hero-actions .btn-outline{border-color:rgba(250,246,238,0.5);color:var(--paper);}
+  .hero-actions .btn-outline:hover{background:var(--paper);color:var(--espresso);}
+  .hero-visual{
+    aspect-ratio:4/5;
+    background:linear-gradient(160deg, #4A3222 0%, #2A1D14 60%);
+    border:1px solid rgba(184,132,58,0.35);
+    border-radius:6px;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .hero-visual::before{
+    content:"Foto produk / kedai Anda";
+    color:rgba(250,246,238,0.4);
+    font-size:0.85rem;
+    letter-spacing:0.02em;
+  }
+  .hero-tag{
+    position:absolute;bottom:22px;left:22px;right:22px;
+    background:rgba(20,14,9,0.7);
+    border:1px solid rgba(184,132,58,0.4);
+    padding:14px 16px;
+    font-size:0.85rem;
+    color:var(--cream);
+  }
+  @media (max-width:820px){
+    .hero .wrap{grid-template-columns:1fr;padding-top:44px;padding-bottom:44px;}
+    .hero-visual{aspect-ratio:16/10;}
+  }
+
+  /* ---------- Trust strip ---------- */
+  .trust{
+    background:var(--cream);
+    border-bottom:1px solid var(--line);
+  }
+  .trust .wrap{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    padding:22px 24px;
+    gap:20px;
+  }
+  .trust-item{
+    font-size:0.88rem;font-weight:600;
+    color:var(--roast);
+    display:flex;align-items:center;gap:10px;
+  }
+  .trust-item svg{width:20px;height:20px;color:var(--honey);flex-shrink:0;}
+  @media (max-width:820px){
+    .trust .wrap{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:480px){
+    .trust .wrap{grid-template-columns:1fr;}
+  }
+
+  section{padding:88px 0;}
+  .section-head{
+    display:flex;justify-content:space-between;align-items:flex-end;
+    margin-bottom:44px;gap:20px;flex-wrap:wrap;
+  }
+  .section-head h2{font-size:clamp(1.6rem,2.6vw,2.1rem);max-width:22ch;}
+  .section-head p{color:var(--roast);max-width:36ch;font-size:0.98rem;}
+
+  /* ---------- Brand story ---------- */
+  .story{background:var(--paper);}
+  .story-grid{
+    display:grid;grid-template-columns:0.85fr 1.15fr;
+    gap:56px;align-items:center;
+  }
+  .story-photo{
+    aspect-ratio:1/1;
+    background:var(--cream);
+    border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--roast);font-size:0.85rem;
+  }
+  .story-quote{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:1.3rem;
+    line-height:1.5;
+    color:var(--espresso);
+    margin-bottom:24px;
+  }
+  .story-name{font-weight:700;color:var(--espresso);}
+  .story-role{color:var(--roast);font-size:0.9rem;margin-bottom:22px;}
+  .story p.body{color:#4A3A2C;margin-bottom:14px;}
+  @media (max-width:820px){
+    .story-grid{grid-template-columns:1fr;}
+  }
+
+  /* ---------- Promo banner ---------- */
+  .promo{
+    background:var(--pine);
+    color:var(--paper);
+  }
+  .promo .wrap{
+    display:grid;grid-template-columns:1fr auto;
+    align-items:center;gap:30px;
+    padding:52px 24px;
+  }
+  .promo h2{color:var(--paper);font-size:clamp(1.5rem,2.6vw,2rem);margin-bottom:10px;}
+  .promo p{color:rgba(250,246,238,0.8);max-width:44ch;}
+  .promo-num{
+    font-family:'Fraunces',serif;
+    font-size:3.4rem;color:var(--honey);
+    line-height:1;text-align:right;
+  }
+  .promo-num span{display:block;font-size:0.85rem;color:rgba(250,246,238,0.7);font-family:'Work Sans',sans-serif;font-weight:600;margin-top:6px;}
+  @media (max-width:700px){
+    .promo .wrap{grid-template-columns:1fr;text-align:left;}
+    .promo-num{text-align:left;}
+  }
+
+  /* ---------- Products ---------- */
+  .products{background:var(--paper);}
+  .product-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    gap:26px;
+  }
+  .product-card{
+    border:1px solid var(--line);
+    background:var(--cream);
+    display:flex;flex-direction:column;
+  }
+  .product-thumb{
+    aspect-ratio:1/1;
+    background:linear-gradient(160deg,#E4D5B8,#D6C29B);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--roast);font-size:0.78rem;
+    position:relative;
+  }
+  .product-badge{
+    position:absolute;top:10px;left:10px;
+    background:var(--honey);color:var(--espresso);
+    font-size:0.72rem;font-weight:700;
+    padding:4px 9px;
+  }
+  .product-body{padding:18px;flex:1;display:flex;flex-direction:column;}
+  .product-body h3{font-size:1.02rem;margin-bottom:6px;}
+  .product-cat{font-size:0.78rem;color:var(--roast);margin-bottom:10px;}
+  .product-price{
+    margin-top:auto;
+    display:flex;align-items:center;justify-content:space-between;
+    padding-top:12px;
+  }
+  .product-price strong{font-size:1.05rem;color:var(--espresso);}
+  .product-price .old{
+    text-decoration:line-through;color:var(--roast);
+    font-size:0.82rem;margin-right:6px;font-weight:400;
+  }
+  .product-add{
+    width:34px;height:34px;
+    border:1px solid var(--espresso);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--espresso);
+    background:transparent;cursor:pointer;
+  }
+  .product-add:hover{background:var(--espresso);color:var(--paper);}
+  @media (max-width:960px){.product-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:480px){.product-grid{grid-template-columns:1fr;}}
+
+  /* ---------- Testimonials ---------- */
+  .testi{background:var(--espresso);color:var(--paper);}
+  .testi .section-head h2{color:var(--paper);}
+  .testi .section-head p{color:rgba(250,246,238,0.7);}
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .testi-card{
+    border:1px solid rgba(184,132,58,0.3);
+    padding:26px;
+  }
+  .testi-card p.quote{
+    font-size:0.98rem;
+    color:rgba(250,246,238,0.88);
+    margin-bottom:20px;
+  }
+  .testi-person{display:flex;align-items:center;gap:12px;}
+  .testi-avatar{
+    width:40px;height:40px;border-radius:50%;
+    background:var(--roast);
+    flex-shrink:0;
+  }
+  .testi-person strong{display:block;font-size:0.92rem;color:var(--paper);}
+  .testi-person span{font-size:0.8rem;color:rgba(250,246,238,0.6);}
+  @media (max-width:960px){.testi-grid{grid-template-columns:1fr;}}
+
+  /* ---------- Journal / blog ---------- */
+  .journal{background:var(--paper);}
+  .journal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+  .journal-card{border-top:2px solid var(--espresso);padding-top:18px;}
+  .journal-thumb{
+    aspect-ratio:16/10;background:var(--cream);
+    border:1px solid var(--line);
+    margin-bottom:16px;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--roast);font-size:0.78rem;
+  }
+  .journal-card h3{font-size:1.05rem;margin-bottom:8px;line-height:1.35;}
+  .journal-card p{font-size:0.9rem;color:var(--roast);}
+  @media (max-width:820px){.journal-grid{grid-template-columns:1fr;}}
+
+  /* ---------- CTA strip ---------- */
+  .cta-strip{
+    background:var(--honey);
+  }
+  .cta-strip .wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:44px 24px;flex-wrap:wrap;gap:20px;
+  }
+  .cta-strip h2{font-size:1.5rem;color:var(--espresso);}
+  .cta-strip .btn{background:var(--espresso);border-color:var(--espresso);color:var(--paper);}
+  .cta-strip .btn:hover{background:transparent;color:var(--espresso);}
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--pine);color:rgba(250,246,238,0.85);}
+  .footer-grid{
+    display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;
+    gap:40px;
+    padding:68px 24px 40px;
+  }
+  .footer-grid h4{
+    color:var(--paper);font-family:'Fraunces',serif;
+    font-size:1.05rem;margin-bottom:16px;
+  }
+  .footer-grid p, .footer-grid a{font-size:0.9rem;color:rgba(250,246,238,0.75);display:block;margin-bottom:8px;}
+  .footer-grid a:hover{color:var(--honey);}
+  .foot-logo{font-family:'Fraunces',serif;font-size:1.3rem;color:var(--paper);margin-bottom:14px;}
+  .foot-bottom{
+    border-top:1px solid rgba(250,246,238,0.15);
+    padding:22px 24px;
+    display:flex;justify-content:space-between;align-items:center;
+    max-width:1160px;margin:0 auto;
+    font-size:0.82rem;color:rgba(250,246,238,0.55);
+    flex-wrap:wrap;gap:10px;
+  }
+  .foot-social{display:flex;gap:14px;}
+  .foot-social a{
+    width:34px;height:34px;border:1px solid rgba(250,246,238,0.25);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--paper);
+  }
+  @media (max-width:820px){
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:480px){
+    .footer-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- =================== HEADER =================== -->
+<header>
+  <div class="nav">
+    <a href="#" class="logo">Tanah <em>Tinggi</em></a>
+    <nav>
+      <ul id="navLinks">
+        <li><a href="#beranda">Beranda</a></li>
+        <li><a href="#produk">Produk</a></li>
+        <li><a href="#cerita">Cerita Kami</a></li>
+        <li><a href="#jurnal">Serba-serbi</a></li>
+        <li><a href="#kontak">Kontak</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a href="#produk" class="btn">Lihat Produk</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Buka menu"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<!-- =================== HERO =================== -->
+<section class="hero" id="beranda" style="padding:0;">
+  <div class="wrap">
+    <div>
+      <span class="hero-eyebrow">Kopi Arabika Dataran Tinggi</span>
+      <h1>Satu cangkir, dari kebun sampai ke meja Anda</h1>
+      <p>Kami memanen dan menyangrai biji kopi pilihan langsung dari petani lokal, menjaga rasa aslinya sampai ke tangan Anda — segar setiap kali dikirim.</p>
+      <div class="hero-actions">
+        <a href="#produk" class="btn btn-honey">Pesan Sekarang</a>
+        <a href="#cerita" class="btn btn-outline">Kenali Kami</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-tag">Ganti bagian ini dengan foto kedai, produk, atau proses produksi Anda.</div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== TRUST STRIP =================== -->
+<div class="trust">
+  <div class="wrap">
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l6 6L20 6"/></svg>
+      Disangrai Segar Setiap Pesanan
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l6 6L20 6"/></svg>
+      Langsung dari Petani Lokal
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l6 6L20 6"/></svg>
+      Dikirim ke Seluruh Indonesia
+    </div>
+    <div class="trust-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12l6 6L20 6"/></svg>
+      Packing Aman & Rapi
+    </div>
+  </div>
+</div>
+
+<!-- =================== BRAND STORY =================== -->
+<section class="story" id="cerita">
+  <div class="wrap story-grid">
+    <div class="story-photo">Foto pemilik usaha</div>
+    <div>
+      <div class="bean-divider">
+        <svg viewBox="0 0 24 24" fill="currentColor"><ellipse cx="12" cy="12" rx="8" ry="11"/></svg>
+        <span>CERITA KAMI</span>
+      </div>
+      <p class="story-quote">"Kami tidak hanya menjual kopi — kami membagikan cerita dari tanah tempat kopi ini tumbuh."</p>
+      <div class="story-name">Nama Pemilik Usaha</div>
+      <div class="story-role">Pendiri, Tanah Tinggi Coffee</div>
+      <p class="body">Usaha ini bermula dari kebun keluarga di dataran tinggi, tempat kopi arabika tumbuh alami di udara sejuk. Setiap biji dipilih dan disangrai dengan hati-hati agar rasa aslinya tetap terjaga.</p>
+      <p class="body">Ganti paragraf ini dengan cerita usaha Anda sendiri — bagaimana usaha dimulai, apa yang membuatnya berbeda, dan siapa orang di baliknya. Cerita yang jujur membuat pelanggan lebih percaya.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =================== PROMO BANNER =================== -->
+<div class="promo">
+  <div class="wrap">
+    <div>
+      <h2>Diskon untuk pelanggan setia</h2>
+      <p>Nikmati potongan harga khusus untuk pemesanan langsung melalui website ini — tanpa perantara, lebih hemat.</p>
+      <a href="#produk" class="btn btn-honey" style="margin-top:18px;">Klaim Diskon</a>
+    </div>
+    <div class="promo-num">15%<span>Diskon Spesial</span></div>
+  </div>
+</div>
+
+<!-- =================== PRODUCTS =================== -->
+<section class="products" id="produk">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Produk unggulan kami</h2>
+      <p>Pilihan favorit pelanggan, dipanen dan disangrai dengan standar terbaik.</p>
+    </div>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-thumb"><span class="product-badge">Terlaris</span>Foto produk 1</div>
+        <div class="product-body">
+          <h3>Kopi Arabika 200g</h3>
+          <div class="product-cat">Biji / Bubuk</div>
+          <div class="product-price">
+            <strong>Rp65.000</strong>
+            <button class="product-add" aria-label="Tambah ke keranjang">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb">Foto produk 2</div>
+        <div class="product-body">
+          <h3>Kopi Robusta 200g</h3>
+          <div class="product-cat">Biji / Bubuk</div>
+          <div class="product-price">
+            <strong>Rp48.000</strong>
+            <button class="product-add" aria-label="Tambah ke keranjang">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb"><span class="product-badge">Promo</span>Foto produk 3</div>
+        <div class="product-body">
+          <h3>Paket Coba Rasa (3x100g)</h3>
+          <div class="product-cat">Bundel</div>
+          <div class="product-price">
+            <span class="old">Rp150.000</span>
+            <strong>Rp129.000</strong>
+            <button class="product-add" aria-label="Tambah ke keranjang">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb">Foto produk 4</div>
+        <div class="product-body">
+          <h3>Kopi Drip Bag (isi 5)</h3>
+          <div class="product-cat">Praktis</div>
+          <div class="product-price">
+            <strong>Rp55.000</strong>
+            <button class="product-add" aria-label="Tambah ke keranjang">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== TESTIMONIALS =================== -->
+<section class="testi">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Kata pelanggan kami</h2>
+      <p>Cerita jujur dari mereka yang sudah mencoba.</p>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <p class="quote">"Rasa kopinya konsisten, pengiriman cepat, dan pelayanannya ramah. Sudah langganan sejak setahun lalu."</p>
+        <div class="testi-person">
+          <div class="testi-avatar"></div>
+          <div><strong>Nama Pelanggan</strong><span>Kota, Provinsi</span></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <p class="quote">"Kemasannya rapi dan aman, kopinya masih segar sampai tujuan. Recommended untuk pecinta kopi."</p>
+        <div class="testi-person">
+          <div class="testi-avatar"></div>
+          <div><strong>Nama Pelanggan</strong><span>Kota, Provinsi</span></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <p class="quote">"Harganya bersahabat untuk kualitas seperti ini. Anak-anak di rumah pun jadi suka ngopi bareng saya."</p>
+        <div class="testi-person">
+          <div class="testi-avatar"></div>
+          <div><strong>Nama Pelanggan</strong><span>Kota, Provinsi</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== JOURNAL / BLOG =================== -->
+<section class="journal" id="jurnal">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Serba-serbi &amp; cerita terbaru</h2>
+      <p>Kabar seputar produk, proses, dan kegiatan usaha kami.</p>
+    </div>
+    <div class="journal-grid">
+      <div class="journal-card">
+        <div class="journal-thumb">Foto artikel 1</div>
+        <h3>Mengenal Proses di Balik Produk Kami</h3>
+        <p>Cerita singkat tentang bagaimana produk kami dibuat, dari bahan sampai jadi.</p>
+      </div>
+      <div class="journal-card">
+        <div class="journal-thumb">Foto artikel 2</div>
+        <h3>Tips Merawat & Menikmati Produk Anda</h3>
+        <p>Panduan sederhana agar Anda mendapatkan pengalaman terbaik.</p>
+      </div>
+      <div class="journal-card">
+        <div class="journal-thumb">Foto artikel 3</div>
+        <h3>Kabar Kegiatan & Kolaborasi Terbaru</h3>
+        <p>Kami ikut serta dalam berbagai kegiatan lokal — simak selengkapnya.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== CTA STRIP =================== -->
+<div class="cta-strip">
+  <div class="wrap">
+    <h2>Siap coba produk kami?</h2>
+    <a href="#produk" class="btn">Belanja Sekarang</a>
+  </div>
+</div>
+
+<!-- =================== FOOTER =================== -->
+<footer id="kontak">
+  <div class="wrap footer-grid">
+    <div>
+      <div class="foot-logo">Tanah Tinggi</div>
+      <p>Alamat: Jl. Contoh Alamat No. 00, Kec. Contoh, Kota, Provinsi, Kode Pos</p>
+      <p>WhatsApp: <a href="tel:0800000000">0800-0000-000</a></p>
+      <p>Email: <a href="mailto:halo@contohtoko.com">halo@contohtoko.com</a></p>
+    </div>
+    <div>
+      <h4>Tautan</h4>
+      <a href="#beranda">Beranda</a>
+      <a href="#produk">Produk</a>
+      <a href="#cerita">Cerita Kami</a>
+      <a href="#jurnal">Serba-serbi</a>
+    </div>
+    <div>
+      <h4>Pembayaran</h4>
+      <p>Bank Contoh</p>
+      <p>No. Rek: 0000-0000-0000</p>
+      <p>a.n. Nama Usaha Anda</p>
+    </div>
+    <div>
+      <h4>Pengiriman</h4>
+      <p>Dikirim melalui JNE, J&amp;T, SiCepat, Pos Indonesia, dan mitra kurir lainnya.</p>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>Copyright © 2026 Tanah Tinggi Coffee. Semua hak dilindungi.</span>
+    <div class="foot-social">
+      <a href="#" aria-label="Facebook">f</a>
+      <a href="#" aria-label="Instagram">ig</a>
+      <a href="#" aria-label="WhatsApp">wa</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const toggle = document.getElementById('menuToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+</script>
+
+</body>
+</html>
