@@ -9,19 +9,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Umkm extends Model
 {
     protected $fillable = [
-        'user_id',
-        'name',
-        'slug',
-        'category',
-        'description',
-        'phone',
-        'address',
-        'landmark',
-        'logo',
-        'cover',
-        'latitude',
-        'longitude',
-    ];
+    'user_id',
+    'name',
+    'slug',
+    'category',
+    'business_type',
+    'description',
+    'phone',
+    'address',
+    'landmark',
+    'opening_time',
+    'closing_time',
+    'logo',
+    'cover',
+    'latitude',
+    'longitude',
+];
 
     protected $casts = [
     'latitude' => 'float',
@@ -36,5 +39,11 @@ class Umkm extends Model
     public function items(): HasMany
     {
         return $this->hasMany(Item::class);
+    }
+
+    public function locations(): HasMany
+    {
+        return $this->hasMany(UmkmLocation::class)
+            ->orderBy('sort_order');
     }
 }

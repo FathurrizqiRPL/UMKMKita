@@ -826,6 +826,26 @@ a {
     background: #b91c1c;
 }
 
+.current-image {
+    width: 110px;
+    height: 110px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    border: 1px solid #e5e4ed;
+    border-radius: 14px;
+    background: #f7f7fb;
+}
+
+.current-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.current-image-cover {
+    width: 180px;
+}
+
 @media (max-width: 600px) {
     .delete-card {
         flex-direction: column;
