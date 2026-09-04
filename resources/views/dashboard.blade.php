@@ -276,8 +276,8 @@
                             Lihat Detail
                         </a>
 
-                        <a href="{{ route('umkm.destroy.website') }}">
-                            Hapus
+                        <a href="{{ route('umkm.delete.website') }}" class="delete-umkm-link">
+                            Hapus Website
                         </a>
 
                     </div>

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use App\Models\DeletedUmkm;
+
 
 class UmkmController extends Controller
 {
@@ -70,7 +72,7 @@ class UmkmController extends Controller
 public function delete(Request $request)
 {
     $umkm = $request->user()->umkm()->firstOrFail();
-    
+
     // Kita arahkan ke file baru bernama hapus.blade.php
     return view('umkm.hapus', compact('umkm'));
 }
@@ -78,23 +80,41 @@ public function delete(Request $request)
 // Fungsi untuk mengeksekusi penghapusan
 public function destroy(Request $request)
 {
-    $umkm = $request->user()->umkm()->firstOrFail();
+    $umkm = $request->user()
+        ->umkm()
+        ->with('items')
+        ->firstOrFail();
 
-    // Opsional: Hapus logo/cover dari storage jika ada
+    DeletedUmkm::updateOrCreate(
+        [
+            'slug' => $umkm->slug,
+        ],
+        [
+            'name' => $umkm->name,
+            'deleted_at' => now(),
+        ]
+    );
+
+    foreach ($umkm->items as $item) {
+        if ($item->image) {
+            Storage::disk('public')->delete($item->image);
+        }
+    }
+
     if ($umkm->logo) {
-        \Illuminate\Support\Facades\Storage::disk('public')->delete($umkm->logo);
-    }
-    if ($umkm->cover) {
-        \Illuminate\Support\Facades\Storage::disk('public')->delete($umkm->cover);
+        Storage::disk('public')->delete($umkm->logo);
     }
 
-    // Hapus data dari database
+    if ($umkm->cover) {
+        Storage::disk('public')->delete($umkm->cover);
+    }
+
     $umkm->delete();
 
-    // Kembalikan user ke halaman utama/home setelah website dihapus
-    return redirect('/')->with('success', 'Website UMKM berhasil dihapus.');
+    return redirect()
+        ->route('dashboard')
+        ->with('success', 'Website UMKM berhasil dihapus.');
 }
-
     public function update(Request $request)
     {
         $umkm = $request->user()->umkm()->firstOrFail();
@@ -138,14 +158,25 @@ public function destroy(Request $request)
     }
 
     public function show(string $slug)
-    {
-        $umkm = Umkm::with('items')
-            ->where('slug', $slug)
-            ->where('status', 'active')
-            ->firstOrFail();
+{
+    $umkm = Umkm::with('items')
+        ->where('slug', $slug)
+        ->where('status', 'active')
+        ->first();
 
+    if ($umkm) {
         return view('umkm.show', compact('umkm'));
     }
+
+    $deletedUmkm = DeletedUmkm::where('slug', $slug)->first();
+
+    if ($deletedUmkm) {
+        return response()
+            ->view('umkm.unavailable', compact('deletedUmkm'), 410);
+    }
+
+    abort(404);
+}
 
     private function uniqueSlug(string $name, ?int $ignoreId = null): string
     {
