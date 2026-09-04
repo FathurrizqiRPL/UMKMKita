@@ -3,47 +3,78 @@
 @section('content')
 
 <div class="edit-page">
+
     <div class="edit-container">
 
         <a href="{{ route('dashboard') }}" class="edit-back-link">
-            ← Batal & Kembali ke dashboard
+            ← Batal & Kembali ke Dashboard
         </a>
 
         <div class="edit-heading">
-            <span class="edit-eyebrow" style="color: #dc2626;">DANGER ZONE</span>
+
+            <span class="delete-eyebrow">
+                DANGER ZONE
+            </span>
+
             <h1>
                 Hapus Website<br>
                 <em>{{ $umkm->name }}.</em>
             </h1>
+
             <p>
-                Halaman ini digunakan untuk menutup dan menghapus website publik kamu selamanya.
+                Tindakan ini akan menghapus website UMKM dan seluruh data yang ada di dalamnya secara permanen.
             </p>
+
         </div>
 
-        <form action="{{ route('umkm.destroy.website') }}" method="POST" class="edit-form" onsubmit="return confirm('Apakah kamu benar-benar yakin? Tindakan ini akan menghapus semua data produk dan tidak bisa dikembalikan.');">
-            @csrf
-            @method('DELETE')
+        <section class="delete-card">
 
-            <section class="edit-card" style="border: 2px solid #fecaca; background-color: #fef2f2;">
-                <div class="edit-card-title">
-                    <span style="color: #991b1b;">PERINGATAN KERAS</span>
-                    <h2 style="color: #7f1d1d;">Konfirmasi Penghapusan</h2>
-                </div>
-                
-                <p style="color: #991b1b; margin-bottom: 20px; line-height: 1.5;">
-                    Dengan menekan tombol di bawah, kamu akan menghapus website <strong>{{ $umkm->name }}</strong> secara permanen. Semua data termasuk deskripsi, logo, foto sampul, dan daftar produk yang ada di dalamnya akan ikut terhapus dari sistem.
+            <div class="delete-warning-icon">
+                !
+            </div>
+
+            <div class="delete-content">
+
+                <span class="delete-label">
+                    PERINGATAN
+                </span>
+
+                <h2>
+                    Website ini akan dihapus permanen.
+                </h2>
+
+                <p>
+                    Semua data dari <strong>{{ $umkm->name }}</strong>, termasuk profil usaha, logo, foto sampul, produk, layanan, dan foto item akan ikut dihapus.
                 </p>
 
-                <div class="edit-submit" style="margin-top: 30px; padding-top: 0; border: none;">
-                    <button class="edit-submit-button" type="submit" style="background-color: #dc2626; color: white;">
-                        Ya, Hapus Website Saya
-                        <span>🗑️</span>
-                    </button>
-                </div>
-            </section>
-        </form>
+                <p class="delete-warning-text">
+                    Tindakan ini tidak dapat dibatalkan.
+                </p>
+
+            </div>
+
+        </section>
+
+        <div class="delete-actions">
+
+            <a href="{{ route('dashboard') }}" class="delete-cancel-button">
+                Batal
+            </a>
+
+            <form action="{{ route('umkm.destroy.website') }}" method="POST" onsubmit="return confirm('Apakah kamu benar-benar yakin ingin menghapus website UMKM ini secara permanen?');">
+                @csrf
+                @method('DELETE')
+
+                <button type="submit" class="delete-confirm-button">
+                    Hapus Website Saya
+                    <span>→</span>
+                </button>
+            </form>
+
+        </div>
 
     </div>
+
 </div>
 
 @endsection
