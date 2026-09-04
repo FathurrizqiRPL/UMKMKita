@@ -26,7 +26,10 @@ document.addEventListener('DOMContentLoaded', function () {
     let userMarker = null;
     let radiusCircle = null;
     let umkmMarkers = [];
+    let activeUmkmMarker = null;
+    let relatedLocationLine = null;
     let manualLocationMode = false;
+    
 
     function escapeHtml(value) {
         return String(value ?? '')
@@ -71,22 +74,87 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function clearUmkmMarkers() {
-        umkmMarkers.forEach(function (marker) {
-            map.removeLayer(marker);
+        umkmMarkers.forEach(function (item) {
+            map.removeLayer(item.marker);
         });
 
         umkmMarkers = [];
     }
-
-    function createUmkmIcon() {
-        return L.divIcon({
-            className: '',
-            html: '<div class="umkm-pin"><span>U</span></div>',
-            iconSize: [38, 38],
-            iconAnchor: [19, 38],
-            popupAnchor: [0, -38]
-        });
+    
+    function highlightUmkmLocations(activeMarker, activeUmkm) {
+    if (relatedLocationLine) {
+        map.removeLayer(relatedLocationLine);
+        relatedLocationLine = null;
     }
+
+    const relatedLocations = [];
+
+    umkmMarkers.forEach(function (item) {
+        const sameUmkm = String(item.umkm.umkm_id) === String(activeUmkm.umkm_id);
+        let state = sameUmkm ? 'related' : 'normal';
+
+        if (sameUmkm) relatedLocations.push(item);
+        if (item.marker === activeMarker) state = 'active';
+
+        item.marker.setIcon(createUmkmIcon(state, item.umkm.business_type));
+    });
+
+    relatedLocations.sort(function (a, b) {
+        return Number(a.umkm.location_number) - Number(b.umkm.location_number);
+    });
+
+    const relatedPoints = relatedLocations.map(function (item) {
+        return item.marker.getLatLng();
+    });
+
+    
+   if (activeUmkm.business_type === 'keliling' && relatedPoints.length > 1) {
+    relatedLocationLine = L.polyline(relatedPoints, {
+        color: '#5848e8',
+        weight: 5,
+        opacity: .9,
+        dashArray: '10, 8'
+    }).addTo(map);
+}
+}
+
+    function resetUmkmHighlights() {
+    umkmMarkers.forEach(function (item) {
+        item.marker.setIcon(createUmkmIcon('normal', item.umkm.business_type));
+    });
+
+    if (relatedLocationLine) {
+        map.removeLayer(relatedLocationLine);
+        relatedLocationLine = null;
+    }
+}
+
+    function focusUmkmMarker(marker) {
+    map.stop();
+
+    map.flyTo(marker.getLatLng(), 18, {
+        animate: true,
+        duration: 0.65
+    });
+}
+    
+   map.on('popupclose', function (event) {
+    if (event.popup._source === activeUmkmMarker) {
+        activeUmkmMarker = null;
+        resetUmkmHighlights();
+    }
+});
+    
+    function createUmkmIcon(state = 'normal', businessType = 'tetap') {
+    const mobileClass = businessType === 'keliling' ? ' umkm-pin-mobile' : '';
+    return L.divIcon({
+        className: '',
+        html: `<div class="umkm-pin umkm-pin-${state}${mobileClass}"><span>U</span></div>`,
+        iconSize: [38, 38],
+        iconAnchor: [19, 38],
+        popupAnchor: [0, -38]
+    });
+}
 
     function createUserIcon() {
         return L.divIcon({
@@ -139,12 +207,9 @@ document.addEventListener('DOMContentLoaded', function () {
             const lat = Number(umkm.latitude);
             const lng = Number(umkm.longitude);
 
-            const marker = L.marker(
-                [lat, lng],
-                {
-                    icon: createUmkmIcon()
-                }
-            ).addTo(map);
+            const marker = L.marker([lat, lng], {
+                icon: createUmkmIcon('normal', umkm.business_type)
+            }).addTo(map);
 
             const image = umkm.cover || umkm.logo;
 
@@ -162,6 +227,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         <span class="radar-popup-category">
                             ${escapeHtml(umkm.category)}
                         </span>
+                        
+                        ${umkm.business_type === 'keliling'
+                            ? `<span class="radar-popup-mobile-badge">Keliling · Titik ${umkm.location_number}</span>`
+                            : `<span class="radar-popup-fixed-badge">Di Tempat</span>`
+                        }
 
                         <h3>
                             ${escapeHtml(umkm.name)}
@@ -174,7 +244,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         <p class="radar-popup-address">
                             ${escapeHtml(umkm.address || 'Alamat belum tersedia')}
                         </p>
-
+                        
+                        ${umkm.start_time && umkm.end_time
+                            ? `<p class="radar-popup-hours">🕒 ${escapeHtml(umkm.start_time)} - ${escapeHtml(umkm.end_time)}</p>`
+                            : ''
+                        }
+                        
                         ${
                             umkm.landmark
                                 ? `<p class="radar-popup-landmark">Patokan: ${escapeHtml(umkm.landmark)}</p>`
@@ -188,9 +263,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             `;
 
-            marker.bindPopup(popupHtml);
-
-            umkmMarkers.push(marker);
+            marker.bindPopup(popupHtml, {
+                autoPan: false
+            });
+            marker.on('click', function () {
+                activeUmkmMarker = marker;
+                highlightUmkmLocations(marker, umkm);
+                focusUmkmMarker(marker);
+            });
+            
+            umkmMarkers.push({
+                marker: marker,
+                umkm: umkm
+            });
 
             const card = document.createElement('article');
 
@@ -217,8 +302,9 @@ document.addEventListener('DOMContentLoaded', function () {
             `;
 
             card.addEventListener('click', function () {
-                map.setView([lat, lng], 17);
-
+                activeUmkmMarker = marker;
+                highlightUmkmLocations(marker, umkm);
+                focusUmkmMarker(marker);
                 marker.openPopup();
             });
 

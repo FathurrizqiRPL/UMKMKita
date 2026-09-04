@@ -568,3 +568,46 @@ button {
         grid-template-columns: 1fr;
     }
 }
+
+.umkm-pin.umkm-pin-related {
+    background: #8b7cf6;
+    box-shadow: 0 0 0 6px rgba(88, 72, 232, .22), 0 6px 18px rgba(88, 72, 232, .35);
+    transform: rotate(-45deg) scale(1.08);
+}
+
+.umkm-pin.umkm-pin-active {
+    background: #5848e8;
+    box-shadow: 0 0 0 9px rgba(88, 72, 232, .28), 0 8px 22px rgba(88, 72, 232, .45);
+    transform: rotate(-45deg) scale(1.2);
+}
+
+.umkm-pin-mobile::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    right: -3px;
+    top: -3px;
+    border: 2px solid white;
+    border-radius: 50%;
+    background: #ff9f43;
+}
+
+.radar-popup-mobile-badge,
+.radar-popup-fixed-badge {
+    display: inline-flex;
+    margin-left: 6px;
+    padding: 3px 6px;
+    border-radius: 6px;
+    background: #f0edff;
+    color: #5848e8;
+    font-size: 9px;
+    font-weight: 800;
+}
+
+.radar-popup-hours {
+    margin: 0 0 12px;
+    color: #44485a;
+    font-size: 10px;
+    font-weight: 700;
+}
