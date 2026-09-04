@@ -22,7 +22,7 @@
         <span>UMKM<span class="purple">Kita</span></span>
     </a>
 
-    <a href="{{ route('home') }}" class="back-home">← Kembali ke Beranda</a>
+    <a href="{{ route('home') }}" class="back-home"> Kembali ke Beranda</a>
 </header>
 
 <main class="radar-page">
@@ -92,7 +92,7 @@
         <div class="nearby-grid" id="nearbyGrid"></div>
 
         <div class="nearby-empty" id="nearbyEmpty" hidden>
-            <div>📍</div>
+            <div><img src="{{ asset('image/radar-umkm.png') }}" alt=""></div>
 
             <h3>Belum ada UMKM di dekat kamu</h3>
 

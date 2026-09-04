@@ -10,64 +10,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
-    <style>
-.back-to-top {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.2s ease;
-    z-index: 1000;
-}
-
-.back-to-top.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-.back-to-top:hover {
-    transform: translateY(-3px);
-}
-
-.progress-ring {
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: rotate(-90deg);
-}
-
-.progress-ring__bg {
-    fill: transparent;
-    stroke: #e6e6e6;
-    stroke-width: 3;
-}
-
-.progress-ring__circle {
-    fill: transparent;
-    stroke: #d90429;
-    stroke-width: 3;
-    stroke-linecap: round;
-    transition: stroke-dashoffset 0.1s linear;
-}
-
-.back-to-top .arrow {
-    font-size: 16px;
-    font-weight: bold;
-    color: #e65c5c;
-    transform: rotate(90deg);
-    user-select: none;
-}
-</style>
 </head>
 
 <body>
@@ -108,13 +53,8 @@
         <div class="nav-actions">
 
             @auth
-
-                <a href="{{ route('dashboard') }}" class="login-btn">
-                    Dashboard
-                </a>
-
                 <a href="{{ route('dashboard') }}" class="nav-button">
-                    Kelola UMKM
+                    Dashboard UMKM
                 </a>
 
             @else
@@ -204,10 +144,15 @@
     <div class="container hero-container">
 
         <div class="hero-content">
+            <div class="hero-badge">
+                <span class="hero-badge-dot"></span>
+                <span>Platform Digitalisasi UMKM Indonesia</span>
+            </div>
+
             <h1>
                 UMKM-mu punya cerita.
 
-                <span>
+                <span class="gradient-text">
                     Biarkan dunia menemukannya.
                 </span>
             </h1>

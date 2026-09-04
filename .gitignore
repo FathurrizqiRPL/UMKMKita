@@ -25,3 +25,11 @@ _ide_helper.php
 Homestead.json
 Homestead.yaml
 Thumbs.db
+.agent/
+# Antigravity AI Skills
+.agents/
+skills-lock.json
+
+# Antigravity AI Skills
+.agents/
+skills-lock.json
