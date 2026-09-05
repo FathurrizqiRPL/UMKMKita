@@ -827,3 +827,61 @@ a {
 .delete-umkm-link:hover {
     color: #b91c1c !important;
 }
+
+.website-url-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.website-url {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+    color: #171b2d;
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.website-url:hover {
+    color: var(--primary);
+}
+
+.copy-url-button {
+    flex-shrink: 0;
+    padding: 8px 12px;
+    border: 1px solid #dedaf8;
+    border-radius: 9px;
+    background: #f4f2ff;
+    color: #5848e8;
+    font-size: 11px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.copy-url-button:hover {
+    border-color: #5848e8;
+    background: #ece9ff;
+}
+
+.copy-url-button.copied {
+    border-color: #ccebdc;
+    background: #eaf8f1;
+    color: #198754;
+}
+
+@media (max-width: 600px) {
+    .website-url-wrap {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .copy-url-button {
+        width: 100%;
+    }
+}

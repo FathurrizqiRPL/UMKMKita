@@ -151,20 +151,26 @@
                 </div>
 
 
-                <div class="dashboard-stat">
+                @php
+                    $websiteUrl = route('umkm.show', $umkm->slug);
+                @endphp
 
-                    <div class="stat-top">
-                        <span>ALAMAT WEBSITE</span>
+                <div class="dashboard-stat-card">
+                    <span class="stat-label">ALAMAT WEBSITE</span>
+
+                    <div class="website-url-wrap">
+                        <a href="{{ $websiteUrl }}" target="_blank" class="website-url">
+                            {{ $websiteUrl }}
+                        </a>
+
+                        <button type="button"
+                            class="copy-url-button"
+                            data-url="{{ $websiteUrl }}">
+                            Copy
+                        </button>
                     </div>
 
-                    <strong class="stat-slug">
-                        /{{ $umkm->slug }}
-                    </strong>
-
-                    <small>
-                        Alamat website kamu
-                    </small>
-
+                    <p>Alamat website kamu</p>
                 </div>
 
             </section>
@@ -506,5 +512,34 @@
     </div>
 
 </div>
+
+<script>
+    document.querySelectorAll('.copy-url-button').forEach(function (button) {
+    button.addEventListener('click', async function () {
+        const url = button.dataset.url;
+        const originalText = button.textContent;
+
+        try {
+            await navigator.clipboard.writeText(url);
+
+            button.textContent = 'Tersalin ✓';
+            button.classList.add('copied');
+
+            setTimeout(function () {
+                button.textContent = originalText;
+                button.classList.remove('copied');
+            }, 1800);
+        } catch (error) {
+            console.error('Gagal menyalin URL:', error);
+            button.textContent = 'Gagal menyalin';
+
+            setTimeout(function () {
+                button.textContent = originalText;
+            }, 1800);
+        }
+    });
+});
+
+</script>
 
 @endsection

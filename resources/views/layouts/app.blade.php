@@ -13,28 +13,25 @@
 </head>
 <body>
 <header class="topbar">
-    <a class="brand" href="{{ route('dashboard') }}">
+    <a class="brand" href="{{ route('home') }}">
         <span>U</span>
         UMKM<b>Kita</b>
     </a>
     <nav>
-        <a href="{{ route('home') }}">
-            Beranda
-        </a>
         @if(auth()->user()->umkm)
 
             <a href="{{ route('umkm.show', auth()->user()->umkm->slug) }}" target="_blank">
                 Lihat Website
             </a>
 
-            <a href="{{ route('umkm.edit') }}">
-                Pengaturan
+            <a href="{{ route('dashboard') }}">
+                Dashboard UMKM
             </a>
         @endif
         <form method="POST" action="{{ route('logout') }}" style="display:inline">
             @csrf
             <button class="logout-btn" type="submit">
-                Keluar
+                Logout
             </button>
         </form>
     </nav>
