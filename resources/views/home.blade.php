@@ -2,6 +2,7 @@
 <html lang="id">
 
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,6 +15,45 @@
 
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
     <style>
+        /* Tambahkan ini untuk wadah gambar agar posisi absolut tombol tidak lari */
+.umkm-image {
+    position: relative; 
+}
+
+.btn-favorit-baru {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 36px;
+    min-width: 40px;
+    padding: 0 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #111;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    
+    /* 3 Baris ini memaksa tombol selalu berada di lapisan teratas dan bisa diklik */
+    z-index: 999 !important; 
+    pointer-events: auto !important; 
+    transition: all 0.2s ease;
+}
+
+.btn-favorit-baru:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.05);
+}
+
+.btn-favorit-baru.liked .heart-icon {
+    color: #ff3b3b;
+}
 .back-to-top {
     position: fixed;
     bottom: 30px;
@@ -34,7 +74,20 @@
     opacity: 1;
     visibility: visible;
 }
-
+.favorite.liked {
+    color: #ff3b3b; /* Warna merah saat disukai */
+}
+.favorite {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;            /* Jarak antara ikon hati dan angka */
+    width: auto;         /* Membiarkan tombol melebar otomatis */
+    min-width: 40px;     /* Lebar minimal agar tetap proporsional saat angkanya 0 */
+    height: 40px;        /* Sesuaikan dengan tinggi tombol aslimu */
+    padding: 0 12px;     /* Memberi ruang kosong di sisi kiri dan kanan dalam tombol */
+    border-radius: 20px; /* Membuat sudutnya melengkung menjadi bentuk kapsul */
+}
 .back-to-top:hover {
     transform: translateY(-3px);
 }
@@ -67,6 +120,8 @@
     transform: rotate(90deg);
     user-select: none;
 }
+
+
 </style>
 </head>
 
@@ -680,12 +735,15 @@
                             {{ ucfirst($umkm->category) }}
                         </span>
 
+                        <button type="button" class="btn-favorit-baru" data-id="{{ $umkm->id }}" aria-label="Favorit {{ $umkm->name }}">
+    <span class="heart-icon">♡</span>
+    <span class="like-count">{{ $umkm->likes_count ?? 0 }}</span>
+</button>
                         <span class="umkm-status" data-status="checking">...</span>
 
                         <button type="button" class="favorite" aria-label="Favorit {{ $umkm->name }}">
                             ♡
                         </button>
-
                     </div>
 
                     <div class="umkm-info">
@@ -1042,40 +1100,79 @@
 <script src="{{ asset('js/home.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+
+    // ==========================================
+    // 1. LOGIKA TOMBOL FAVORIT / LIKE
+    // ==========================================
+    // (SUDAH DIPERBAIKI: Hapus DOMContentLoaded yang dobel di sini)
+    document.querySelectorAll('.btn-favorit-baru').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            let umkmId = this.dataset.id;
+            let countSpan = this.querySelector('.like-count');
+            let iconSpan = this.querySelector('.heart-icon');
+            let isLiked = this.classList.contains('liked');
+            let action = isLiked ? 'unlike' : 'like';
+
+            fetch(`/umkm/${umkmId}/toggle-like`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ action: action })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (action === 'like') {
+                        this.classList.add('liked');
+                        iconSpan.innerText = '♥';
+                    } else {
+                        this.classList.remove('liked');
+                        iconSpan.innerText = '♡';
+                    }
+                    countSpan.innerText = data.likes_count;
+                }
+            })
+            .catch(error => console.error('Gagal memproses like:', error));
+        });
+    });
+
+    // ==========================================
+    // 2. LOGIKA TOMBOL BACK TO TOP
+    // ==========================================
     const backToTopBtn = document.getElementById('backToTop');
     const circle = document.querySelector('.progress-ring__circle');
 
-    if (!backToTopBtn || !circle) return;
+    if (backToTopBtn && circle) {
+        const radius = circle.r.baseVal.value;
+        const circumference = 2 * Math.PI * radius;
 
-    const radius = circle.r.baseVal.value;
-    const circumference = 2 * Math.PI * radius;
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+        circle.style.strokeDashoffset = circumference;
 
-    circle.style.strokeDasharray = `${circumference} ${circumference}`;
-    circle.style.strokeDashoffset = circumference;
+        function updateProgress() {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollFraction = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+            const offset = circumference - (scrollFraction * circumference);
 
-    function updateProgress() {
-        const scrollTop = window.scrollY || document.documentElement.scrollTop;
-        const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollFraction = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
-        const offset = circumference - (scrollFraction * circumference);
+            circle.style.strokeDashoffset = offset;
 
-        circle.style.strokeDashoffset = offset;
-
-        if (scrollTop > 100) {
-            backToTopBtn.classList.add('show');
-        } else {
-            backToTopBtn.classList.remove('show');
+            if (scrollTop > 100) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
         }
+
+        window.addEventListener('scroll', updateProgress);
+        updateProgress();
     }
 
-    window.addEventListener('scroll', updateProgress);
-
-    backToTopBtn.addEventListener('click', () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
 });
 </script>
 </body>

@@ -232,4 +232,21 @@ class UmkmController extends Controller
 
         return $slug;
     }
+    
+
+    public function toggleLike(Request $request, $id)
+{
+    $umkm = \App\Models\Umkm::findOrFail($id);
+    
+    if ($request->action === 'like') {
+        $umkm->increment('likes_count');
+    } else {
+        $umkm->decrement('likes_count');
+    }
+
+    return response()->json([
+        'success' => true, 
+        'likes_count' => $umkm->likes_count
+    ]);
+}
 }
