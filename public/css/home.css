@@ -1254,6 +1254,66 @@ button {
     color: #333;
 }
 
+.umkm-status {
+    position: absolute;
+
+    left: 14px;
+    top: 46px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 5px 9px;
+
+    border-radius: 50px;
+
+    background: rgba(255,255,255,.92);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: .03em;
+
+    box-shadow: 0 2px 8px rgba(20,20,50,.08);
+
+    backdrop-filter: blur(4px);
+}
+
+.umkm-status::before {
+    content: "";
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: currentColor;
+}
+
+.umkm-status.status-open {
+    color: #157347;
+}
+
+.umkm-status.status-closed {
+    color: #b02a37;
+}
+
+.umkm-status.status-online {
+    color: #5848e8;
+}
+
+.umkm-status.status-checking {
+    color: #73798b;
+}
+
+.umkm-status.status-checking::before {
+    opacity: .45;
+}
+
 .favorite {
     position: absolute;
 

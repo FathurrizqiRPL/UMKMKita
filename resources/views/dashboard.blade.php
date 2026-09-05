@@ -209,6 +209,34 @@
 
 </div>
 
+                @php
+                    $websiteUrl = route('umkm.show', $umkm->slug);
+                @endphp
+
+                <div class="dashboard-stat">
+                    <div class="stat-top">
+                        <span>ALAMAT WEBSITE</span>
+                    </div>
+
+                    <div class="website-url-box">
+                        <input
+                            type="text"
+                            class="website-url-input"
+                            value="{{ $websiteUrl }}"
+                            readonly
+                        >
+
+                        <button
+                            type="button"
+                            class="copy-url-button"
+                            data-url="{{ $websiteUrl }}"
+                        >
+                            Copy
+                        </button>
+                    </div>
+
+                    <small>Alamat website kamu</small>
+                </div>
             </section>
 
 
@@ -569,6 +597,32 @@
     }
 </script>
 
+<script>
+    document.querySelectorAll('.copy-url-button').forEach(function (button) {
+        button.addEventListener('click', async function () {
+            const originalText = button.textContent;
+
+            try {
+                await navigator.clipboard.writeText(button.dataset.url);
+
+                button.textContent = 'Tersalin ✓';
+                button.classList.add('copied');
+
+                setTimeout(function () {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 1800);
+            } catch (error) {
+                console.error('Gagal menyalin URL:', error);
+            }
+        });
+    });
+
+    document.querySelectorAll('.website-url-input').forEach(function (input) {
+        input.addEventListener('click', function () {
+            input.select();
+        });
+    });
+</script>
+
 @endsection
-
-
