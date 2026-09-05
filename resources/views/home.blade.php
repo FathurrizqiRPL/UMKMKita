@@ -109,9 +109,6 @@
 
             @auth
 
-                <a href="{{ route('dashboard') }}" class="login-btn">
-                    Dashboard
-                </a>
 
                 <a href="{{ route('dashboard') }}" class="nav-button">
                     Kelola UMKM
@@ -170,9 +167,6 @@
 
         @auth
 
-            <a href="{{ route('dashboard') }}">
-                Dashboard
-            </a>
 
             <a href="{{ route('dashboard') }}" class="mobile-cta">
                 Kelola UMKM

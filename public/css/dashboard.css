@@ -309,6 +309,82 @@ a {
     color: #7b7f91;
 }
 
+.website-url-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 14px 0 6px;
+}
+
+.website-url-input {
+    min-width: 0;
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #dedcec;
+    border-radius: 9px;
+    outline: none;
+    background: #f8f8fc;
+    color: #171b2d;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: text;
+}
+
+.website-url-input:focus {
+    border-color: #5848e8;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(88, 72, 232, .08);
+}
+
+.copy-url-button {
+    flex-shrink: 0;
+    padding: 10px 12px;
+    border: 1px solid #dedaf8;
+    border-radius: 9px;
+    background: #f4f2ff;
+    color: #5848e8;
+    font-size: 10px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.copy-url-button:hover {
+    border-color: #5848e8;
+    background: #ebe8ff;
+}
+
+.copy-url-button.copied {
+    border-color: #c8ecd8;
+    background: #e9f9f0;
+    color: #187849;
+}
+
+.copy-url-button {
+    flex-shrink: 0;
+    padding: 6px 10px;
+    border: 1px solid #dedaf8;
+    border-radius: 8px;
+    background: #f4f2ff;
+    color: #5848e8;
+    font-size: 10px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.copy-url-button:hover {
+    border-color: #5848e8;
+    background: #ebe8ff;
+}
+
+.copy-url-button.copied {
+    border-color: #c8ecd8;
+    background: #e9f9f0;
+    color: #187849;
+}
+
 .stat-slug {
     font-size: 20px !important;
     word-break: break-all;
@@ -827,3 +903,4 @@ a {
 .delete-umkm-link:hover {
     color: #b91c1c !important;
 }
+
