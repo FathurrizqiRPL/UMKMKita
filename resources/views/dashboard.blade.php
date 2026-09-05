@@ -1,6 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    .btn-copy {
+        background: #f0edff;
+        color: #5848e8;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        
+    }
+    @media (min-width: 1024px) {
+    .dashboard-stats {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+}
+    .btn-copy:hover {
+        background: #5848e8;
+        color: #ffffff;
+    }
+</style>
 
 <div class="dashboard-page">
 
@@ -149,23 +173,41 @@
                     </small>
 
                 </div>
+<div class="dashboard-stat">
+    <div class="stat-top">
+        <span>JUMLAH DISUKAI</span>
+    </div>
 
+    <strong>
+        {{ $umkm->likes_count ?? 0 }}
+    </strong>
 
-                <div class="dashboard-stat">
+    <small>
+        Orang menyukai website kamu
+    </small>
+</div>
+<div class="dashboard-stat">
+    
+    <div class="stat-top" style="display: flex; justify-content: space-between; align-items: center;">
+        <span>ALAMAT WEBSITE</span>
+        
+        <!-- Tombol dipindah ke sini -->
+        <button type="button" onclick="copyUrl('{{ url('/' . $umkm->slug) }}', this)" class="btn-copy">
+            Salin Link
+        </button>
+    </div>
 
-                    <div class="stat-top">
-                        <span>ALAMAT WEBSITE</span>
-                    </div>
+    <div style="margin: 8px 0;">
+        <strong class="stat-slug">
+            /{{ $umkm->slug }}
+        </strong>
+    </div>
 
-                    <strong class="stat-slug">
-                        /{{ $umkm->slug }}
-                    </strong>
+    <small>
+        Alamat website kamu
+    </small>
 
-                    <small>
-                        Alamat website kamu
-                    </small>
-
-                </div>
+</div>
 
             </section>
 
@@ -507,4 +549,26 @@
 
 </div>
 
+<script>
+    function copyUrl(url, button) {
+        navigator.clipboard.writeText(url).then(() => {
+            const originalText = button.innerText;
+            button.innerText = 'Tersalin! ✓';
+            button.style.backgroundColor = '#10b981';
+            button.style.color = 'white';
+
+            setTimeout(() => {
+                button.innerText = originalText;
+                button.style.backgroundColor = '';
+                button.style.color = '';
+            }, 2000);
+        }).catch(err => {
+            alert('Gagal menyalin link.');
+            console.error(err);
+        });
+    }
+</script>
+
 @endsection
+
+
