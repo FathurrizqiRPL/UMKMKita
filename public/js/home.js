@@ -365,4 +365,130 @@ document.addEventListener("DOMContentLoaded", () => {
 
     });
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Status Buka / Tutup UMKM
+    |--------------------------------------------------------------------------
+    */
+
+    const statusBadges =
+        document.querySelectorAll(".umkm-status");
+
+
+    function parseTime(value) {
+
+        if (!value) return null;
+
+        const parts = String(value).split(":");
+
+        if (parts.length < 2) return null;
+
+        const hours = Number(parts[0]);
+
+        const minutes = Number(parts[1]);
+
+        if (
+            Number.isNaN(hours) ||
+            Number.isNaN(minutes)
+        ) {
+            return null;
+        }
+
+        return (hours * 60) + minutes;
+
+    }
+
+
+    function isOpen(nowMinutes, opening, closing) {
+
+        if (
+            opening === null ||
+            closing === null
+        ) {
+            return null;
+        }
+
+        // Operasional melewati tengah malam
+        if (closing < opening) {
+
+            return nowMinutes >= opening ||
+                nowMinutes < closing;
+
+        }
+
+        return nowMinutes >= opening &&
+            nowMinutes < closing;
+
+    }
+
+
+    function updateStatusBadges() {
+
+        if (!statusBadges.length) return;
+
+        const date = new Date();
+
+        const nowMinutes =
+            (date.getHours() * 60) +
+            date.getMinutes();
+
+
+        statusBadges.forEach(badge => {
+
+            const card =
+                badge.closest(".umkm-card");
+
+            if (!card) return;
+
+            const opening =
+                parseTime(
+                    card.dataset.opening
+                );
+
+            const closing =
+                parseTime(
+                    card.dataset.closing
+                );
+
+            const open =
+                isOpen(
+                    nowMinutes,
+                    opening,
+                    closing
+                );
+
+
+            if (open === null) {
+
+                badge.textContent = "Aktif";
+
+                badge.className =
+                    "umkm-status status-online";
+
+            } else if (open) {
+
+                badge.textContent = "Buka";
+
+                badge.className =
+                    "umkm-status status-open";
+
+            } else {
+
+                badge.textContent = "Tutup";
+
+                badge.className =
+                    "umkm-status status-closed";
+
+            }
+
+        });
+
+    }
+
+
+    updateStatusBadges();
+
+    setInterval(updateStatusBadges, 60000);
+
 });

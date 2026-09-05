@@ -632,7 +632,7 @@
 
             </div>
 
-            <a href="#umkm" class="see-all">
+            <a href="{{ route('radar') }}" class="see-all">
                 Lihat Semua UMKM →
             </a>
 
@@ -672,7 +672,7 @@
 
             @forelse ($umkms as $umkm)
 
-                <article class="umkm-card" data-category="{{ strtolower($umkm->category) }}">
+                <article class="umkm-card" data-category="{{ strtolower($umkm->category) }}" data-opening="{{ $umkm->opening_time }}" data-closing="{{ $umkm->closing_time }}">
 
                     <div class="umkm-image image-{{ strtolower($umkm->category) }}">
 
@@ -685,6 +685,8 @@
                         <span class="umkm-category">
                             {{ ucfirst($umkm->category) }}
                         </span>
+
+                        <span class="umkm-status" data-status="checking">...</span>
 
                         <button type="button" class="favorite" aria-label="Favorit {{ $umkm->name }}">
                             ♡
