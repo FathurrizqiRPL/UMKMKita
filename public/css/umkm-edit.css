@@ -229,6 +229,69 @@ a {
     flex-shrink: 0;
 }
 
+.favorite-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1px solid #e7e7ef;
+    border-radius: 14px;
+    background: #f8f9fc;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.favorite-toggle:hover {
+    border-color: #cfc9ff;
+    background: #f6f4ff;
+}
+
+.favorite-toggle input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.favorite-toggle-box {
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border: 1.5px solid #cbcbd8;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.favorite-toggle input:checked + .favorite-toggle-box {
+    border-color: #5848e8;
+    background: #5848e8;
+}
+
+.favorite-toggle input:checked + .favorite-toggle-box::before {
+    content: "✓";
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.favorite-toggle-text {
+    display: block;
+}
+
+.favorite-toggle-text strong {
+    display: block;
+    color: #333748;
+    font-size: 13px;
+}
+
+.favorite-toggle-text small {
+    display: block;
+    margin-top: 2px;
+    color: #858897;
+    font-size: 10px;
+}
+
 .product-edit-preview img,
 .product-current-preview img {
     width: 100%;
@@ -322,12 +385,12 @@ a {
     height: 7px;
     border-right: 2px solid #5848e8;
     border-bottom: 2px solid #5848e8;
-    transform: translateY(-2px) rotate(45deg);
+    transform: translateY(2px) rotate(225deg);
     transition: transform .2s ease;
 }
 
 .product-edit-card.open .product-edit-chevron::before {
-    transform: translateY(2px) rotate(225deg);
+    transform: translateY(-2px) rotate(45deg);
 }
 
 .product-edit-body {
