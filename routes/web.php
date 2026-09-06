@@ -7,6 +7,9 @@ use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Route;
 
 // ... (route milikmu yang lain di atasnya) ...
+
+
+Route::post('/umkm/toggle-website-status', [UmkmController::class, 'toggleWebsiteStatus'])->name('umkm.toggle-website-status');
 Route::post('/umkm/toggle-status', [UmkmController::class, 'toggleStatus'])->name('umkm.toggle-status')->middleware('auth');
 
 Route::get('/preview-template/{name}', function ($name) {
