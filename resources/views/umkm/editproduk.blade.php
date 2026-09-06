@@ -101,21 +101,28 @@
 
                                 <label class="edit-field">
                                     <span>Nama Produk / Layanan</span>
-                                    <input type="text" name="items[{{ $item->id }}][name]"
-                                        value="{{ old('items.'.$item->id.'.name', $item->name) }}" required>
+
+                                    <input type="text"
+                                        name="items[{{ $item->id }}][name]"
+                                        value="{{ old('items.'.$item->id.'.name', $item->name) }}"
+                                        required>
                                 </label>
                             </div>
 
                             <div class="edit-two-col">
                                 <label class="edit-field">
                                     <span>Harga (Rp)</span>
-                                    <input type="number" name="items[{{ $item->id }}][price]"
+
+                                    <input type="number"
+                                        name="items[{{ $item->id }}][price]"
                                         value="{{ old('items.'.$item->id.'.price', $item->price) }}">
                                 </label>
 
                                 <label class="edit-field item-duration-field">
                                     <span>Durasi (Opsional)</span>
-                                    <input type="text" name="items[{{ $item->id }}][duration]"
+
+                                    <input type="text"
+                                        name="items[{{ $item->id }}][duration]"
                                         value="{{ old('items.'.$item->id.'.duration', $item->duration) }}"
                                         placeholder="Contoh: 60 menit">
                                 </label>
@@ -123,94 +130,36 @@
 
                             <label class="edit-field">
                                 <span>Deskripsi singkat</span>
+
                                 <textarea name="items[{{ $item->id }}][description]" rows="3">{{ old('items.'.$item->id.'.description', $item->description) }}</textarea>
+                            </label>
+
+                            <label class="favorite-toggle">
+                                <input type="checkbox"
+                                    name="items[{{ $item->id }}][is_favorite]"
+                                    value="1"
+                                    @checked(old('items.'.$item->id.'.is_favorite', $item->is_favorite))>
+
+                                <span class="favorite-toggle-box"></span>
+
+                                <span class="favorite-toggle-text">
+                                    <strong>Jadikan Menu Favorit</strong>
+                                    <small>Tandai produk atau layanan ini sebagai pilihan utama.</small>
+                                </span>
                             </label>
 
                             <label class="edit-file">
                                 <span>Ganti Foto (Opsional)</span>
-                                <input type="file" name="items[{{ $item->id }}][image]" accept="image/*" data-image-input>
+
+                                <input type="file"
+                                    name="items[{{ $item->id }}][image]"
+                                    accept="image/*"
+                                    data-image-input>
                             </label>
 
                         </div>
                     </div>
-
-                    <div class="edit-two-col">
-                        <label class="edit-field">
-                            <span>Tipe Item</span>
-                            <select name="items[{{ $item->id }}][type]" required>
-                                <option value="product" @selected(old('items.'.$item->id.'.type', $item->type) === 'product')>Produk</option>
-                                <option value="service" @selected(old('items.'.$item->id.'.type', $item->type) === 'service')>Layanan</option>
-                            </select>
-                        </label>
-
-                        <label class="edit-field">
-                            <span>Nama Produk / Layanan</span>
-                            <input 
-                                type="text" 
-                                name="items[{{ $item->id }}][name]" 
-                                value="{{ old('items.'.$item->id.'.name', $item->name) }}" 
-                                required
-                            >
-                        </label>
-                    </div>
-
-                    <div class="edit-two-col">
-                        <label class="edit-field">
-                            <span>Harga (Rp)</span>
-                            <input 
-                                type="number" 
-                                name="items[{{ $item->id }}][price]" 
-                                value="{{ old('items.'.$item->id.'.price', $item->price) }}"
-                            >
-                        </label>
-
-                        <label class="edit-field">
-                            <span>Durasi (Opsional)</span>
-                            <input 
-                                type="text" 
-                                name="items[{{ $item->id }}][duration]" 
-                                value="{{ old('items.'.$item->id.'.duration', $item->duration) }}"
-                            >
-                        </label>
-                    </div>
-
-                    <label class="edit-field">
-                        <span>Deskripsi singkat</span>
-                        <textarea 
-                            name="items[{{ $item->id }}][description]" 
-                            rows="3"
-                        >{{ old('items.'.$item->id.'.description', $item->description) }}</textarea>
-                    </label>
-
-                    {{-- Pilihan Status Favorit & Terlaris --}}
-                    <div style="background: #f8f9fc; border: 1px solid #e7e7ef; padding: 14px 18px; border-radius: 14px; margin: 16px 0; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s ease;"
-     onmouseover="this.style.borderColor='#5848e8'; this.style.background='#f3f2ff';"
-     onmouseout="this.style.borderColor='#e7e7ef'; this.style.background='#f8f9fc';"
-     onclick="const cb = this.querySelector('input[type=&quot;checkbox&quot;]'); cb.checked = !cb.checked;"
->
-    <input 
-        type="checkbox" 
-        name="items[{{ $item->id }}][is_favorite]" 
-        value="1" 
-        @checked(old('items.'.$item->id.'.is_favorite', $item->is_favorite)) 
-        style="width: 18px; height: 18px; accent-color: #5848e8; cursor: pointer;"
-        onclick="event.stopPropagation();"
-    >
-    <span style="font-weight: 700; font-size: 14px; color: #333748; user-select: none;">
-        ⭐ Jadikan Menu Favorit
-    </span>
-</div>
-
-                    <label class="edit-file">
-                        <span>Ganti Foto (Opsional)</span>
-                        <input 
-                            type="file" 
-                            name="items[{{ $item->id }}][image]" 
-                            accept="image/*"
-                        >
-                    </label>
                 </section>
-
             @empty
                 <div class="edit-card">
                     <p class="edit-empty">Belum ada produk atau layanan untuk diedit.</p>
@@ -231,13 +180,13 @@
 </div>
 
 <script>
-document.querySelectorAll('[data-product-card]').forEach(card => {
+document.querySelectorAll('[data-product-card]').forEach(function (card) {
     const toggle = card.querySelector('[data-product-toggle]');
     const body = card.querySelector('[data-product-body]');
     const imageInput = card.querySelector('[data-image-input]');
     const typeSelect = card.querySelector('.item-type-select');
     const durationField = card.querySelector('.item-duration-field');
-    const durationInput = durationField.querySelector('input');
+    const durationInput = durationField?.querySelector('input');
     const summaryPreview = card.querySelector('.product-edit-preview');
     const currentPreview = card.querySelector('.product-current-preview');
 
@@ -252,11 +201,14 @@ document.querySelectorAll('[data-product-card]').forEach(card => {
 
         durationField.style.display = isService ? '' : 'none';
 
-        if (!isService) durationInput.value = '';
+        if (!isService && durationInput) {
+            durationInput.value = '';
+        }
+
         resizeCard();
     }
 
-    toggle.addEventListener('click', () => {
+    toggle.addEventListener('click', function () {
         const open = card.classList.toggle('open');
         body.style.maxHeight = open ? body.scrollHeight + 'px' : '0';
     });
@@ -264,7 +216,7 @@ document.querySelectorAll('[data-product-card]').forEach(card => {
     typeSelect.addEventListener('change', updateDurationField);
     updateDurationField();
 
-    imageInput.addEventListener('change', event => {
+    imageInput.addEventListener('change', function (event) {
         const file = event.target.files[0];
         if (!file) return;
 
