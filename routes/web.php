@@ -71,6 +71,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 });
 
 
+Route::get('/umkm', [UmkmController::class, 'index'])->name('umkm.index');
+
 Route::get('/umkm/{slug}', [UmkmController::class, 'show'])->name('umkm.show');
 
 require __DIR__.'/auth.php';
