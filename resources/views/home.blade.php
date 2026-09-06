@@ -14,7 +14,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
-    <<link rel="stylesheet" href="{{ asset('css/home.css') }}?v={{ filemtime(public_path('css/home.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}?v={{ filemtime(public_path('css/home.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/brand.css') }}">
 
     <style>
@@ -681,7 +681,7 @@
 
             </div>
 
-            <a href="{{ route('radar') }}" class="see-all">
+            <a href="{{ route('umkm.index') }}" class="see-all">
                 Lihat Semua UMKM →
             </a>
 

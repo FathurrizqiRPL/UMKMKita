@@ -60,11 +60,21 @@
                     <p>Masukkan informasi dasar mengenai usaha kamu.</p>
                 </div>
 
-                <div class="form-group">
-                    <label for="name">Nama UMKM</label>
-                    <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Contoh: Kedai Senja" required>
-                </div>
+            
+<div class="form-group">
+    <label for="name">Nama UMKM</label>
+    <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Contoh: Kedai Senja" required>
+</div>
 
+<!-- INPUT URL WEBSITE UMKM -->
+<div class="form-group">
+    <label for="slug">URL Website UMKM</label>
+    <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="color: #666; font-size: 14px; background: #f3f4f6; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px;">umkmkita.com/</span>
+        <input type="text" id="slug" name="slug" value="{{ old('slug') }}" placeholder="kedai-senja" style="flex: 1;" required>
+    </div>
+    <small class="field-help" style="margin-top: 4px; display: block; color: #666;">Gunakan huruf kecil dan tanda hubung (-) tanpa spasi. Contoh: <code>kedai-senja</code></small>
+</div>
                 <div class="form-group">
                     <label for="category">Kategori UMKM</label>
                     <select id="category" name="category" required>
