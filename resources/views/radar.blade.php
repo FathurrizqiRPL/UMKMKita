@@ -11,18 +11,113 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="stylesheet" href="{{ asset('css/radar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/home.css') }}?v={{ filemtime(public_path('css/home.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/brand.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/radar.css') }}?v={{ filemtime(public_path('css/umkms.css')) }}">
 </head>
 
 <body>
 
-<header class="radar-navbar">
-    <x-brand-logo :href="route('home')" />
+<header class="navbar" id="navbar">
 
-    <a href="{{ route('home') }}" class="back-home">← Kembali ke Beranda</a>
-</header>
+        <div class="container nav-inner">
+
+            <x-brand-logo :href="route('home')" />
+
+            <nav class="nav-menu">
+
+                <a href="{{ route('home') }}">
+                    Beranda
+                </a>
+
+                <a href="{{ route('home') . '#cara-kerja' }}">
+                    Cara Kerja
+                </a>
+
+                <a href="{{ route('umkm.index') }}">
+                    Jelajahi UMKM
+                </a>
+
+                <a href="{{ route('radar') }}" class="active">
+                    Radar UMKM
+                </a>
+
+                <a href="{{ route('home') . '#tentang' }}">
+                    Tentang
+                </a>
+
+            </nav>
+
+            <div class="nav-actions">
+
+                @auth
+
+                    <a href="{{ route('dashboard') }}" class="nav-button">
+                        Kelola UMKM
+                    </a>
+
+                @else
+
+                    <a href="{{ route('login') }}" class="login-btn">
+                        Masuk
+                    </a>
+
+                    <a href="{{ route('register') }}" class="nav-button">
+                        Buat Website
+                    </a>
+
+                @endauth
+
+            </div>
+        </div>
+
+    </header>
+
+     <div class="mobile-menu" id="mobileMenu">
+
+        <a href="{{ route('home') }}">
+            Beranda
+        </a>
+
+        <a href="{{ route('home') . '#cara-kerja' }}">
+            Cara Kerja
+        </a>
+
+        <a href="{{ route('umkm.index') }}">
+            Jelajahi UMKM
+        </a>
+
+        <a href="{{ route('radar') }}">
+            Radar UMKM
+        </a>
+
+        <a href="{{ route('home') . '#tentang' }}">
+            Tentang
+        </a>
+
+        <div class="mobile-menu-buttons">
+
+            @auth
+
+                <a href="{{ route('dashboard') }}" class="mobile-cta">
+                    Kelola UMKM
+                </a>
+
+            @else
+
+                <a href="{{ route('login') }}">
+                    Masuk
+                </a>
+
+                <a href="{{ route('register') }}" class="mobile-cta">
+                    Buat Website
+                </a>
+
+            @endauth
+
+        </div>
+
+    </div>
 
 <main class="radar-page">
     <section class="radar-heading">
@@ -99,6 +194,8 @@
         </div>
     </section>
 </main>
+
+@include('partials.footer')
 
 <script>
     window.radarUmkms = {{ Illuminate\Support\Js::from($radarUmkms) }};

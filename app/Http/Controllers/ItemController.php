@@ -22,9 +22,15 @@ class ItemController extends Controller
             'price' => ['nullable', 'numeric', 'min:0'],
             'duration' => ['nullable', 'string', 'max:50'],
             'image' => ['nullable', 'image', 'max:4096'],
+            'is_favorite' => ['nullable', 'boolean'],
+            'is_best_seller' => ['nullable', 'boolean'],
         ]);
 
         $data['umkm_id'] = $umkm->id;
+        
+        // Membaca status centang dari form
+        $data['is_favorite'] = $request->has('is_favorite');
+        $data['is_best_seller'] = $request->has('is_best_seller');
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('items', 'public');
@@ -67,7 +73,6 @@ public function updateSemua(Request $request)
 {
     $umkm = $request->user()->umkm()->firstOrFail();
     
-    // Validasi data array
     $request->validate([
         'items' => 'required|array',
         'items.*.name' => 'required|string|max:100',
@@ -76,23 +81,27 @@ public function updateSemua(Request $request)
         'items.*.duration' => 'nullable|string|max:50',
         'items.*.description' => 'nullable|string|max:500',
         'items.*.image' => 'nullable|image|max:4096',
+        'items.*.is_favorite' => 'nullable|boolean',
+        'items.*.is_best_seller' => 'nullable|boolean',
     ]);
 
-    // Looping data yang dikirim dari form
-    foreach ($request->items as $id => $data) {
-        // Cari item berdasarkan ID dan pastikan milik UMKM yang login
+    foreach ($request->items as $id => $itemData) {
         $item = Item::where('id', $id)->where('umkm_id', $umkm->id)->first();
         
         if ($item) {
-            // Jika ada file gambar baru di-upload untuk item ini
+            // Atur status centang checkbox (jika tidak dicentang, nilainya jadi false/0)
+            $itemData['is_favorite'] = isset($itemData['is_favorite']);
+            $itemData['is_best_seller'] = isset($itemData['is_best_seller']);
+
+            // Jika ada file gambar baru
             if ($request->hasFile("items.{$id}.image")) {
                 if ($item->image) {
                     \Illuminate\Support\Facades\Storage::disk('public')->delete($item->image);
                 }
-                $data['image'] = $request->file("items.{$id}.image")->store('items', 'public');
+                $itemData['image'] = $request->file("items.{$id}.image")->store('items', 'public');
             }
             
-            $item->update($data);
+            $item->update($itemData);
         }
     }
 

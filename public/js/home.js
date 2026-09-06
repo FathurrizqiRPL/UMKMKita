@@ -389,6 +389,42 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Status Buka / Tutup UMKM Keliling
+    |--------------------------------------------------------------------------
+    */
+
+    function locationIsOpen(nowMinutes, schedule) {
+
+        for (const loc of schedule) {
+
+            const opening = parseTime(loc.open);
+
+            const closing = parseTime(loc.close);
+
+            if (
+                opening === null ||
+                closing === null
+            ) {
+                continue;
+            }
+
+            const open = isOpen(
+                nowMinutes,
+                opening,
+                closing
+            );
+
+            if (open) return true;
+
+        }
+
+        return false;
+
+    }
+
+
     function updateStatusBadges() {
 
         if (!statusBadges.length) return;
@@ -408,14 +444,43 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!card) return;
 
             // CEK STATUS MANUAL TERLEBIH DAHULU
-            const isManualClosed = card.dataset.manual === "1";
+            const isManualClosed =
+                card.dataset.manual === "1";
 
             if (isManualClosed) {
+
                 badge.textContent = "Tutup";
-                badge.className = "umkm-status status-closed";
-                return; // Lewati pengecekan jam jika sudah ditutup manual
+
+                badge.className =
+                    "umkm-status status-closed";
+
+                return;
+
             }
 
+
+            // Ambil jadwal lokasi dari atribut
+            let locationSchedule = [];
+
+            try {
+
+                const raw =
+                    card.getAttribute("data-schedule");
+
+                if (raw) {
+
+                    locationSchedule = JSON.parse(raw);
+
+                }
+
+            } catch (err) {
+
+                locationSchedule = [];
+
+            }
+
+
+            // JAM UMKM (tetap)
             const opening =
                 parseTime(
                     card.dataset.opening
@@ -426,22 +491,36 @@ document.addEventListener("DOMContentLoaded", () => {
                     card.dataset.closing
                 );
 
-            const open =
-                isOpen(
+
+            let isOpenNow = null;
+
+            // 1) Jam utama UMKM
+            if (opening !== null && closing !== null) {
+
+                isOpenNow = isOpen(
                     nowMinutes,
                     opening,
                     closing
                 );
 
+            }
 
-            if (open === null) {
+            // 2) Jam dari lokasi titik standby (keliling)
+            if (
+                isOpenNow === null &&
+                locationSchedule.length
+            ) {
 
-                badge.textContent = "Aktif";
+                isOpenNow = locationIsOpen(
+                    nowMinutes,
+                    locationSchedule
+                );
 
-                badge.className =
-                    "umkm-status status-online";
+            }
 
-            } else if (open) {
+
+            // Selalu tampilkan Buka / Tutup
+            if (isOpenNow) {
 
                 badge.textContent = "Buka";
 

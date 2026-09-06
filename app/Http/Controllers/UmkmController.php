@@ -21,7 +21,14 @@ class UmkmController extends Controller
     public function index(Request $request)
     {
         $categories = ['Kuliner', 'Fashion', 'Jasa', 'Kerajinan', 'Kecantikan', 'Otomotif', 'Lainnya'];
+
         $query = Umkm::withCount('locations')->where('status', 'active');
+
+
+        $query = Umkm::withCount('locations')
+            ->with(['locations' => fn ($q) => $q->orderBy('sort_order')])
+            ->where('status', 'active');
+
 
         if ($search = trim((string) $request->query('search'))) {
             $query->where(function ($q) use ($search) {
