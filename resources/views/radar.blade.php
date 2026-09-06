@@ -41,6 +41,12 @@
                 <a href="{{ route('register') }}" class="nav-button">Buat Website</a>
             @endauth
         </div>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="Buka menu navigasi">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
     </div>
 </header>
 
@@ -141,6 +147,7 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="{{ asset('js/radar.js') }}?v={{ filemtime(public_path('js/radar.js')) }}"></script>
+<script src="{{ asset('js/home.js') }}?v={{ filemtime(public_path('js/home.js')) }}"></script>
 <script src="{{ asset('js/profile.js') }}"></script>
 
 </body>
