@@ -140,7 +140,7 @@ Database        : MySQL
 Package Manager : Composer, npm
 Build Tool      : Vite
 Version Control : Git & GitHub
-Deployment      : Railwa
+Deployment      : Railway
 Testing         : PHPUnit
 ```
 ### Alasan Pemilihan Teknologi
