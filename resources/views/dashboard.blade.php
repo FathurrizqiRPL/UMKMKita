@@ -51,7 +51,7 @@
             <div class="dashboard-hero-content">
 
                 <span class="section-label">
-                    DASHBOARD PEMILIK UMKM
+                   
                 </span>
 
                 <h1>
@@ -504,7 +504,6 @@
                                     class="dashboard-secondary-button"
                                 >
                                     Tambah Item
-                                    <span>→</span>
                                 </button>
 
                             </div>
@@ -549,7 +548,6 @@
                     class="cta-white-button"
                 >
                     Buka Website
-                    <span>↗</span>
                 </a>
 
             </section>

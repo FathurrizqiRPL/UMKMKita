@@ -6,7 +6,7 @@
     <div class="edit-container">
 
         <a href="{{ route('dashboard') }}" class="edit-back-link">
-            ← Kembali ke dashboard
+            Kembali ke dashboard
         </a>
 
         <div class="edit-heading">
