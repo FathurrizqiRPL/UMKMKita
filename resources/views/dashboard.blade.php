@@ -51,7 +51,7 @@
             <div class="dashboard-hero-content">
 
                 <span class="section-label">
-                   
+
                 </span>
 
                 <h1>
@@ -68,7 +68,7 @@
             </div>
 
 
-            
+
 
         </section>
 
@@ -205,7 +205,7 @@
                     $websiteUrl = route('umkm.show', $umkm->slug);
                 @endphp
 
-                
+
             </section>
 
 
@@ -334,8 +334,8 @@
     </a>
 
     {{-- Tombol Bahaya: Hapus Website --}}
-    <a 
-        href="{{ route('umkm.delete.website') }}" 
+    <a
+        href="{{ route('umkm.delete.website') }}"
         class="delete-umkm-link"
         style="
             display: inline-flex;
@@ -358,7 +358,7 @@
     </a>
 
 </div>
-                    
+
 
                 </div>
 
@@ -419,7 +419,7 @@
             @if($item->is_favorite)
                 <span style="background: #fff8e6; color: #b7791f; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; border: 1px solid #feebc8;">⭐ FAVORIT</span>
             @endif
-           
+
         </div>
     </div>
 
@@ -454,34 +454,17 @@
 
 
                     {{-- QUICK ADD --}}
-
-                    {{-- QUICK ADD / TAMBAH MENU MANUAL --}}
 <div class="quick-add">
-    <span class="quick-add-label">
-        TAMBAH MENU / LAYANAN
-    </span>
+    <span class="quick-add-label">TAMBAH MENU / LAYANAN</span>
 
-    <form
-        action="{{ route('items.store') }}"
-        method="POST"
-        enctype="multipart/form-data"
-    >
+    <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
-                            <div class="quick-form-grid">
-
-                                <select name="type" required>
-
-                                    <option value="product">
-                                        Produk
-                                    </option>
-
-                                    <option value="service">
-                                        Layanan
-                                    </option>
-
-                                </select>
-
+        <div class="quick-form-grid">
+            <select name="type" id="quickItemType" required>
+                <option value="product" {{ old('type') === 'product' ? 'selected' : '' }}>Produk</option>
+                <option value="service" {{ old('type') === 'service' ? 'selected' : '' }}>Layanan</option>
+            </select>
 
             <input
                 type="text"
@@ -492,43 +475,93 @@
             />
         </div>
 
-                            <div class="quick-form-grid">
+        <div class="quick-form-grid">
+            <input
+                type="number"
+                name="price"
+                value="{{ old('price') }}"
+                placeholder="Harga"
+                min="0"
+            />
 
-                                <input
-                                    type="number"
-                                    name="price"
-                                    placeholder="Harga"
-                                />
-
-                                <input
-                                    type="text"
-                                    name="duration"
-                                    placeholder="Durasi (opsional)"
-                                />
-
-                            </div>
-
+            <div id="quickDurationField" hidden>
+                <input
+                    type="text"
+                    name="duration"
+                    value="{{ old('duration') }}"
+                    placeholder="Durasi, contoh: 30 menit"
+                />
+            </div>
+        </div>
 
         <textarea
             name="description"
-            placeholder="Deskripsi singkat menu (opsional)"
+            placeholder="Deskripsi singkat menu / layanan (opsional)"
         >{{ old('description') }}</textarea>
 
-        <!-- PILIHAN TANDA / BADGE UNGGULAN -->
-        <div style="background: #f8f9fc; border: 1px solid #e7e7ef; padding: 14px 18px; border-radius: 14px; margin: 16px 0; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s ease;"
-     onmouseover="this.style.borderColor='#5848e8'; this.style.background='#f3f2ff';"
-     onmouseout="this.style.borderColor='#e7e7ef'; this.style.background='#f8f9fc';"
-     onclick="const cb = this.querySelector('input[type=&quot;checkbox&quot;]'); cb.checked = !cb.checked;"
->
-    <input 
-        type="checkbox" 
-        name="is_favorite" 
-        value="1" 
-        style="width: 18px; height: 18px; accent-color: #5848e8; cursor: pointer;"
-    >
-    <span style="font-weight: 700; font-size: 14px; color: #333748; user-select: none;">
-        ⭐ Jadikan Menu Favorit
-    </span>
+        <label
+            style="background:#f8f9fc; border:1px solid #e7e7ef; padding:14px 18px; border-radius:14px; margin:16px 0; display:inline-flex; align-items:center; gap:10px; cursor:pointer;"
+        >
+            <input
+                type="checkbox"
+                name="is_favorite"
+                value="1"
+                {{ old('is_favorite') ? 'checked' : '' }}
+                style="width:18px; height:18px; accent-color:#5848e8; cursor:pointer;"
+            >
+            <span style="font-weight:700; font-size:14px; color:#333748;">
+                ⭐ Jadikan Menu Favorit
+            </span>
+        </label>
+
+        <div
+            id="quickPhotoPreview"
+            hidden
+            style="margin-bottom:16px; padding:12px; border:1px solid #e7e7ef; border-radius:14px; align-items:center; gap:12px;"
+        >
+            <img
+                id="quickPhotoImage"
+                src=""
+                alt="Preview foto"
+                style="width:64px; height:64px; object-fit:cover; border-radius:10px;"
+            >
+
+            <div style="min-width:0; flex:1;">
+                <strong style="display:block; font-size:13px;">Foto dipilih</strong>
+                <small
+                    id="quickPhotoName"
+                    style="display:block; color:#777b8e; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"
+                ></small>
+            </div>
+
+            <button
+                type="button"
+                id="quickPhotoRemove"
+                style="border:0; background:#fff0f3; color:#ff3366; padding:8px 12px; border-radius:9px; font-weight:700; cursor:pointer;"
+            >
+                Batal
+            </button>
+        </div>
+
+        <div class="quick-form-bottom">
+            <label class="file-input">
+                <span>+</span>
+                <span>Tambahkan foto</span>
+
+                <input
+                    type="file"
+                    name="image"
+                    id="quickItemImage"
+                    accept="image/*"
+                />
+            </label>
+
+            <button type="submit" class="dashboard-secondary-button">
+                Tambah Item
+                <span>→</span>
+            </button>
+        </div>
+    </form>
 </div>
 
                             <div class="quick-form-bottom">
@@ -574,7 +607,7 @@
             ====================================== --}}
 
             <section class="dashboard-bottom-cta" style="display: flex; justify-content: space-between; align-items: center; gap: 30px; flex-wrap: wrap;">
-    
+
     <div>
         <span class="section-label">
             WEBSITE KAMU SUDAH ONLINE
@@ -597,17 +630,17 @@
 
     <div style="background: rgba(255, 255, 255, 0.1); padding: 16px; border-radius: 18px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); min-width: 320px; flex: 1; max-width: 450px;">
         <span style="display: block; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; letter-spacing: 0.05em;">ALAMAT WEBSITE KAMU</span>
-        
+
         <div style="display: flex; gap: 8px; align-items: center;">
-            <input 
-                type="text" 
+            <input
+                type="text"
                 id="bottomWebsiteUrl"
-                value="{{ $websiteUrl }}" 
-                readonly 
+                value="{{ $websiteUrl }}"
+                readonly
                 style="width: 100%; padding: 12px 16px; background: #fff; border: none; border-radius: 10px; font-size: 14px; color: #15182b; font-weight: 600; outline: none;"
             >
-            <button 
-                type="button" 
+            <button
+                type="button"
                 id="bottomCopyBtn"
                 data-url="{{ $websiteUrl }}"
                 style="background: #5848e8; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background 0.2s;"
@@ -731,46 +764,62 @@
     });
 
     const quickItemType = document.getElementById('quickItemType');
-    const quickDurationField = document.getElementById('quickDurationField');
+const quickDurationField = document.getElementById('quickDurationField');
 
-    function updateQuickDuration() {
-        quickDurationField.hidden = quickItemType.value !== 'service';
+function updateQuickDuration() {
+    if (!quickItemType || !quickDurationField) return;
+
+    const isService = quickItemType.value === 'service';
+    quickDurationField.hidden = !isService;
+
+    const durationInput = quickDurationField.querySelector('input');
+    if (durationInput && !isService) durationInput.value = '';
+}
+
+quickItemType?.addEventListener('change', updateQuickDuration);
+updateQuickDuration();
+
+const quickItemImage = document.getElementById('quickItemImage');
+const quickPhotoPreview = document.getElementById('quickPhotoPreview');
+const quickPhotoImage = document.getElementById('quickPhotoImage');
+const quickPhotoName = document.getElementById('quickPhotoName');
+const quickPhotoRemove = document.getElementById('quickPhotoRemove');
+
+let quickPhotoUrl = null;
+
+quickItemImage?.addEventListener('change', function () {
+    const file = quickItemImage.files[0];
+
+    if (!file) {
+        resetQuickPhoto();
+        return;
     }
 
-    quickItemType.addEventListener('change', updateQuickDuration);
-    updateQuickDuration();
+    if (quickPhotoUrl) URL.revokeObjectURL(quickPhotoUrl);
 
-    const quickItemImage = document.getElementById('quickItemImage');
-    const quickPhotoPreview = document.getElementById('quickPhotoPreview');
-    const quickPhotoImage = document.getElementById('quickPhotoImage');
-    const quickPhotoName = document.getElementById('quickPhotoName');
-    const quickPhotoRemove = document.getElementById('quickPhotoRemove');
+    quickPhotoUrl = URL.createObjectURL(file);
+    quickPhotoImage.src = quickPhotoUrl;
+    quickPhotoName.textContent = file.name;
+    quickPhotoPreview.hidden = false;
+    quickPhotoPreview.style.display = 'flex';
+});
 
-    let quickPhotoUrl = null;
+quickPhotoRemove?.addEventListener('click', function () {
+    quickItemImage.value = '';
+    resetQuickPhoto();
+});
 
-    quickItemImage?.addEventListener('change', () => {
-        const file = quickItemImage.files[0];
-        if (!file) return;
+function resetQuickPhoto() {
+    quickPhotoPreview.hidden = true;
+    quickPhotoPreview.style.display = 'none';
+    quickPhotoImage.src = '';
+    quickPhotoName.textContent = '';
 
-        if (quickPhotoUrl) URL.revokeObjectURL(quickPhotoUrl);
-
-        quickPhotoUrl = URL.createObjectURL(file);
-        quickPhotoImage.src = quickPhotoUrl;
-        quickPhotoName.textContent = file.name;
-        quickPhotoPreview.hidden = false;
-    });
-
-    quickPhotoRemove?.addEventListener('click', () => {
-        quickItemImage.value = '';
-        quickPhotoPreview.hidden = true;
-        quickPhotoImage.src = '';
-        quickPhotoName.textContent = '';
-
-        if (quickPhotoUrl) {
-            URL.revokeObjectURL(quickPhotoUrl);
-            quickPhotoUrl = null;
-        }
-    });
+    if (quickPhotoUrl) {
+        URL.revokeObjectURL(quickPhotoUrl);
+        quickPhotoUrl = null;
+    }
+}
 </script>
 
 @endsection
