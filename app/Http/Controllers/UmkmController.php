@@ -30,6 +30,7 @@ class UmkmController extends Controller
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:100'],
+            'slug' => ['required', 'string', 'max:50', 'alpha_dash', 'unique:umkms,slug'],
             'category' => ['required', 'string', 'max:50'],
             'business_type' => ['required', Rule::in(['tetap', 'keliling'])],
             'description' => ['nullable', 'string', 'max:1000'],
@@ -49,13 +50,16 @@ class UmkmController extends Controller
             'locations.*.end_time' => ['required_if:business_type,keliling', 'date_format:H:i'],
             'logo' => ['nullable', 'image', 'max:2048'],
             'cover' => ['nullable', 'image', 'max:4096'],
+        ], [
+            'slug.unique' => 'URL UMKM tersebut sudah digunakan oleh orang lain. Silakan pilih URL yang lain.',
+            'slug.alpha_dash' => 'URL hanya boleh berisi huruf, angka, tanda hubung (-), dan garis bawah (_).',
         ]);
 
         $locations = $data['locations'] ?? [];
         unset($data['locations']);
 
         $data['user_id'] = $request->user()->id;
-        $data['slug'] = $this->uniqueSlug($data['name']);
+        $data['slug'] = Str::slug($data['slug']);
 
         if ($data['business_type'] === 'keliling') {
             $data['address'] = null;
@@ -107,6 +111,7 @@ class UmkmController extends Controller
 
         $data = $request->validate([
             'name' => ['required', 'string', 'max:100'],
+            'slug' => ['required', 'string', 'max:50', 'alpha_dash', Rule::unique('umkms', 'slug')->ignore($umkm->id)],
             'category' => ['required', 'string', 'max:50'],
             'business_type' => ['required', Rule::in(['tetap', 'keliling'])],
             'description' => ['nullable', 'string', 'max:1000'],
@@ -126,14 +131,15 @@ class UmkmController extends Controller
             'locations.*.end_time' => ['required_if:business_type,keliling', 'date_format:H:i'],
             'logo' => ['nullable', 'image', 'max:2048'],
             'cover' => ['nullable', 'image', 'max:4096'],
+        ], [
+            'slug.unique' => 'URL UMKM tersebut sudah digunakan oleh orang lain. Silakan pilih URL yang lain.',
+            'slug.alpha_dash' => 'URL hanya boleh berisi huruf, angka, tanda hubung (-), dan garis bawah (_).',
         ]);
 
         $locations = $data['locations'] ?? [];
         unset($data['locations']);
 
-        if ($data['name'] !== $umkm->name) {
-            $data['slug'] = $this->uniqueSlug($data['name'], $umkm->id);
-        }
+        $data['slug'] = Str::slug($data['slug']);
 
         if ($data['business_type'] === 'keliling') {
             $data['address'] = null;
@@ -220,48 +226,33 @@ class UmkmController extends Controller
         abort(404);
     }
 
-    private function uniqueSlug(string $name, ?int $ignoreId = null): string
+    public function toggleLike(Request $request, $id)
     {
-        $base = Str::slug($name) ?: 'umkm';
-        $slug = $base;
-        $number = 2;
-
-        while (Umkm::where('slug', $slug)->when($ignoreId, fn ($query) => $query->where('id', '!=', $ignoreId))->exists()) {
-            $slug = $base . '-' . $number++;
+        $umkm = \App\Models\Umkm::findOrFail($id);
+        
+        if ($request->action === 'like') {
+            $umkm->increment('likes_count');
+        } else {
+            $umkm->decrement('likes_count');
         }
 
-        return $slug;
-    }
-    
-
-    public function toggleLike(Request $request, $id)
-{
-    $umkm = \App\Models\Umkm::findOrFail($id);
-    
-    if ($request->action === 'like') {
-        $umkm->increment('likes_count');
-    } else {
-        $umkm->decrement('likes_count');
+        return response()->json([
+            'success' => true, 
+            'likes_count' => $umkm->likes_count
+        ]);
     }
 
-    return response()->json([
-        'success' => true, 
-        'likes_count' => $umkm->likes_count
-    ]);
-}
+    public function toggleStatus()
+    {
+        $umkm = auth()->user()->umkm;
+        
+        if (!$umkm) {
+            return back()->with('error', 'UMKM tidak ditemukan.');
+        }
 
-public function toggleStatus()
-{
-    $umkm = auth()->user()->umkm;
-    
-    if (!$umkm) {
-        return back()->with('error', 'UMKM tidak ditemukan.');
+        $umkm->is_manual_closed = !$umkm->is_manual_closed;
+        $umkm->save();
+
+        return back()->with('success', 'Status operasional berhasil diperbarui.');
     }
-
-    $umkm->is_manual_closed = !$umkm->is_manual_closed;
-    $umkm->save();
-
-    return back()->with('success', 'Status operasional berhasil diperbarui.');
-}
-
 }
