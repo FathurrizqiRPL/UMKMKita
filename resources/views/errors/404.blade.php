@@ -5,11 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Halaman Tidak Ditemukan — UMKMKita</title>
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ asset('css/brand.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/brand.css') }}">
 
     <style>
         * {
@@ -41,18 +46,14 @@
             box-shadow: 0 24px 70px rgba(35, 30, 85, 0.08);
         }
 
-        .logo {
+        .error-brand-logo {
+            display: inline-flex;
+            margin: 0 auto 25px;
+        }
+
+        .error-brand-logo .brand-logo-mark {
             width: 64px;
             height: 64px;
-            display: grid;
-            place-items: center;
-            margin: 0 auto 25px;
-            border-radius: 18px;
-            background: #5848e8;
-            color: #ffffff;
-            font-family: "Plus Jakarta Sans", sans-serif;
-            font-size: 25px;
-            font-weight: 800;
         }
 
         .error-code {
@@ -134,21 +135,20 @@
             .error-card {
                 padding: 40px 23px;
             }
+
+            .error-brand-logo .brand-logo-mark {
+                width: 56px;
+                height: 56px;
+            }
         }
     </style>
 </head>
 
 <body>
-
     <main class="error-card">
+        <x-brand-logo :icon-only="true" class="error-brand-logo" />
 
-        <div class="logo">
-            U
-        </div>
-
-        <span class="error-code">
-            ERROR 404
-        </span>
+        <span class="error-code">ERROR 404</span>
 
         <h1>
             Halaman yang kamu cari<br>
@@ -173,8 +173,6 @@
         <div class="brand">
             <strong>UMKMKita</strong> · Digitalisasi UMKM Indonesia
         </div>
-
     </main>
-
 </body>
 </html>

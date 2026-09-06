@@ -28,13 +28,9 @@ body {
 }
 
 a {
-    text-decoration: none;
     color: inherit;
+    text-decoration: none;
 }
-
-/* =========================
-   AUTH PAGE
-========================= */
 
 .auth-page {
     min-height: 100vh;
@@ -43,8 +39,8 @@ a {
     justify-content: center;
     padding: 40px 20px;
     background:
-        linear-gradient(rgba(232, 231, 244, 0.45) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(232, 231, 244, 0.45) 1px, transparent 1px),
+        linear-gradient(rgba(232, 231, 244, .45) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232, 231, 244, .45) 1px, transparent 1px),
         var(--bg);
     background-size: 72px 72px;
 }
@@ -54,51 +50,20 @@ a {
     max-width: 460px;
 }
 
-/* =========================
-   BRAND
-========================= */
-
-.auth-brand {
+.auth-wrapper .brand-logo {
+    width: max-content;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 24px;
-    color: var(--text);
-    font: 800 23px "Plus Jakarta Sans", sans-serif;
+    margin: 0 auto 24px;
 }
-
-.logo-mark {
-    width: 42px;
-    height: 42px;
-    display: grid;
-    place-items: center;
-    border-radius: 12px;
-    background: var(--primary);
-    color: #fff;
-    box-shadow: 0 10px 25px rgba(88, 72, 232, 0.22);
-}
-
-.logo-purple {
-    color: var(--primary);
-}
-
-/* =========================
-   CARD
-========================= */
 
 .auth-card {
     width: 100%;
     padding: 38px 40px;
-    background: var(--white);
     border: 1px solid var(--border);
     border-radius: 20px;
-    box-shadow: 0 20px 60px rgba(37, 30, 90, 0.08);
+    background: var(--white);
+    box-shadow: 0 20px 60px rgba(37, 30, 90, .08);
 }
-
-/* =========================
-   HEADING
-========================= */
 
 .auth-heading {
     margin-bottom: 28px;
@@ -116,14 +81,6 @@ a {
     font-size: 15px;
     line-height: 1.6;
 }
-
-.mobile-brand {
-    display: none;
-}
-
-/* =========================
-   FORM
-========================= */
 
 .auth-form {
     display: grid;
@@ -164,7 +121,7 @@ a {
     background: #fff;
     color: var(--text);
     font: 400 14px "DM Sans", sans-serif;
-    transition: 0.2s ease;
+    transition: .2s ease;
 }
 
 .field input::placeholder {
@@ -173,12 +130,8 @@ a {
 
 .field input:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(88, 72, 232, 0.09);
+    box-shadow: 0 0 0 4px rgba(88, 72, 232, .09);
 }
-
-/* =========================
-   ERROR
-========================= */
 
 .field-error {
     display: block;
@@ -186,10 +139,6 @@ a {
     color: var(--danger);
     font-size: 12px;
 }
-
-/* =========================
-   REMEMBER
-========================= */
 
 .remember-row {
     display: flex;
@@ -207,10 +156,6 @@ a {
     accent-color: var(--primary);
 }
 
-/* =========================
-   BUTTON
-========================= */
-
 .auth-submit {
     width: 100%;
     height: 52px;
@@ -220,8 +165,8 @@ a {
     color: #fff;
     font: 700 15px "DM Sans", sans-serif;
     cursor: pointer;
-    box-shadow: 0 10px 25px rgba(88, 72, 232, 0.18);
-    transition: 0.2s ease;
+    box-shadow: 0 10px 25px rgba(88, 72, 232, .18);
+    transition: .2s ease;
 }
 
 .auth-submit:hover {
@@ -232,10 +177,6 @@ a {
 .auth-submit span {
     margin-left: 7px;
 }
-
-/* =========================
-   REGISTER / BACK
-========================= */
 
 .auth-switch {
     margin: 24px 0 12px;
@@ -260,10 +201,6 @@ a {
     color: var(--primary);
 }
 
-/* =========================
-   MOBILE
-========================= */
-
 @media (max-width: 600px) {
     .auth-page {
         align-items: flex-start;
@@ -275,7 +212,7 @@ a {
         margin-top: 10px;
     }
 
-    .auth-brand {
+    .auth-wrapper .brand-logo {
         margin-bottom: 20px;
     }
 

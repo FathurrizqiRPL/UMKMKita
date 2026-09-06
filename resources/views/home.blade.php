@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>UMKMKita - Digitalisasi UMKM Indonesia</title>
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,10 +15,12 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/brand.css') }}">
+
     <style>
         /* Tambahkan ini untuk wadah gambar agar posisi absolut tombol tidak lari */
 .umkm-image {
-    position: relative; 
+    position: relative;
 }
 
 .btn-favorit-baru {
@@ -39,10 +42,10 @@
     color: #111;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    
+
     /* 3 Baris ini memaksa tombol selalu berada di lapisan teratas dan bisa diklik */
-    z-index: 999 !important; 
-    pointer-events: auto !important; 
+    z-index: 999 !important;
+    pointer-events: auto !important;
     transition: all 0.2s ease;
 }
 
@@ -131,10 +134,7 @@
 
     <div class="container nav-inner">
 
-        <a href="{{ route('home') }}" class="logo">
-            <span class="logo-mark">U</span>
-            <span>UMKM<span class="logo-purple">Kita</span></span>
-        </a>
+        <x-brand-logo :href="route('home')" />
 
         <nav class="nav-menu">
 
@@ -736,9 +736,9 @@
                         </span>
 
                         <button type="button" class="btn-favorit-baru" data-id="{{ $umkm->id }}" aria-label="Favorit {{ $umkm->name }}">
-    <span class="heart-icon">♡</span>
-    <span class="like-count">{{ $umkm->likes_count ?? 0 }}</span>
-</button>
+                            <span class="heart-icon">♡</span>
+                            <span class="like-count">{{ $umkm->likes_count ?? 0 }}</span>
+                        </button>
                         <span class="umkm-status" data-status="checking">...</span>
 
                         <button type="button" class="favorite" aria-label="Favorit {{ $umkm->name }}">
@@ -793,6 +793,11 @@
 
             @endforelse
 
+        </div>
+        <div class="umkm-filter-empty" id="umkmFilterEmpty" hidden>
+            <div class="umkm-empty-icon">♡</div>
+            <h3 id="umkmFilterEmptyTitle">Belum ada UMKM di kategori ini</h3>
+            <p>Coba pilih kategori lain untuk melihat UMKM yang tersedia.</p>
         </div>
 
     </div>
@@ -1000,17 +1005,7 @@
 
         <div class="footer-brand">
 
-            <a href="{{ route('home') }}" class="logo footer-logo">
-
-                <span class="logo-mark">
-                    U
-                </span>
-
-                <span>
-                    UMKM<span class="logo-purple">Kita</span>
-                </span>
-
-            </a>
+            <x-brand-logo :href="route('home')" class="footer-logo" />
 
             <p>
                 Membantu UMKM Indonesia membangun

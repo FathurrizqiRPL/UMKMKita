@@ -1,6 +1,5 @@
 <x-guest-layout>
     <div class="auth-heading">
-        <span class="mobile-brand">UMKM<span>Kita</span></span>
         <h2>Buat akun UMKMKita.</h2>
         <p>Daftar gratis dan mulai buat website untuk usahamu.</p>
     </div>

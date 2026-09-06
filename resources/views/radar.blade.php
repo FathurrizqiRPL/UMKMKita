@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Radar UMKM — UMKMKita</title>
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,15 +13,13 @@
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="{{ asset('css/radar.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/brand.css') }}">
 </head>
 
 <body>
 
 <header class="radar-navbar">
-    <a href="{{ route('home') }}" class="radar-brand">
-        <span class="radar-logo">U</span>
-        <span>UMKM<span class="purple">Kita</span></span>
-    </a>
+    <x-brand-logo :href="route('home')" />
 
     <a href="{{ route('home') }}" class="back-home">← Kembali ke Beranda</a>
 </header>

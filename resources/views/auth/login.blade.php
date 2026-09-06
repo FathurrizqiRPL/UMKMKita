@@ -1,10 +1,8 @@
 <x-guest-layout>
     <div class="auth-heading">
-        <span class="mobile-brand">UMKM<span>Kita</span></span>
         <h2>Selamat datang kembali.</h2>
         <p>Masuk untuk mengelola website UMKM kamu.</p>
     </div>
-
     <form method="POST" action="{{ route('login') }}" class="auth-form">
         @csrf
 

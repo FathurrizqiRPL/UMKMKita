@@ -49,29 +49,6 @@ select {
     background: #17152f;
     color: white;
 }
-
-.admin-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: "Plus Jakarta Sans", sans-serif;
-    font-size: 20px;
-    font-weight: 800;
-}
-
-.admin-brand > span {
-    width: 40px;
-    height: 40px;
-    display: grid;
-    place-items: center;
-    border-radius: 12px;
-    background: var(--primary);
-}
-
-.admin-brand b {
-    color: #9f96ff;
-}
-
 .admin-badge {
     width: fit-content;
     margin-top: 22px;
@@ -394,4 +371,8 @@ select {
         min-width: 0;
         width: 100%;
     }
+}
+
+.admin-sidebar .brand-logo {
+    color: #fff;
 }

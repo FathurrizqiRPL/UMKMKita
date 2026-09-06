@@ -67,51 +67,37 @@ document.addEventListener("DOMContentLoaded", () => {
     |--------------------------------------------------------------------------
     */
 
-    const categoryButtons =
-        document.querySelectorAll(".category");
-
-    const umkmCards =
-        document.querySelectorAll(".umkm-card");
-
+    const categoryButtons = document.querySelectorAll(".category");
+    const umkmCards = document.querySelectorAll(".umkm-card");
+    const filterEmpty = document.getElementById("umkmFilterEmpty");
+    const filterEmptyTitle = document.getElementById("umkmFilterEmptyTitle");
 
     categoryButtons.forEach(button => {
-
         button.addEventListener("click", () => {
+            const category = button.dataset.category;
+            let visibleCount = 0;
 
-            const category =
-                button.dataset.category;
-
-
-            categoryButtons.forEach(btn => {
-                btn.classList.remove("active");
-            });
-
+            categoryButtons.forEach(btn => btn.classList.remove("active"));
             button.classList.add("active");
 
-
             umkmCards.forEach(card => {
+                const visible = category === "all" || category === card.dataset.category;
+                card.classList.toggle("hidden", !visible);
 
-                const cardCategory =
-                    card.dataset.category;
-
-
-                if (
-                    category === "all" ||
-                    category === cardCategory
-                ) {
-
-                    card.classList.remove("hidden");
-
-                } else {
-
-                    card.classList.add("hidden");
-
-                }
-
+                if (visible) visibleCount++;
             });
 
-        });
+            if (!filterEmpty) return;
 
+            const categoryName = button.textContent.trim();
+            filterEmpty.hidden = visibleCount > 0;
+
+            if (filterEmptyTitle) {
+                filterEmptyTitle.textContent = category === "all"
+                    ? "Belum ada UMKM yang tersedia"
+                    : `Belum ada UMKM kategori ${categoryName}`;
+            }
+        });
     });
 
 
