@@ -16,6 +16,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/home.css') }}?v={{ filemtime(public_path('css/home.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/brand.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 
     <style>
 
@@ -161,26 +162,12 @@
         </nav>
 
         <div class="nav-actions">
-
             @auth
-
-
-                <a href="{{ route('dashboard') }}" class="nav-button">
-                    Kelola UMKM
-                </a>
-
+                <x-profile-menu />
             @else
-
-                <a href="{{ route('login') }}" class="login-btn">
-                    Masuk
-                </a>
-
-                <a href="{{ route('register') }}" class="nav-button">
-                    Buat Website
-                </a>
-
+                <a href="{{ route('login') }}" class="login-btn">Masuk</a>
+                <a href="{{ route('register') }}" class="nav-button">Buat Website</a>
             @endauth
-
         </div>
 
         <button class="mobile-menu-btn" id="mobileMenuBtn">
@@ -1166,6 +1153,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 </script>
+<script src="{{ asset('js/profile.js') }}"></script>
 </body>
 
 </html>
