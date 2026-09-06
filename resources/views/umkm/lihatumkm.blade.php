@@ -53,37 +53,24 @@
             </nav>
 
             <div class="nav-actions">
-
-            @auth
-                <x-profile-menu />
-            @else
-                <div class="nav-actions">
+                @auth
+                    <x-profile-menu />
+                @else
                     <a href="{{ route('login') }}" class="login-btn">Masuk</a>
                     <a href="{{ route('register') }}" class="nav-button">Buat Website</a>
-                </div>
-            @endauth
-                @auth
-
-                    <a href="{{ route('dashboard') }}" class="nav-button">
-                        Kelola UMKM
-                    </a>
-
-                @else
-
-                    <a href="{{ route('login') }}" class="login-btn">
-                        Masuk
-                    </a>
-
-                    <a href="{{ route('register') }}" class="nav-button">
-                        Buat Website
-                    </a>
-
                 @endauth
-
             </div>
+
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
         </div>
 
     </header>
+
 
     <div class="mobile-menu" id="mobileMenu">
 
@@ -111,14 +98,6 @@
 
             @auth
 
-        @auth
-            <x-profile-menu />
-        @else
-            <div class="nav-actions">
-                <a href="{{ route('login') }}" class="login-btn">Masuk</a>
-                <a href="{{ route('register') }}" class="nav-button">Buat Website</a>
-            </div>
-        @endauth
                 <a href="{{ route('dashboard') }}" class="mobile-cta">
                     Kelola UMKM
                 </a>
@@ -498,7 +477,6 @@
 
 <script src="{{ asset('js/umkms.js') }}?v={{ filemtime(public_path('js/umkms.js')) }}"></script>
 <script src="{{ asset('js/profile.js') }}"></script>
-    <script src="{{ asset('js/umkms.js') }}?v={{ filemtime(public_path('js/umkms.js')) }}"></script>
 
 </body>
 
