@@ -50,7 +50,7 @@ class UmkmController extends Controller
 
         $umkms = $query->latest()->paginate(12)->withQueryString();
 
-        return view('umkm.index', compact('umkms', 'categories'));
+        return view('umkm.lihatumkm', compact('umkms', 'categories'));
     }
 
     public function create(Request $request)
