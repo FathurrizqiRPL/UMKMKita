@@ -12,6 +12,27 @@ use Illuminate\Validation\Rule;
 
 class UmkmController extends Controller
 {
+
+public function showw($slug)
+{
+    $umkm = Umkm::where('slug', $slug)->firstOrFail();
+
+    // Jika status ditangguhkan, abort atau redirect
+    if ($umkm->status !== 'active') {
+        abort(403, 'Website UMKM ini sedang ditangguhkan.');
+    }
+
+    return view('umkm.show', compact('umkm'));
+}   
+public function toggleWebsiteStatus()
+{
+    $umkm = auth()->user()->umkm; // Sesuaikan dengan relasi model user kamu
+    if ($umkm) {
+        $umkm->status = $umkm->status === 'active' ? 'suspended' : 'active';
+        $umkm->save();
+    }
+    return back()->with('success', 'Status website berhasil diperbarui.');
+}
     public function dashboard(Request $request)
     {
         $umkm = $request->user()->umkm()->with(['items', 'locations'])->first();

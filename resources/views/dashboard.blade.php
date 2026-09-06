@@ -132,9 +132,16 @@
         </span>
     </div>
 
-    <strong style="display: block; margin-top: 8px;">
-        {{ $umkm->status === 'active' ? 'Aktif' : ' Ditangguhkan' }}
-    </strong>
+    <strong>{{ $umkm->status === 'active' ? 'Aktif' : 'Ditangguhkan' }}</strong>
+
+    <div style="margin-top: 10px;">
+        <form action="{{ route('umkm.toggle-website-status') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn-copy" style="cursor: pointer;">
+                {{ $umkm->status === 'active' ? 'Tangguhkan Website' : 'Aktifkan Kembali' }}
+            </button>
+        </form>
+    </div>
 </div>
 
                 {{-- Container 1: Status Operasional Toko --}}
@@ -143,7 +150,7 @@
         <span>STATUS OPERASIONAL</span>
         <span class="{{ $umkm->is_manual_closed ? 'status-suspended' : 'status-online' }}">
             <i></i>
-            {{ $umkm->is_manual_closed ? 'Tutup Manual' : 'Online / Otomatis' }}
+            {{ $umkm->is_manual_closed ? 'Tutup' : 'Buka' }}
         </span>
     </div>
 
@@ -583,17 +590,64 @@
         </p>
     </div>
 
+    {{-- Kotak Salin URL di dalam CTA Bawah --}}
+    @php
+        $websiteUrl = route('umkm.show', $umkm->slug);
+    @endphp
 
-                <a
-                    href="{{ route('umkm.show', $umkm->slug) }}"
-                    target="_blank"
-                    class="cta-white-button"
-                >
-                    Buka Website
-                    <span>↗</span>
-                </a>
+    <div style="background: rgba(255, 255, 255, 0.1); padding: 16px; border-radius: 18px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); min-width: 320px; flex: 1; max-width: 450px;">
+        <span style="display: block; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; letter-spacing: 0.05em;">ALAMAT WEBSITE KAMU</span>
+        
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <input 
+                type="text" 
+                id="bottomWebsiteUrl"
+                value="{{ $websiteUrl }}" 
+                readonly 
+                style="width: 100%; padding: 12px 16px; background: #fff; border: none; border-radius: 10px; font-size: 14px; color: #15182b; font-weight: 600; outline: none;"
+            >
+            <button 
+                type="button" 
+                id="bottomCopyBtn"
+                data-url="{{ $websiteUrl }}"
+                style="background: #5848e8; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background 0.2s;"
+                onmouseover="this.style.background='#4838d8'"
+                onmouseout="this.style.background='#5848e8'"
+            >
+                Salin
+            </button>
+        </div>
+    </div>
 
 </section>
+
+{{-- Script Pendukung untuk Fungsi Tombol Salin --}}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const copyBtn = document.getElementById("bottomCopyBtn");
+        const urlInput = document.getElementById("bottomWebsiteUrl");
+
+        if (copyBtn && urlInput) {
+            copyBtn.addEventListener("click", () => {
+                urlInput.select();
+                urlInput.setSelectionRange(0, 99999);
+
+                navigator.clipboard.writeText(urlInput.value).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = "Berhasil Disalin! ✓";
+                    copyBtn.style.background = "#10b981";
+
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.background = "#5848e8";
+                    }, 2000);
+                }).catch(err => {
+                    console.error("Gagal menyalin teks: ", err);
+                });
+            });
+        }
+    });
+</script>
 
 {{-- Script Pendukung untuk Fungsi Tombol Salin --}}
 <script>
