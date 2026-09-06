@@ -249,4 +249,19 @@ class UmkmController extends Controller
         'likes_count' => $umkm->likes_count
     ]);
 }
+
+public function toggleStatus()
+{
+    $umkm = auth()->user()->umkm;
+    
+    if (!$umkm) {
+        return back()->with('error', 'UMKM tidak ditemukan.');
+    }
+
+    $umkm->is_manual_closed = !$umkm->is_manual_closed;
+    $umkm->save();
+
+    return back()->with('success', 'Status operasional berhasil diperbarui.');
+}
+
 }
