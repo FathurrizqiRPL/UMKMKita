@@ -14,11 +14,11 @@
 
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ asset('css/home.css') }}">
+    <<link rel="stylesheet" href="{{ asset('css/home.css') }}?v={{ filemtime(public_path('css/home.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/brand.css') }}">
 
     <style>
-        /* Tambahkan ini untuk wadah gambar agar posisi absolut tombol tidak lari */
+
 .umkm-image {
     position: relative;
 }
@@ -1092,7 +1092,7 @@
 </footer>
 
 
-<script src="{{ asset('js/home.js') }}"></script>
+<script src="{{ asset('js/home.js') }}?v={{ filemtime(public_path('js/home.js')) }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
