@@ -749,7 +749,11 @@
                             </h3>
 
                             <span class="location">
-                                {{ $umkm->address ?: 'Lokasi belum ditambahkan' }}
+                                @if($umkm->business_type === 'keliling')
+                                    UMKM Keliling · {{ $umkm->locations_count }} titik standby
+                                @else
+                                    {{ $umkm->address ?: 'Lokasi belum ditambahkan' }}
+                                @endif
                             </span>
 
                         </div>
