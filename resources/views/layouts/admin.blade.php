@@ -5,22 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? 'Admin — UMKMKita' }}</title>
+    @php
+        $pageTitle = match (true) {
+            request()->routeIs('admin.dashboard') => 'Dashboard Admin — UMKMKita',
+            request()->routeIs('admin.umkms*') => 'Kelola UMKM — UMKMKita',
+            request()->routeIs('admin.users*') => 'Kelola Pengguna — UMKMKita',
+            default => 'Admin — UMKMKita',
+        };
+    @endphp
+
+    <title>{{ $pageTitle }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/brand.css') }}">
 </head>
 
 <body>
     <div class="admin-shell">
         <aside class="admin-sidebar">
-            <a href="{{ route('admin.dashboard') }}" class="admin-brand">
-                <span>U</span>
-                <strong>UMKM<b>Kita</b></strong>
-            </a>
+            <x-brand-logo :href="route('admin.dashboard')" />
 
             <div class="admin-badge">ADMIN PANEL</div>
 
