@@ -708,7 +708,18 @@
 
             @forelse ($umkms as $umkm)
 
-                <article class="umkm-card" data-category="{{ strtolower($umkm->category) }}" data-opening="{{ $umkm->opening_time }}" data-closing="{{ $umkm->closing_time }}" data-manual="{{ $umkm->is_manual_closed ? '1' : '0' }}">
+                @php
+                    $locationSchedule = $umkm->locations
+                        ->filter(fn ($loc) => $loc->start_time && $loc->end_time)
+                        ->map(fn ($loc) => [
+                            'open' => substr((string) $loc->start_time, 0, 5),
+                            'close' => substr((string) $loc->end_time, 0, 5),
+                        ])
+                        ->values()
+                        ->toJson();
+                @endphp
+
+                <article class="umkm-card" data-category="{{ strtolower($umkm->category) }}" data-opening="{{ $umkm->opening_time }}" data-closing="{{ $umkm->closing_time }}" data-manual="{{ $umkm->is_manual_closed ? '1' : '0' }}" data-schedule="{{ $locationSchedule }}">
                     <div class="umkm-image image-{{ strtolower($umkm->category) }}">
 
                         @if ($umkm->cover)
@@ -986,97 +997,7 @@
 
 {{-- FOOTER --}}
 
-<footer>
-
-    <div class="container footer-container">
-
-        <div class="footer-brand">
-
-            <x-brand-logo :href="route('home')" class="footer-logo" />
-
-            <p>
-                Membantu UMKM Indonesia membangun
-                kehadiran digital dengan lebih mudah.
-            </p>
-
-        </div>
-
-
-        <div class="footer-column">
-
-            <strong>
-                Platform
-            </strong>
-
-            <a href="#beranda">
-                Beranda
-            </a>
-
-            <a href="#cara-kerja">
-                Cara Kerja
-            </a>
-
-            <a href="#umkm">
-                Jelajahi UMKM
-            </a>
-
-        </div>
-
-
-        <div class="footer-column">
-
-            <strong>
-                Bantuan
-            </strong>
-
-            <a href="#">
-                Panduan
-            </a>
-
-            <a href="#">
-                FAQ
-            </a>
-
-            <a href="#">
-                Kontak
-            </a>
-
-        </div>
-
-
-        <div class="footer-column">
-
-            <strong>
-                Legal
-            </strong>
-
-            <a href="#">
-                Kebijakan Privasi
-            </a>
-
-            <a href="#">
-                Ketentuan
-            </a>
-
-        </div>
-
-    </div>
-
-
-    <div class="container footer-bottom">
-
-        <span>
-            © {{ date('Y') }} UMKMKita.
-            Semua hak dilindungi.
-        </span>
-
-        <span>
-            Dibuat untuk UMKM Indonesia 🇮🇩
-        </span>
-
-    </div>
-
-</footer>
+@include('partials.footer')
 
 
 <script src="{{ asset('js/home.js') }}?v={{ filemtime(public_path('js/home.js')) }}"></script>
