@@ -721,8 +721,7 @@
 
             @forelse ($umkms as $umkm)
 
-                <article class="umkm-card" data-category="{{ strtolower($umkm->category) }}" data-opening="{{ $umkm->opening_time }}" data-closing="{{ $umkm->closing_time }}">
-
+                <article class="umkm-card" data-category="{{ strtolower($umkm->category) }}" data-opening="{{ $umkm->opening_time }}" data-closing="{{ $umkm->closing_time }}" data-manual="{{ $umkm->is_manual_closed ? '1' : '0' }}">
                     <div class="umkm-image image-{{ strtolower($umkm->category) }}">
 
                         @if ($umkm->cover)
@@ -741,9 +740,6 @@
                         </button>
                         <span class="umkm-status" data-status="checking">...</span>
 
-                        <button type="button" class="favorite" aria-label="Favorit {{ $umkm->name }}">
-                            ♡
-                        </button>
                     </div>
 
                     <div class="umkm-info">

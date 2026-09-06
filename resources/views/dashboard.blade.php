@@ -139,23 +139,30 @@
             <section class="dashboard-stats">
 
                 <div class="dashboard-stat">
-                    <div class="stat-top">
-                        <span>STATUS WEBSITE</span>
+    <div class="stat-top">
+        <span>STATUS WEBSITE</span>
+        <span class="{{ $umkm->is_manual_closed ? 'status-suspended' : 'status-online' }}">
+            <i></i>
+            {{ $umkm->is_manual_closed ? 'Tutup Manual' : 'Online / Otomatis' }}
+        </span>
+    </div>
 
-                        <span class="{{ $umkm->status === 'active' ? 'status-online' : 'status-suspended' }}">
-                            <i></i>
-                            {{ $umkm->status === 'active' ? 'Online' : 'Nonaktif' }}
-                        </span>
-                    </div>
+
+    <strong>{{ $umkm->is_manual_closed ? 'Tutup' : 'Buka' }}</strong>
 
                     <strong>
                         {{ $umkm->status === 'active' ? 'Buka' : 'Ditangguhkan' }}
                     </strong>
 
-                    <small>
-                        Website {{ $umkm->name }}
-                    </small>
-                </div>
+    <div style="margin-top: 10px;">
+        <form action="{{ route('umkm.toggle-status') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn-copy" style="cursor: pointer;">
+                {{ $umkm->is_manual_closed ? 'Buka Toko Kembali' : 'Tutup Toko Sementara' }}
+            </button>
+        </form>
+    </div>
+</div>
 
 
                 <div class="dashboard-stat">
@@ -186,28 +193,7 @@
         Orang menyukai website kamu
     </small>
 </div>
-<div class="dashboard-stat">
 
-    <div class="stat-top" style="display: flex; justify-content: space-between; align-items: center;">
-        <span>ALAMAT WEBSITE</span>
-
-        <!-- Tombol dipindah ke sini -->
-        <button type="button" onclick="copyUrl('{{ url('/' . $umkm->slug) }}', this)" class="btn-copy">
-            Salin Link
-        </button>
-    </div>
-
-    <div style="margin: 8px 0;">
-        <strong class="stat-slug">
-            /{{ $umkm->slug }}
-        </strong>
-    </div>
-
-    <small>
-        Alamat website kamu
-    </small>
-
-</div>
 
                 @php
                     $websiteUrl = route('umkm.show', $umkm->slug);
@@ -629,6 +615,8 @@
             input.select();
         });
     });
+
+    
 </script>
 
 @endsection
