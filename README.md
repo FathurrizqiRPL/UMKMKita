@@ -1,7 +1,7 @@
 <div align="center">
   
   # UMKMkita 
-  ### UMKM Lebih Dekat, Usaha Makin Terlihat
+  ### Temukan UMKM, Dekatkan Pelanggan
   
   [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_Site-success?style=for-the-badge)](https://umkmkita-production.up.railway.app/)
   [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/FathurrizqiRPL/UMKMKita)
@@ -35,9 +35,9 @@
 
 | Nama | Peran | GitHub |
 |------|-------|--------|
-| **Fathurrizqi Hidayat** | Project Lead & Full Stack Developer | [GitHub](https://github.com/FathurrizqiRPL) |
-| **Harun** | Frontend Developer | [GitHub](https://github.com/Runtax-html) |
-| **Luthfi Daffa Nur Syafaat** | Backend Developer | [GitHub](https://github.com/[username3]) |
+| **Fathurrizqi Hidayat** | Full Stack Developer | https://github.com/FathurrizqiRPL |
+| **Harun** | Frontend Developer | https://github.com/Runtax-html |
+| **Luthfi Daffa Nur Syafaat** | Backend Developer | https://github.com/noerdaffa |
 
 
 ---
@@ -112,6 +112,7 @@ Platform mendukung dua jenis usaha, yaitu **UMKM Di Tempat** yang memiliki lokas
 
 ---
 
+<a id="-teknologi"></a>
 ## 🛠️ Teknologi
 
 ### Tech Stack
@@ -139,7 +140,7 @@ Database        : MySQL
 Package Manager : Composer, npm
 Build Tool      : Vite
 Version Control : Git & GitHub
-Deployment      : Railwa
+Deployment      : Railway
 Testing         : PHPUnit
 ```
 ### Alasan Pemilihan Teknologi
@@ -177,6 +178,7 @@ Testing         : PHPUnit
 
 ---
 
+<a id="-arsitektur-sistem"></a>
 ## 🏗️ Arsitektur Sistem
 
 ### System Architecture
@@ -200,9 +202,80 @@ flowchart LR
 
 ### Database Schema
 
+Berikut merupakan Entity Relationship Diagram (ERD) dari database UMKMkita:
+
+```mermaid
+erDiagram
+    USERS ||--o{ UMKMS : memiliki
+    UMKMS ||--o{ ITEMS : memiliki
+    UMKMS ||--o{ UMKM_LOCATIONS : memiliki
+
+    USERS {
+        bigint id PK
+        varchar name
+        varchar email
+        varchar profile_photo
+        varchar password
+        varchar role
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    UMKMS {
+        bigint id PK
+        bigint user_id FK
+        varchar name
+        varchar slug
+        int likes_count
+        varchar status
+        varchar category
+        varchar business_type
+        text description
+        varchar phone
+        varchar address
+        varchar landmark
+        time opening_time
+        time closing_time
+        decimal latitude
+        decimal longitude
+        varchar logo
+        varchar cover
+        boolean is_manual_closed
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ITEMS {
+        bigint id PK
+        bigint umkm_id FK
+        varchar type
+        varchar name
+        text description
+        decimal price
+        varchar duration
+        varchar image
+        boolean is_favorite
+        boolean is_best_seller
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    UMKM_LOCATIONS {
+        bigint id PK
+        bigint umkm_id FK
+        varchar address
+        varchar landmark
+        decimal latitude
+        decimal longitude
+        time start_time
+        time end_time
+        int sort_order
+        timestamp created_at
+        timestamp updated_at
+    }
 ```
-[Tambahkan diagram ERD atau schema database]
-```
+
+### Folder Structure
 
 ### Folder Structure
 
@@ -243,6 +316,7 @@ UMKMKita/
 ```
 ---
 
+<a id="-instalasi--setup"></a>
 ## ⚙️ Instalasi & Setup
 
 ### Prerequisites
@@ -314,13 +388,22 @@ DB_PASSWORD=
 
 > Sesuaikan `DB_USERNAME` dan `DB_PASSWORD` dengan konfigurasi MySQL pada perangkat Anda.
 
-#### 5️⃣ Jalankan Migration
+#### 5️⃣ Jalankan Migration & Seeder
 
-Jalankan migration untuk membuat struktur database:
+Jalankan migration dan seeder untuk membuat struktur database sekaligus menyiapkan akun Admin Localhost:
 
 ```bash
-php artisan migrate
+php artisan migrate --seed
 ```
+
+Akun Admin Localhost:
+
+```text
+Email    : admin@localhost.test
+Password : Admin12345
+```
+
+> Admin Localhost digunakan untuk kebutuhan development dan pengujian project secara lokal. Admin Hosting menggunakan akun yang berbeda.
 
 #### 6️⃣ Buat Storage Link
 
