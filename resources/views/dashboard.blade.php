@@ -147,7 +147,12 @@
         </span>
     </div>
 
+
     <strong>{{ $umkm->is_manual_closed ? 'Tutup' : 'Buka' }}</strong>
+
+                    <strong>
+                        {{ $umkm->status === 'active' ? 'Buka' : 'Ditangguhkan' }}
+                    </strong>
 
     <div style="margin-top: 10px;">
         <form action="{{ route('umkm.toggle-status') }}" method="POST">
