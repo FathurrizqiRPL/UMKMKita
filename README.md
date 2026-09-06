@@ -1,7 +1,7 @@
 <div align="center">
   
   # UMKMkita 
-  ### UMKM Lebih Dekat, Usaha Makin Terlihat
+  ### Temukan UMKM, Dekatkan Pelanggan
   
   [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_Site-success?style=for-the-badge)](https://umkmkita-production.up.railway.app/)
   [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/FathurrizqiRPL/UMKMKita)
@@ -35,9 +35,9 @@
 
 | Nama | Peran | GitHub |
 |------|-------|--------|
-| **Fathurrizqi Hidayat** | Project Lead & Full Stack Developer | [GitHub](https://github.com/FathurrizqiRPL) |
-| **Harun** | Frontend Developer | [GitHub](https://github.com/Runtax-html) |
-| **Luthfi Daffa Nur Syafaat** | Backend Developer | [GitHub](https://github.com/noerdaffa) |
+| **Fathurrizqi Hidayat** | Project Lead & Full Stack Developer | https://github.com/FathurrizqiRPL |
+| **Harun** | Frontend Developer | https://github.com/Runtax-html |
+| **Luthfi Daffa Nur Syafaat** | Backend Developer | https://github.com/noerdaffa |
 
 
 ---
