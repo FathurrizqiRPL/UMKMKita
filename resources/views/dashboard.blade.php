@@ -180,19 +180,20 @@
                     </small>
 
                 </div>
-<div class="dashboard-stat">
-    <div class="stat-top">
-        <span>JUMLAH DISUKAI</span>
-    </div>
 
-    <strong>
-        {{ $umkm->likes_count ?? 0 }}
-    </strong>
+        <div class="dashboard-stat">
+            <div class="stat-top">
+                <span>JUMLAH DISUKAI</span>
+            </div>
 
-    <small>
-        Orang menyukai website kamu
-    </small>
-</div>
+            <strong>
+                {{ $umkm->likes_count ?? 0 }}
+            </strong>
+
+            <small>
+                Orang menyukai website kamu
+            </small>
+        </div>
 
 
                 @php
@@ -443,18 +444,10 @@
 
                             <div class="quick-form-grid">
 
-                                <select name="type" required>
-
-                                    <option value="product">
-                                        Produk
-                                    </option>
-
-                                    <option value="service">
-                                        Layanan
-                                    </option>
-
+                               <select name="type" id="quickItemType" required>
+                                    <option value="product">Produk</option>
+                                    <option value="service">Layanan</option>
                                 </select>
-
 
                                 <input
                                     type="text"
@@ -467,19 +460,11 @@
 
 
                             <div class="quick-form-grid">
+                                <input type="number" name="price" placeholder="Harga">
 
-                                <input
-                                    type="number"
-                                    name="price"
-                                    placeholder="Harga"
-                                />
-
-                                <input
-                                    type="text"
-                                    name="duration"
-                                    placeholder="Durasi (opsional)"
-                                />
-
+                                <div id="quickDurationField" hidden>
+                                    <input type="text" name="duration" placeholder="Durasi (opsional)">
+                                </div>
                             </div>
 
 
@@ -491,21 +476,27 @@
 
                             <div class="quick-form-bottom">
 
-                                <label class="file-input">
-
-                                    <span>+</span>
-
-                                    <span>
-                                        Tambahkan foto
-                                    </span>
-
-                                    <input
-                                        type="file"
-                                        name="image"
-                                        accept="image/*"
-                                    />
-
+                                <div class="quick-photo-field">
+                                <label class="quick-photo-button" for="quickItemImage">
+                                    <span>＋</span>
+                                    Tambahkan foto
                                 </label>
+
+                                <input type="file" id="quickItemImage" name="image" accept="image/*" hidden>
+
+                                <div class="quick-photo-preview" id="quickPhotoPreview" hidden>
+                                    <img id="quickPhotoImage" src="" alt="Preview foto">
+
+                                    <div class="quick-photo-info">
+                                        <strong id="quickPhotoName"></strong>
+                                        <small>Foto siap ditambahkan</small>
+                                    </div>
+
+                                    <button type="button" class="quick-photo-remove" id="quickPhotoRemove" aria-label="Batalkan foto">
+                                        ×
+                                    </button>
+                                </div>
+                            </div>
 
 
                                 <button
@@ -616,7 +607,47 @@
         });
     });
 
-    
+    const quickItemType = document.getElementById('quickItemType');
+    const quickDurationField = document.getElementById('quickDurationField');
+
+    function updateQuickDuration() {
+        quickDurationField.hidden = quickItemType.value !== 'service';
+    }
+
+    quickItemType.addEventListener('change', updateQuickDuration);
+    updateQuickDuration();
+
+    const quickItemImage = document.getElementById('quickItemImage');
+    const quickPhotoPreview = document.getElementById('quickPhotoPreview');
+    const quickPhotoImage = document.getElementById('quickPhotoImage');
+    const quickPhotoName = document.getElementById('quickPhotoName');
+    const quickPhotoRemove = document.getElementById('quickPhotoRemove');
+
+    let quickPhotoUrl = null;
+
+    quickItemImage?.addEventListener('change', () => {
+        const file = quickItemImage.files[0];
+        if (!file) return;
+
+        if (quickPhotoUrl) URL.revokeObjectURL(quickPhotoUrl);
+
+        quickPhotoUrl = URL.createObjectURL(file);
+        quickPhotoImage.src = quickPhotoUrl;
+        quickPhotoName.textContent = file.name;
+        quickPhotoPreview.hidden = false;
+    });
+
+    quickPhotoRemove?.addEventListener('click', () => {
+        quickItemImage.value = '';
+        quickPhotoPreview.hidden = true;
+        quickPhotoImage.src = '';
+        quickPhotoName.textContent = '';
+
+        if (quickPhotoUrl) {
+            URL.revokeObjectURL(quickPhotoUrl);
+            quickPhotoUrl = null;
+        }
+    });
 </script>
 
 @endsection

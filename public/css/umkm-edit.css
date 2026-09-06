@@ -192,6 +192,188 @@ a {
     font-size: 22px;
 }
 
+.product-edit-card {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e5e5ee;
+    border-radius: 18px;
+    box-shadow: 0 10px 35px rgba(37, 30, 90, .025);
+    transition: .2s ease;
+}
+
+.product-edit-card.open {
+    border-color: #d8d4ff;
+    box-shadow: 0 16px 40px rgba(37, 30, 90, .06);
+}
+
+.product-edit-summary {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 76px 1fr auto;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 20px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.product-edit-preview {
+    width: 76px;
+    height: 76px;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #f2f1ff;
+    flex-shrink: 0;
+}
+
+.product-edit-preview img,
+.product-current-preview img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.product-image-placeholder,
+.product-current-placeholder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 4px;
+    background: #f1efff;
+    color: #8177dc;
+}
+
+.product-image-placeholder span,
+.product-current-placeholder span {
+    font-size: 24px;
+}
+
+.product-image-placeholder small,
+.product-current-placeholder small {
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.product-edit-info {
+    min-width: 0;
+}
+
+.product-edit-number {
+    display: block;
+    margin-bottom: 5px;
+    color: #5848e8;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .14em;
+}
+
+.product-edit-info h2 {
+    margin: 0;
+    overflow: hidden;
+    color: #171b2d;
+    font: 800 18px "Plus Jakarta Sans", sans-serif;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.product-edit-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 8px;
+}
+
+.product-edit-meta span {
+    padding: 5px 8px;
+    border-radius: 7px;
+    background: #f6f5fb;
+    color: #74798b;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.product-edit-action {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #5848e8;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.product-edit-chevron {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: #efedff;
+}
+
+.product-edit-chevron::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-right: 2px solid #5848e8;
+    border-bottom: 2px solid #5848e8;
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform .2s ease;
+}
+
+.product-edit-card.open .product-edit-chevron::before {
+    transform: translateY(2px) rotate(225deg);
+}
+
+.product-edit-body {
+    max-height: 0;
+    overflow: hidden;
+    border-top: 1px solid transparent;
+    transition: max-height .3s ease;
+}
+
+.product-edit-card.open .product-edit-body {
+    border-top-color: #ecebf3;
+}
+
+.product-edit-body-inner {
+    display: grid;
+    gap: 20px;
+    padding: 24px;
+}
+
+.product-current-image {
+    display: grid;
+    gap: 9px;
+}
+
+.product-current-label {
+    color: #414558;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.product-current-preview {
+    width: 180px;
+    height: 130px;
+    overflow: hidden;
+    border: 1px solid #e4e2ee;
+    border-radius: 14px;
+    background: #f5f4fa;
+}
+
+.edit-empty {
+    margin: 0;
+    padding: 20px;
+    color: #74798b;
+    text-align: center;
+}
+
 /* ================================
    LABEL
 ================================ */
@@ -688,6 +870,43 @@ a {
     .edit-submit-button {
         width: 100%;
     }
+
+    .product-edit-summary {
+    grid-template-columns: 62px 1fr auto;
+    gap: 12px;
+    padding: 14px;
+}
+
+.product-edit-preview {
+    width: 62px;
+    height: 62px;
+}
+
+.product-edit-info h2 {
+    font-size: 15px;
+}
+
+.product-edit-meta {
+    gap: 5px;
+}
+
+.product-edit-meta span {
+    padding: 4px 6px;
+    font-size: 9px;
+}
+
+.product-edit-label {
+    display: none;
+}
+
+.product-edit-body-inner {
+    padding: 18px 14px;
+}
+
+.product-current-preview {
+    width: 100%;
+    height: 180px;
+}
 }
 
 .delete-eyebrow {
@@ -832,4 +1051,7 @@ a {
     .delete-confirm-button {
         width: 100%;
     }
+}
+.item-duration-field[hidden] {
+    display: none !important;
 }
