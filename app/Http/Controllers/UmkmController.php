@@ -13,24 +13,25 @@ use Illuminate\Validation\Rule;
 class UmkmController extends Controller
 {
 
-public function showw($slug)
+public function showw(string $slug)
 {
-    $umkm = Umkm::where('slug', $slug)->firstOrFail();
+    $umkm = Umkm::with(['items', 'locations', 'posters'])->where('slug', $slug)->firstOrFail();
 
-    // Jika status ditangguhkan, abort atau redirect
     if ($umkm->status !== 'active') {
         abort(403, 'Website UMKM ini sedang ditangguhkan.');
     }
 
     return view('umkm.show', compact('umkm'));
-}   
-public function toggleWebsiteStatus()
+}
+public function toggleWebsiteStatus(Request $request)
 {
-    $umkm = auth()->user()->umkm; // Sesuaikan dengan relasi model user kamu
+    $umkm = $request->user()->umkm;
+
     if ($umkm) {
         $umkm->status = $umkm->status === 'active' ? 'suspended' : 'active';
         $umkm->save();
     }
+
     return back()->with('success', 'Status website berhasil diperbarui.');
 }
     public function dashboard(Request $request)
@@ -295,7 +296,7 @@ public function toggleWebsiteStatus()
         abort(404);
     }
 
-    public function toggleLike(Request $request, $id)
+   public function toggleLike(Request $request, $id)
     {
         $umkm = Umkm::findOrFail($id);
 
@@ -311,20 +312,20 @@ public function toggleWebsiteStatus()
         ]);
     }
 
-    public function toggleStatus()
+    public function toggleStatus(Request $request)
     {
-        $umkm = auth()->user()->umkm;
+        $umkm = $request->user()->umkm;
 
         if (!$umkm) {
-            return back()->with('error', 'UMKM tidak ditemukan.');
+            return redirect()->route('dashboard')->with('error', 'UMKM tidak ditemukan.');
         }
 
         $umkm->is_manual_closed = !$umkm->is_manual_closed;
         $umkm->save();
 
-        return back()->with(
+        return redirect()->route('dashboard')->with(
             'success',
-            'Status operasional berhasil diperbarui.'
+            $umkm->is_manual_closed ? 'Toko berhasil ditutup.' : 'Toko berhasil dibuka.'
         );
     }
 
