@@ -91,7 +91,7 @@ Platform mendukung dua jenis usaha, yaitu **UMKM Di Tempat** yang memiliki lokas
 
 ### Live Demo
 
-🔗 **[Kunjungi Website](https://umkmkita-production.up.railway.app/)**
+🔗 **Kunjungi Website : https://umkmkita-production.up.railway.app/**
 
 ### Screenshot Aplikasi
 
