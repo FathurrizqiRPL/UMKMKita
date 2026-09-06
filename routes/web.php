@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UmkmController;
@@ -35,6 +36,10 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/radar-umkm', [HomeController::class, 'radar'])->name('radar');
 
 Route::middleware('auth')->group(function () {
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
     Route::get('/dashboard', [UmkmController::class, 'dashboard'])->name('dashboard');
 
     Route::get('/buat-website', [UmkmController::class, 'create'])->name('umkm.create');
