@@ -25,12 +25,10 @@
             </div>
         @endif
 
-        {{-- Form action diarahkan ke rute update massal --}}
         <form action="{{ route('umkm.update.semua.produk') }}" method="POST" enctype="multipart/form-data" class="edit-form">
             @csrf
             @method('PUT')
 
-            {{-- Looping semua produk/layanan --}}
             @forelse($items as $item)
                 <section class="edit-card">
                     <div class="edit-card-title">
@@ -41,7 +39,6 @@
                     <div class="edit-two-col">
                         <label class="edit-field">
                             <span>Tipe Item</span>
-                            {{-- Perhatikan penamaan name="items[id][field]" --}}
                             <select name="items[{{ $item->id }}][type]" required>
                                 <option value="product" @selected(old('items.'.$item->id.'.type', $item->type) === 'product')>Produk</option>
                                 <option value="service" @selected(old('items.'.$item->id.'.type', $item->type) === 'service')>Layanan</option>
@@ -86,6 +83,25 @@
                             rows="3"
                         >{{ old('items.'.$item->id.'.description', $item->description) }}</textarea>
                     </label>
+
+                    {{-- Pilihan Status Favorit & Terlaris --}}
+                    <div style="background: #f8f9fc; border: 1px solid #e7e7ef; padding: 14px 18px; border-radius: 14px; margin: 16px 0; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s ease;"
+     onmouseover="this.style.borderColor='#5848e8'; this.style.background='#f3f2ff';"
+     onmouseout="this.style.borderColor='#e7e7ef'; this.style.background='#f8f9fc';"
+     onclick="const cb = this.querySelector('input[type=&quot;checkbox&quot;]'); cb.checked = !cb.checked;"
+>
+    <input 
+        type="checkbox" 
+        name="items[{{ $item->id }}][is_favorite]" 
+        value="1" 
+        @checked(old('items.'.$item->id.'.is_favorite', $item->is_favorite)) 
+        style="width: 18px; height: 18px; accent-color: #5848e8; cursor: pointer;"
+        onclick="event.stopPropagation();"
+    >
+    <span style="font-weight: 700; font-size: 14px; color: #333748; user-select: none;">
+        ⭐ Jadikan Menu Favorit
+    </span>
+</div>
 
                     <label class="edit-file">
                         <span>Ganti Foto (Opsional)</span>
