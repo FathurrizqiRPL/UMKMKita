@@ -60,12 +60,6 @@ Setiap UMKM dapat menampilkan informasi usaha, produk atau layanan, lokasi, sert
 
 Platform mendukung dua jenis usaha, yaitu **UMKM Di Tempat** yang memiliki lokasi tetap dan **UMKM Keliling** yang dapat memiliki beberapa titik standby beserta waktu operasionalnya.
 
-### Solusi yang Ditawarkan
-
-[Jelaskan bagaimana aplikasi ini menyelesaikan masalah tersebut dengan pendekatan yang unik atau inovatif]
-
-### Tujuan Proyek
-
 - 🎯 **Tujuan Utama**: Membantu UMKM membangun kehadiran digital dan mempermudah masyarakat menemukan usaha lokal.
 - 📊 **Target Pengguna**: Pelaku UMKM serta masyarakat yang ingin menemukan produk dan layanan UMKM di sekitarnya.
 - 💡 **Value Proposition**: Menggabungkan pembuatan website UMKM dan pencarian UMKM berbasis lokasi dalam satu platform yang mudah digunakan.
