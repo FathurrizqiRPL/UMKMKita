@@ -149,7 +149,7 @@
                     </div>
 
                     <strong>
-                        {{ $umkm->status === 'active' ? 'Aktif' : 'Ditangguhkan' }}
+                        {{ $umkm->status === 'active' ? 'Buka' : 'Ditangguhkan' }}
                     </strong>
 
                     <small>
