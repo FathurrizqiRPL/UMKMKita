@@ -1,10 +1,10 @@
 <div align="center">
   
   # UMKMkita 
-  ### [Tagline Singkat dan Menarik]
+  ### UMKM Lebih Dekat, Usaha Makin Terlihat
   
-  [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_Site-success?style=for-the-badge)](https://[URL_DEMO])
-  [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://[URL_REPO])
+  [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_Site-success?style=for-the-badge)](https://umkmkita-production.up.railway.app/)
+  [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/FathurrizqiRPL/UMKMKita)
   [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
   
   **Submission for ITECHNO CUP 2026 - Web Development**
@@ -46,7 +46,19 @@
 
 ### Latar Belakang
 
-[Jelaskan konteks permasalahan yang ingin diselesaikan. Gunakan data atau fakta untuk memperkuat argumen. Contoh: "Berdasarkan survei X, 70% pengguna mengalami kesulitan dalam......"]
+UMKM memiliki peran penting dalam perekonomian masyarakat, tetapi tidak semua pelaku UMKM memiliki akses, kemampuan teknis, atau anggaran untuk membangun media promosi digital mereka sendiri.
+
+Di sisi lain, masyarakat sering kali kesulitan menemukan UMKM lokal yang berada di sekitar mereka, terutama usaha kecil yang belum memiliki kehadiran digital yang kuat. Tantangan ini menjadi semakin besar bagi UMKM keliling yang tidak selalu beroperasi pada satu lokasi tetap.
+
+UMKMkita hadir sebagai platform digital yang membantu pelaku UMKM membangun kehadiran online dengan lebih mudah sekaligus membantu masyarakat menemukan UMKM lokal di sekitar mereka.
+
+### Solusi yang Ditawarkan
+
+UMKMkita menyediakan platform yang memungkinkan pemilik UMKM membuat halaman website usahanya tanpa perlu membangun website dari awal.
+
+Setiap UMKM dapat menampilkan informasi usaha, produk atau layanan, lokasi, serta informasi pendukung lainnya. UMKMkita juga menyediakan fitur Radar UMKM untuk membantu pengguna menemukan UMKM di sekitar lokasi mereka.
+
+Platform mendukung dua jenis usaha, yaitu **UMKM Di Tempat** yang memiliki lokasi tetap dan **UMKM Keliling** yang dapat memiliki beberapa titik standby beserta waktu operasionalnya.
 
 ### Solusi yang Ditawarkan
 
@@ -54,9 +66,9 @@
 
 ### Tujuan Proyek
 
-- 🎯 **Tujuan Utama**: [Tujuan primer aplikasi]
-- 📊 **Target Pengguna**: [Siapa yang akan menggunakan aplikasi ini]
-- 💡 **Value Proposition**: [Apa yang membuat aplikasi ini berbeda dari solusi lain]
+- 🎯 **Tujuan Utama**: Membantu UMKM membangun kehadiran digital dan mempermudah masyarakat menemukan usaha lokal.
+- 📊 **Target Pengguna**: Pelaku UMKM serta masyarakat yang ingin menemukan produk dan layanan UMKM di sekitarnya.
+- 💡 **Value Proposition**: Menggabungkan pembuatan website UMKM dan pencarian UMKM berbasis lokasi dalam satu platform yang mudah digunakan.
 
 ---
 
@@ -66,17 +78,18 @@
 
 | Fitur | Deskripsi | Keunggulan |
 |----------|--------------|---------------|
-| **Create Website** | pemilik umkm dapat mempromosikan usaha nya memalui website | untuk mengefesiensi budget pemilik umkm, di fitur ini kami memberikan solusi dengan menyediakan teamplate pembuatan website dengan gratis  |
-| **[Nama Fitur 2]** | [Deskripsi singkat fitur] | [Mengapa fitur ini penting/unik] |
-| **[Nama Fitur 3]** | [Deskripsi singkat fitur] | [Mengapa fitur ini penting/unik] |
-| **[Nama Fitur 4]** | [Deskripsi singkat fitur] | [Mengapa fitur ini penting/unik] |
+| **Website UMKM** | Pemilik UMKM dapat membuat halaman website untuk mempromosikan usaha, produk, dan layanannya. | Membantu UMKM memiliki media promosi digital tanpa harus membuat website dari awal. |
+| **Radar UMKM** | Pengguna dapat menemukan UMKM di sekitar lokasi mereka melalui peta interaktif. | Mempermudah masyarakat menemukan dan mengenal usaha lokal di sekitarnya. |
+| **UMKM Di Tempat & Keliling** | Platform mendukung usaha dengan lokasi tetap maupun usaha keliling dengan beberapa titik standby. | Lebih fleksibel untuk berbagai model operasional UMKM, termasuk pedagang keliling. |
+| **Manajemen Produk & Layanan** | Pemilik UMKM dapat menambahkan dan mengelola produk atau layanan yang ditampilkan pada website mereka. | Informasi usaha dapat diperbarui sendiri melalui dashboard tanpa mengubah kode website. |
 
 ### Fitur Tambahan
 
-- **[Fitur A]** - [Penjelasan singkat]
-- **[Fitur B]** - [Penjelasan singkat]
-- **[Fitur C]** - [Penjelasan singkat]
-- **[Fitur D]** - [Penjelasan singkat]
+- **Dashboard UMKM** - Pusat pengelolaan website, informasi usaha, dan produk atau layanan.
+- **Pencarian & Filter UMKM** - Membantu pengguna mencari UMKM berdasarkan nama maupun kategori.
+- **Lokasi & Jam Operasional** - Menampilkan informasi lokasi dan waktu operasional UMKM.
+- **Panel Admin** - Admin dapat memantau pengguna dan UMKM serta mengatur status UMKM.
+- **Responsive Design** - Antarmuka dirancang agar dapat digunakan pada desktop maupun perangkat mobile.
 
 ---
 
@@ -84,7 +97,7 @@
 
 ### Live Demo
 
-🔗 **[Kunjungi Website](https://[URL_DEMO])**
+🔗 **[Kunjungi Website](https://umkmkita-production.up.railway.app/)**
 
 ### Screenshot Aplikasi
 
@@ -110,47 +123,61 @@
 ### Tech Stack
 
 #### Frontend
-```
-Framework    : [React / Next.js / Vue / dll]
-UI Library   : [Tailwind CSS / Material-UI / Chakra UI / dll]
-State Mgmt   : [Redux / Zustand / Context API / dll]
-Validation   : [Zod / Yup / React Hook Form / dll]
+```text
+Template Engine : Blade
+Styling         : CSS3
+Scripting       : JavaScript
+Map Library     : Leaflet.js
+Map Data        : OpenStreetMap
 ```
 
 #### Backend
-```
-Runtime      : [Node.js / Bun / Deno / dll]
-Framework    : [Express / Fastify / Hono / dll]
-Database     : [PostgreSQL / MongoDB / MySQL / dll]
-ORM          : [Prisma / Drizzle / TypeORM / dll]
-Auth         : [JWT / NextAuth / Clerk / dll]
+```text
+Runtime         : PHP 8.3+
+Framework       : Laravel
+ORM             : Eloquent ORM
+Authentication  : Laravel Breeze
+Database        : MySQL
 ```
 
 #### DevOps & Tools
+```text
+Package Manager : Composer, npm
+Build Tool      : Vite
+Version Control : Git & GitHub
+Deployment      : Railwa
+Testing         : PHPUnit
 ```
-Deployment   : [Vercel / Netlify / Railway / dll]
-CI/CD        : [GitHub Actions / Vercel / dll]
-Testing      : [Jest / Vitest / Playwright / dll]
-Monitoring   : [Sentry / LogRocket / dll]
-```
-
 ### Alasan Pemilihan Teknologi
 
 | Teknologi | Alasan Pemilihan |
 |-----------|------------------|
-| **[Tech 1]** | [Jelaskan mengapa memilih teknologi ini, keunggulannya untuk proyek ini] |
-| **[Tech 2]** | [Jelaskan mengapa memilih teknologi ini, keunggulannya untuk proyek ini] |
-| **[Tech 3]** | [Jelaskan mengapa memilih teknologi ini, keunggulannya untuk proyek ini] |
+| **Laravel** | Dipilih sebagai framework utama karena menyediakan struktur MVC serta fitur seperti routing, validation, authentication, dan Eloquent ORM yang membantu pengembangan aplikasi menjadi lebih terstruktur. |
+| **Blade** | Terintegrasi langsung dengan Laravel dan memudahkan pembuatan halaman dinamis tanpa membutuhkan framework frontend tambahan. |
+| **JavaScript** | Digunakan untuk menangani interaksi dinamis pada sisi pengguna, seperti pengelolaan lokasi, interaksi Radar UMKM, dan berbagai fitur antarmuka lainnya. |
+| **MySQL** | Digunakan sebagai sistem manajemen database untuk menyimpan dan mengelola data pengguna, UMKM, produk atau layanan, lokasi, serta data aplikasi lainnya secara terstruktur. |
+| **Leaflet.js** | Digunakan untuk membangun peta interaktif pada fitur Radar UMKM karena ringan, fleksibel, dan mudah diintegrasikan dengan OpenStreetMap. |
+| **OpenStreetMap** | Digunakan sebagai sumber data peta untuk menampilkan lokasi UMKM pada fitur berbasis lokasi. |
+| **Railway** | Digunakan sebagai platform deployment agar UMKMkita dapat dijalankan dan diakses secara online. |
 
 ### Dependencies Utama
 
+#### Composer
 ```json
 {
-  "dependencies": {
-    "[package-1]": "^x.x.x",
-    "[package-2]": "^x.x.x",
-    "[package-3]": "^x.x.x"
-  }
+  "php": "^8.3",
+  "laravel/framework": "^13.8",
+  "laravel/tinker": "^3.0",
+  "laravel/breeze": "^2.4",
+  "phpunit/phpunit": "^12.5.12"
+}
+```
+
+#### NPM
+```json
+{
+  "laravel-vite-plugin": "^3.1",
+  "vite": "^8.0.0"
 }
 ```
 
@@ -160,8 +187,21 @@ Monitoring   : [Sentry / LogRocket / dll]
 
 ### System Architecture
 
-```
-[Tambahkan diagram arsitektur sistem - bisa menggunakan Mermaid atau gambar]
+UMKMkita menggunakan arsitektur **Model-View-Controller (MVC)** yang disediakan oleh Laravel. Arsitektur ini memisahkan tampilan, logika aplikasi, dan pengelolaan data agar pengembangan lebih terstruktur dan mudah dikelola.
+
+```mermaid
+flowchart LR
+    A[Pengguna] --> B[Browser]
+    B --> C[Laravel Routes]
+    C --> D[Controller]
+    D --> E[Model / Eloquent ORM]
+    E --> F[(MySQL Database)]
+    D --> G[Blade View]
+    G --> B
+
+    G --> H[JavaScript]
+    H --> I[Leaflet.js]
+    I --> J[OpenStreetMap]
 ```
 
 ### Database Schema
@@ -172,21 +212,41 @@ Monitoring   : [Sentry / LogRocket / dll]
 
 ### Folder Structure
 
+```text
+UMKMKita/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/     # Logika aplikasi
+│   │   └── Middleware/      # Middleware aplikasi
+│   ├── Models/              # Model Eloquent
+│   └── Providers/           # Service provider
+│
+├── bootstrap/               # Proses bootstrap Laravel
+├── config/                  # Konfigurasi aplikasi
+│
+├── database/
+│   ├── factories/           # Model factory
+│   ├── migrations/          # Struktur database
+│   └── seeders/             # Data seeder
+│
+├── public/
+│   ├── css/                 # Stylesheet aplikasi
+│   ├── js/                  # JavaScript aplikasi
+│   └── images/              # Asset gambar
+│
+├── resources/
+│   └── views/               # Blade template
+│
+├── routes/
+│   ├── web.php              # Route utama aplikasi
+│   └── auth.php             # Route autentikasi
+│
+├── tests/                   # Direktori testing Laravel
+├── composer.json            # Dependency PHP
+├── package.json             # Dependency frontend
+├── vite.config.js           # Konfigurasi Vite
+└── artisan                  # Laravel CLI
 ```
-project-root/
-├── src/
-│   ├── components/     # Reusable components
-│   ├── pages/          # Page components
-│   ├── hooks/          # Custom hooks
-│   ├── utils/          # Utility functions
-│   ├── services/       # API services
-│   ├── store/          # State management
-│   └── types/          # TypeScript types
-├── public/             # Static assets
-├── tests/              # Test files
-└── docs/               # Documentation
-```
-
 ---
 
 ## ⚙️ Instalasi & Setup
@@ -194,9 +254,12 @@ project-root/
 ### Prerequisites
 
 Pastikan Anda telah menginstall:
-- **Node.js** (v18.x atau lebih tinggi)
-- **npm** / **yarn** / **pnpm**
-- **[Database]** (jika diperlukan)
+
+- **PHP 8.3 atau lebih tinggi**
+- **Composer**
+- **Node.js 22.12 atau lebih tinggi**
+- **npm**
+- **MySQL**
 - **Git**
 
 ### Langkah Instalasi
@@ -204,60 +267,95 @@ Pastikan Anda telah menginstall:
 #### 1️⃣ Clone Repository
 
 ```bash
-git clone https://github.com/[username]/[repo-name].git
-cd [repo-name]
+git clone https://github.com/FathurrizqiRPL/UMKMKita.git
+cd UMKMKita
 ```
 
 #### 2️⃣ Install Dependencies
 
+Install dependency PHP menggunakan Composer:
+
 ```bash
-# Menggunakan npm
+composer install
+```
+
+Install dependency frontend menggunakan npm:
+
+```bash
 npm install
-
-# Atau menggunakan yarn
-yarn install
-
-# Atau menggunakan pnpm
-pnpm install
 ```
 
 #### 3️⃣ Setup Environment Variables
 
-Buat file `.env` di root directory:
-
-```env
-# Database
-DATABASE_URL="[connection_string]"
-
-# Authentication
-JWT_SECRET="[your_jwt_secret]"
-NEXTAUTH_SECRET="[your_nextauth_secret]"
-
-# API Keys
-API_KEY="[your_api_key]"
-
-# Other configs
-NODE_ENV="development"
-PORT=3000
-```
-
-#### 4️⃣ Setup Database
+Salin file `.env.example` menjadi `.env`:
 
 ```bash
-# Jalankan migrasi database
-npm run db:migrate
-
-# Seed data (opsional)
-npm run db:seed
+cp .env.example .env
 ```
 
-#### 5️⃣ Run Development Server
+Kemudian generate application key Laravel:
+
+```bash
+php artisan key:generate
+```
+
+#### 4️⃣ Setup Database MySQL
+
+Buat database MySQL baru, misalnya:
+
+```sql
+CREATE DATABASE umkmkita;
+```
+
+Kemudian sesuaikan konfigurasi database pada file `.env`:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=umkmkita
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+> Sesuaikan `DB_USERNAME` dan `DB_PASSWORD` dengan konfigurasi MySQL pada perangkat Anda.
+
+#### 5️⃣ Jalankan Migration
+
+Jalankan migration untuk membuat struktur database:
+
+```bash
+php artisan migrate
+```
+
+#### 6️⃣ Buat Storage Link
+
+Buat symbolic link agar file yang tersimpan pada storage dapat diakses melalui aplikasi:
+
+```bash
+php artisan storage:link
+```
+
+#### 7️⃣ Jalankan Aplikasi
+
+Jalankan Laravel development server:
+
+```bash
+php artisan serve
+```
+
+Pada terminal terpisah, jalankan Vite:
 
 ```bash
 npm run dev
 ```
 
-Aplikasi akan berjalan di `http://localhost:3000`
+Aplikasi secara default dapat diakses melalui:
+
+```text
+http://127.0.0.1:8000
+```
+
 
 ---
 
@@ -265,112 +363,88 @@ Aplikasi akan berjalan di `http://localhost:3000`
 
 ### Menjalankan Aplikasi
 
+Jalankan Laravel development server:
+
 ```bash
-# Development mode
+php artisan serve
+```
+
+Pada terminal terpisah, jalankan Vite:
+
+```bash
 npm run dev
+```
 
-# Production build
-npm run build
-npm run start
+Aplikasi secara default dapat diakses melalui:
 
-# Run tests
-npm run test
-
-# Linting
-npm run lint
+```text
+http://127.0.0.1:8000
 ```
 
 ### User Guide
 
 #### Untuk Pengguna Umum
 
-1. **Registrasi/Login**: [Jelaskan cara mendaftar atau login]
-2. **[Fitur 1]**: [Jelaskan cara menggunakan fitur ini]
-3. **[Fitur 2]**: [Jelaskan cara menggunakan fitur ini]
+1. **Jelajahi UMKM**: Pengguna dapat melihat berbagai UMKM yang tersedia melalui halaman utama.
+2. **Cari UMKM**: Gunakan fitur pencarian dan kategori untuk menemukan UMKM sesuai kebutuhan.
+3. **Radar UMKM**: Gunakan Radar UMKM untuk menemukan UMKM yang berada di sekitar lokasi pengguna.
+4. **Lihat Detail UMKM**: Pilih UMKM untuk melihat informasi usaha, produk atau layanan, lokasi, dan informasi lainnya.
+
+#### Untuk Pemilik UMKM
+
+1. **Registrasi/Login**: Buat akun atau masuk menggunakan akun yang telah terdaftar.
+2. **Buat Website UMKM**: Lengkapi informasi usaha untuk membuat halaman website UMKM.
+3. **Tentukan Jenis Usaha**: Pilih jenis usaha **Di Tempat** untuk UMKM dengan lokasi tetap atau **Keliling** untuk UMKM dengan beberapa titik standby.
+4. **Kelola Produk/Layanan**: Tambahkan dan kelola produk atau layanan yang akan ditampilkan pada website UMKM.
+5. **Kelola Informasi UMKM**: Perbarui profil, lokasi, jam operasional, dan informasi usaha melalui dashboard.
+6. **Bagikan Website**: Gunakan alamat website UMKM yang tersedia pada dashboard untuk membagikan halaman usaha kepada pelanggan.
 
 #### Untuk Admin
 
-1. **Akses Admin Panel**: [Jelaskan cara mengakses]
-2. **[Fungsi Admin 1]**: [Jelaskan cara menggunakan]
-3. **[Fungsi Admin 2]**: [Jelaskan cara menggunakan]
+1. **Login Admin**: Masuk menggunakan akun yang memiliki akses administrator.
+2. **Kelola UMKM**: Pantau dan kelola data UMKM yang terdaftar pada platform.
+3. **Kelola Pengguna**: Pantau data pengguna yang terdaftar pada UMKMkita.
+4. **Kelola Status UMKM**: Atur status UMKM sesuai kebutuhan pengelolaan platform.
 
 ---
 
 ## 📚 API Documentation
 
-### Base URL
+UMKMkita saat ini tidak menyediakan **REST API atau public API** secara khusus. Aplikasi dibangun menggunakan Laravel dengan pendekatan server-side rendering melalui Blade.
 
-```
-Development: http://localhost:3000/api
-Production:  https://[domain]/api
-```
+Pada fitur **Radar UMKM**, aplikasi memanfaatkan layanan eksternal untuk mendukung fitur berbasis lokasi:
 
-### Endpoints
-
-#### Authentication
-
-```http
-POST /api/auth/register
-POST /api/auth/login
-POST /api/auth/logout
-GET  /api/auth/me
-```
-
-#### [Resource 1]
-
-```http
-GET    /api/[resource]       # Get all
-GET    /api/[resource]/:id   # Get by ID
-POST   /api/[resource]       # Create
-PUT    /api/[resource]/:id   # Update
-DELETE /api/[resource]/:id   # Delete
-```
-
-### Example Request
-
-```javascript
-// Login
-const response = await fetch('/api/auth/login', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    email: 'user@example.com',
-    password: 'password123'
-  })
-});
-```
-
-📖 **[Dokumentasi API Lengkap](./docs/API.md)** _(opsional)_
+- **OpenStreetMap** sebagai sumber peta.
+- **Nominatim** untuk pencarian dan geocoding lokasi.
+- **Leaflet.js** sebagai library untuk menampilkan dan mengelola interaksi peta pada sisi frontend.
 
 ---
 
 ## 🧪 Testing
 
-### Running Tests
+Pengujian UMKMkita dilakukan menggunakan kombinasi **manual testing** dan **automated testing** untuk membantu memastikan aplikasi dapat berjalan dengan baik selama proses pengembangan.
+
+### Manual Testing
+
+Pengujian manual dilakukan melalui development server Laravel:
+
+```text
+http://127.0.0.1:8000
+```
+
+Pengujian dilakukan dengan mencoba langsung berbagai alur dan fitur aplikasi, seperti autentikasi pengguna, pengelolaan data UMKM, pengelolaan produk atau layanan, Radar UMKM, serta tampilan website UMKM.
+
+### Automated Testing
+
+Project juga menyediakan pengujian melalui Laravel Test Runner yang dapat dijalankan dengan:
 
 ```bash
-# Unit tests
-npm run test
-
-# Integration tests
-npm run test:integration
-
-# E2E tests
-npm run test:e2e
-
-# Test coverage
-npm run test:coverage
+php artisan test
 ```
 
-### Test Coverage
+Automated testing pada project menggunakan **PHPUnit** sebagai testing framework.
 
-```
-Statements   : XX%
-Branches     : XX%
-Functions    : XX%
-Lines        : XX%
-```
-
+> Cakupan automated testing masih terbatas dan pengujian utama terhadap keseluruhan fitur aplikasi tetap dilakukan secara manual selama proses pengembangan.
 ---
 
 ## 📄 Lisensi
