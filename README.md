@@ -112,6 +112,7 @@ Platform mendukung dua jenis usaha, yaitu **UMKM Di Tempat** yang memiliki lokas
 
 ---
 
+<a id="teknologi"></a>
 ## 🛠️ Teknologi
 
 ### Tech Stack
@@ -177,6 +178,7 @@ Testing         : PHPUnit
 
 ---
 
+<a id="arsitektur-sistem"></a>
 ## 🏗️ Arsitektur Sistem
 
 ### System Architecture
@@ -243,6 +245,7 @@ UMKMKita/
 ```
 ---
 
+<a id="instalasi-setup"></a>
 ## ⚙️ Instalasi & Setup
 
 ### Prerequisites
