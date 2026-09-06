@@ -314,13 +314,22 @@ DB_PASSWORD=
 
 > Sesuaikan `DB_USERNAME` dan `DB_PASSWORD` dengan konfigurasi MySQL pada perangkat Anda.
 
-#### 5️⃣ Jalankan Migration
+#### 5️⃣ Jalankan Migration & Seeder
 
-Jalankan migration untuk membuat struktur database:
+Jalankan migration dan seeder untuk membuat struktur database sekaligus menyiapkan akun Admin Localhost:
 
 ```bash
-php artisan migrate
+php artisan migrate --seed
 ```
+
+Akun Admin Localhost:
+
+```text
+Email    : admin@localhost.test
+Password : Admin12345
+```
+
+> Admin Localhost digunakan untuk kebutuhan development dan pengujian project secara lokal. Admin Hosting menggunakan akun yang berbeda.
 
 #### 6️⃣ Buat Storage Link
 
