@@ -35,7 +35,7 @@
 
 | Nama | Peran | GitHub |
 |------|-------|--------|
-| **Fathurrizqi Hidayat** | Project Lead & Full Stack Developer | https://github.com/FathurrizqiRPL |
+| **Fathurrizqi Hidayat** | Full Stack Developer | https://github.com/FathurrizqiRPL |
 | **Harun** | Frontend Developer | https://github.com/Runtax-html |
 | **Luthfi Daffa Nur Syafaat** | Backend Developer | https://github.com/noerdaffa |
 
@@ -200,9 +200,80 @@ flowchart LR
 
 ### Database Schema
 
+Berikut merupakan Entity Relationship Diagram (ERD) dari database UMKMkita:
+
+```mermaid
+erDiagram
+    USERS ||--o{ UMKMS : memiliki
+    UMKMS ||--o{ ITEMS : memiliki
+    UMKMS ||--o{ UMKM_LOCATIONS : memiliki
+
+    USERS {
+        bigint id PK
+        varchar name
+        varchar email
+        varchar profile_photo
+        varchar password
+        varchar role
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    UMKMS {
+        bigint id PK
+        bigint user_id FK
+        varchar name
+        varchar slug
+        int likes_count
+        varchar status
+        varchar category
+        varchar business_type
+        text description
+        varchar phone
+        varchar address
+        varchar landmark
+        time opening_time
+        time closing_time
+        decimal latitude
+        decimal longitude
+        varchar logo
+        varchar cover
+        boolean is_manual_closed
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    ITEMS {
+        bigint id PK
+        bigint umkm_id FK
+        varchar type
+        varchar name
+        text description
+        decimal price
+        varchar duration
+        varchar image
+        boolean is_favorite
+        boolean is_best_seller
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    UMKM_LOCATIONS {
+        bigint id PK
+        bigint umkm_id FK
+        varchar address
+        varchar landmark
+        decimal latitude
+        decimal longitude
+        time start_time
+        time end_time
+        int sort_order
+        timestamp created_at
+        timestamp updated_at
+    }
 ```
-[Tambahkan diagram ERD atau schema database]
-```
+
+### Folder Structure
 
 ### Folder Structure
 
