@@ -15,9 +15,6 @@
         <div class="field">
             <div class="field-label-row">
                 <label for="password">Password</label>
-                @if (Route::has('password.request'))
-                    <a href="{{ route('password.request') }}">Lupa password?</a>
-                @endif
             </div>
             <input id="password" type="password" name="password" required autocomplete="current-password" placeholder="Masukkan password">
             @error('password') <span class="field-error">{{ $message }}</span> @enderror

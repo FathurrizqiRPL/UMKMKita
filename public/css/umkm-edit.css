@@ -192,6 +192,251 @@ a {
     font-size: 22px;
 }
 
+.product-edit-card {
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e5e5ee;
+    border-radius: 18px;
+    box-shadow: 0 10px 35px rgba(37, 30, 90, .025);
+    transition: .2s ease;
+}
+
+.product-edit-card.open {
+    border-color: #d8d4ff;
+    box-shadow: 0 16px 40px rgba(37, 30, 90, .06);
+}
+
+.product-edit-summary {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 76px 1fr auto;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 20px;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.product-edit-preview {
+    width: 76px;
+    height: 76px;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #f2f1ff;
+    flex-shrink: 0;
+}
+
+.favorite-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1px solid #e7e7ef;
+    border-radius: 14px;
+    background: #f8f9fc;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.favorite-toggle:hover {
+    border-color: #cfc9ff;
+    background: #f6f4ff;
+}
+
+.favorite-toggle input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.favorite-toggle-box {
+    width: 20px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    border: 1.5px solid #cbcbd8;
+    border-radius: 6px;
+    background: #fff;
+}
+
+.favorite-toggle input:checked + .favorite-toggle-box {
+    border-color: #5848e8;
+    background: #5848e8;
+}
+
+.favorite-toggle input:checked + .favorite-toggle-box::before {
+    content: "✓";
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.favorite-toggle-text {
+    display: block;
+}
+
+.favorite-toggle-text strong {
+    display: block;
+    color: #333748;
+    font-size: 13px;
+}
+
+.favorite-toggle-text small {
+    display: block;
+    margin-top: 2px;
+    color: #858897;
+    font-size: 10px;
+}
+
+.product-edit-preview img,
+.product-current-preview img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.product-image-placeholder,
+.product-current-placeholder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: 4px;
+    background: #f1efff;
+    color: #8177dc;
+}
+
+.product-image-placeholder span,
+.product-current-placeholder span {
+    font-size: 24px;
+}
+
+.product-image-placeholder small,
+.product-current-placeholder small {
+    font-size: 9px;
+    font-weight: 700;
+}
+
+.product-edit-info {
+    min-width: 0;
+}
+
+.product-edit-number {
+    display: block;
+    margin-bottom: 5px;
+    color: #5848e8;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .14em;
+}
+
+.product-edit-info h2 {
+    margin: 0;
+    overflow: hidden;
+    color: #171b2d;
+    font: 800 18px "Plus Jakarta Sans", sans-serif;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.product-edit-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 8px;
+}
+
+.product-edit-meta span {
+    padding: 5px 8px;
+    border-radius: 7px;
+    background: #f6f5fb;
+    color: #74798b;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.product-edit-action {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #5848e8;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.product-edit-chevron {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: #efedff;
+}
+
+.product-edit-chevron::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-right: 2px solid #5848e8;
+    border-bottom: 2px solid #5848e8;
+    transform: translateY(2px) rotate(225deg);
+    transition: transform .2s ease;
+}
+
+.product-edit-card.open .product-edit-chevron::before {
+    transform: translateY(-2px) rotate(45deg);
+}
+
+.product-edit-body {
+    max-height: 0;
+    overflow: hidden;
+    border-top: 1px solid transparent;
+    transition: max-height .3s ease;
+}
+
+.product-edit-card.open .product-edit-body {
+    border-top-color: #ecebf3;
+}
+
+.product-edit-body-inner {
+    display: grid;
+    gap: 20px;
+    padding: 24px;
+}
+
+.product-current-image {
+    display: grid;
+    gap: 9px;
+}
+
+.product-current-label {
+    color: #414558;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.product-current-preview {
+    width: 180px;
+    height: 130px;
+    overflow: hidden;
+    border: 1px solid #e4e2ee;
+    border-radius: 14px;
+    background: #f5f4fa;
+}
+
+.edit-empty {
+    margin: 0;
+    padding: 20px;
+    color: #74798b;
+    text-align: center;
+}
+
 /* ================================
    LABEL
 ================================ */
@@ -688,6 +933,43 @@ a {
     .edit-submit-button {
         width: 100%;
     }
+
+    .product-edit-summary {
+    grid-template-columns: 62px 1fr auto;
+    gap: 12px;
+    padding: 14px;
+}
+
+.product-edit-preview {
+    width: 62px;
+    height: 62px;
+}
+
+.product-edit-info h2 {
+    font-size: 15px;
+}
+
+.product-edit-meta {
+    gap: 5px;
+}
+
+.product-edit-meta span {
+    padding: 4px 6px;
+    font-size: 9px;
+}
+
+.product-edit-label {
+    display: none;
+}
+
+.product-edit-body-inner {
+    padding: 18px 14px;
+}
+
+.product-current-preview {
+    width: 100%;
+    height: 180px;
+}
 }
 
 .delete-eyebrow {
@@ -833,3 +1115,9 @@ a {
         width: 100%;
     }
 }
+.item-duration-field[hidden] {
+    display: none !important;
+}
+
+/* Poster menu / katalog */
+.poster-manager-card .edit-card-title p{max-width:690px;margin:7px 0 0;color:#858897;line-height:1.6}.existing-poster-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:18px}.existing-poster-card{display:grid;grid-template-columns:160px minmax(0,1fr);border:1px solid #e5e3ee;border-radius:18px;background:#fbfaff;overflow:hidden;transition:.2s ease}.existing-poster-card.marked-for-delete{opacity:.48;filter:grayscale(.7)}.existing-poster-preview{min-height:220px;background:#f1f0f5}.existing-poster-preview img{width:100%;height:100%;display:block;object-fit:cover}.existing-poster-fields{padding:18px}.poster-delete-input{display:none}.poster-empty-state{margin-bottom:18px;padding:18px;border:1px dashed #d9d6e7;border-radius:14px;color:#8b8e9e;text-align:center}.edit-poster-list,.poster-list{display:grid;gap:14px}.poster-field-card{padding:20px;border:1px solid #e5e3ee;border-radius:18px;background:#fbfaff}.poster-field-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:18px}.poster-kicker{display:block;margin-bottom:4px;color:#8f91a0;font-size:9px;font-weight:800;letter-spacing:.14em}.poster-field-title{font:800 15px "Plus Jakarta Sans",sans-serif}.poster-remove,.poster-delete-button{padding:8px 11px;border:0;border-radius:9px;background:#fff0f0;color:#c93c3c;font:700 11px "DM Sans",sans-serif;cursor:pointer}.poster-field-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.poster-upload{min-height:52px;display:flex;align-items:center;gap:11px;padding:10px 12px;border:1px dashed #cfcbe4;border-radius:12px;background:#fff;cursor:pointer;position:relative}.poster-upload:hover{border-color:#8f84f1;background:#faf9ff}.poster-upload-icon{width:32px;height:32px;display:grid;place-items:center;border-radius:9px;background:#efedff;color:#5848e8;font-weight:800}.poster-upload strong,.poster-upload small{display:block}.poster-upload strong{font-size:12px}.poster-upload small{margin-top:2px;color:#9497a6;font-size:9px}.poster-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}.compact-poster-upload{min-height:48px}.add-poster-button{margin-top:14px;padding:11px 15px;border:1px solid #dcd8f7;border-radius:11px;background:#f6f4ff;color:#5848e8;font:800 12px "DM Sans",sans-serif;cursor:pointer}.add-poster-button:hover{background:#efedff}@media(max-width:900px){.existing-poster-grid{grid-template-columns:1fr}}@media(max-width:650px){.existing-poster-card{grid-template-columns:1fr}.existing-poster-preview{max-height:330px}.poster-field-grid{grid-template-columns:1fr}.poster-field-card{padding:16px}}

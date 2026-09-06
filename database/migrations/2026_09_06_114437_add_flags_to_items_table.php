@@ -9,13 +9,12 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
- public function up()
+    public function up()
 {
-    if (!Schema::hasColumn('umkms', 'is_manual_closed')) {
-        Schema::table('umkms', function (Blueprint $table) {
-            $table->boolean('is_manual_closed')->default(false);
-        });
-    }
+    Schema::table('items', function (Blueprint $table) {
+        $table->boolean('is_favorite')->default(false);
+        $table->boolean('is_best_seller')->default(false);
+    });
 }
 
     /**
@@ -23,7 +22,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('umkms', function (Blueprint $table) {
+        Schema::table('items', function (Blueprint $table) {
             //
         });
     }

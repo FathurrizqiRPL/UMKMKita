@@ -9,22 +9,19 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
- public function up()
-{
-    if (!Schema::hasColumn('umkms', 'is_manual_closed')) {
-        Schema::table('umkms', function (Blueprint $table) {
-            $table->boolean('is_manual_closed')->default(false);
+    public function up(): void
+    {
+        Schema::create('umkm_user_likes', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
-}
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('umkms', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('umkm_user_likes');
     }
 };

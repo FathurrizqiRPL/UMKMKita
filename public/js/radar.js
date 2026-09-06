@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
     const SEARCH_RADIUS_KM = 10;
-    const FOCUS_ZOOM = 16;
-    const CATEGORIES = ['Kuliner', 'Fashion', 'Jasa', 'Kerajinan', 'Lainnya'];
+    const CATEGORIES = ['Kuliner', 'Fashion', 'Jasa', 'Kerajinan', 'Kecantikan', 'Otomotif', 'Lainnya'];
     const umkms = Array.isArray(window.radarUmkms) ? window.radarUmkms : [];
 
+    const mapElement = document.getElementById('radarMap');
     const locationStatus = document.getElementById('locationStatus');
     const radarSummary = document.getElementById('radarSummary');
     const nearbyCount = document.getElementById('nearbyCount');
@@ -15,29 +15,31 @@ document.addEventListener('DOMContentLoaded', function () {
     const manualLocationInfo = document.getElementById('manualLocationInfo');
     const statusDot = document.querySelector('.status-dot');
 
-    const map = L.map('radarMap').setView([-2.5, 118], 5);
+    const map = L.map('radarMap', {
+        zoomControl: true,
+        preferCanvas: true
+    }).setView([-2.5, 118], 5);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    const tileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
+        updateWhenIdle: false,
+        keepBuffer: 4,
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
-
-    const mapContainer = map.getContainer();
 
     let userMarker = null;
     let radiusCircle = null;
     let umkmMarkers = [];
     let activeUmkmMarker = null;
-    let activeUmkmData = null;
-    let detailPanel = null;
     let manualLocationMode = false;
     let activeCategory = 'all';
-    let manualSearchBox = null;
-    let previousMapCenter = null;
-    let previousMapZoom = null;
-    let previousLocationStatus = null;
-    let previousRadarSummary = null;
-    let focusRequestId = 0;
+    let locationRequestId = 0;
+
+    function refreshMapSize() {
+        requestAnimationFrame(function () {
+            map.invalidateSize({ animate: false, pan: false });
+        });
+    }
 
     function escapeHtml(value) {
         return String(value ?? '')
@@ -70,13 +72,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return distance.toFixed(1) + ' km';
     }
 
-    function clearPreviousMapState() {
-        previousMapCenter = null;
-        previousMapZoom = null;
-        previousLocationStatus = null;
-        previousRadarSummary = null;
-    }
-
     function createUmkmIcon(state = 'normal', businessType = 'tetap') {
         const typeClass = businessType === 'keliling' ? ' umkm-pin-mobile' : ' umkm-pin-fixed';
 
@@ -97,19 +92,109 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function resetUmkmHighlights() {
-        activeUmkmMarker = null;
-        activeUmkmData = null;
+    function createDetailPanel() {
+        let panel = document.getElementById('radarDetailPanel');
+        if (panel) return panel;
 
-        umkmMarkers.forEach(function (item) {
-            item.marker.setIcon(createUmkmIcon('normal', item.umkm.business_type));
-        });
+        panel = document.createElement('aside');
+        panel.id = 'radarDetailPanel';
+        panel.className = 'radar-detail-panel';
+        panel.hidden = true;
+
+        panel.innerHTML = `
+            <button type="button" class="radar-detail-close" id="radarDetailClose" aria-label="Tutup detail">×</button>
+            <div id="radarDetailContent"></div>
+        `;
+
+        mapElement.appendChild(panel);
+
+        panel.querySelector('#radarDetailClose').addEventListener('click', closeDetailPanel);
+
+        return panel;
+    }
+
+    function closeDetailPanel() {
+        const panel = document.getElementById('radarDetailPanel');
+        if (panel) panel.hidden = true;
+
+        activeUmkmMarker = null;
+        resetUmkmHighlights();
+    }
+
+    function renderDetailPanel(umkm) {
+        const panel = createDetailPanel();
+        const content = panel.querySelector('#radarDetailContent');
+        const image = umkm.cover || umkm.logo;
+
+        content.innerHTML = `
+            <div class="radar-detail-image">
+                ${
+                    image
+                        ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(umkm.name)}">`
+                        : `<div class="radar-detail-placeholder">
+                            <span>${escapeHtml(umkm.category || 'UMKM')}</span>
+                            <strong>${escapeHtml(umkm.name)}</strong>
+                        </div>`
+                }
+            </div>
+
+            <div class="radar-detail-body">
+                <div class="radar-detail-tags">
+                    <span>${escapeHtml(umkm.category || 'UMKM')}</span>
+                    <span class="${umkm.business_type === 'keliling' ? 'mobile' : 'fixed'}">
+                        ${
+                            umkm.business_type === 'keliling'
+                                ? `UMKM Keliling · Titik ${escapeHtml(umkm.location_number || '')}`
+                                : 'UMKM Di Tempat'
+                        }
+                    </span>
+                </div>
+
+                <h3>${escapeHtml(umkm.name)}</h3>
+
+                <strong class="radar-detail-distance">
+                    ${formatDistance(umkm.distance)} dari lokasi kamu
+                </strong>
+
+                <div class="radar-detail-info">
+                    ${
+                        umkm.address
+                            ? `<div>
+                                <span>Alamat</span>
+                                <p>${escapeHtml(umkm.address)}</p>
+                            </div>`
+                            : ''
+                    }
+
+                    ${
+                        umkm.landmark
+                            ? `<div>
+                                <span>Patokan</span>
+                                <p>${escapeHtml(umkm.landmark)}</p>
+                            </div>`
+                            : ''
+                    }
+
+                    ${
+                        umkm.start_time && umkm.end_time
+                            ? `<div>
+                                <span>Jam</span>
+                                <p>${escapeHtml(umkm.start_time)}–${escapeHtml(umkm.end_time)}</p>
+                            </div>`
+                            : ''
+                    }
+                </div>
+
+                <a href="${escapeHtml(umkm.url)}" class="radar-detail-website">
+                    Lihat Website →
+                </a>
+            </div>
+        `;
+
+        panel.hidden = false;
     }
 
     function highlightUmkmLocations(activeMarker, activeUmkm) {
-        activeUmkmMarker = activeMarker;
-        activeUmkmData = activeUmkm;
-
         umkmMarkers.forEach(function (item) {
             const sameUmkm = String(item.umkm.umkm_id) === String(activeUmkm.umkm_id);
             let state = sameUmkm ? 'related' : 'normal';
@@ -120,252 +205,46 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function clearUmkmMarkers() {
-        focusRequestId++;
-        closeDetailPanel();
+    function resetUmkmHighlights() {
+        umkmMarkers.forEach(function (item) {
+            item.marker.setIcon(createUmkmIcon('normal', item.umkm.business_type));
+        });
+    }
+
+    function scrollToMap() {
+        mapElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
+    }
+
+    function focusMarker(markerItem, shouldScroll = true) {
+        if (!markerItem) return;
+
+        activeUmkmMarker = markerItem.marker;
+        highlightUmkmLocations(markerItem.marker, markerItem.umkm);
+        renderDetailPanel(markerItem.umkm);
+
         map.stop();
 
+        map.flyTo(markerItem.marker.getLatLng(), 17, {
+            animate: true,
+            duration: .65
+        });
+
+        if (shouldScroll) {
+            setTimeout(scrollToMap, 60);
+        }
+    }
+
+    function clearUmkmMarkers() {
         umkmMarkers.forEach(function (item) {
             map.removeLayer(item.marker);
         });
 
         umkmMarkers = [];
-    }
-
-    function getRelatedLocations(umkm) {
-        return umkmMarkers
-            .filter(function (item) {
-                return String(item.umkm.umkm_id) === String(umkm.umkm_id);
-            })
-            .sort(function (a, b) {
-                return Number(a.umkm.location_number ?? 0) - Number(b.umkm.location_number ?? 0);
-            });
-    }
-
-    function createDetailPanel() {
-        if (detailPanel) return;
-
-        detailPanel = document.createElement('aside');
-        detailPanel.id = 'radarDetailPanel';
-        detailPanel.className = 'radar-detail-panel';
-        detailPanel.hidden = true;
-
-        mapContainer.appendChild(detailPanel);
-
-        L.DomEvent.disableClickPropagation(detailPanel);
-        L.DomEvent.disableScrollPropagation(detailPanel);
-
-        detailPanel.addEventListener('click', function (event) {
-            const closeButton = event.target.closest('.radar-detail-close');
-
-            if (closeButton) {
-                closeDetailPanel();
-                return;
-            }
-
-            const locationButton = event.target.closest('.radar-detail-location-button');
-
-            if (!locationButton || locationButton.disabled) return;
-
-            const markerItem = umkmMarkers.find(function (item) {
-                return String(item.umkm.umkm_id) === String(locationButton.dataset.umkmId) &&
-                    String(item.umkm.location_id) === String(locationButton.dataset.locationId);
-            });
-
-            if (!markerItem) return;
-
-            focusUmkm(markerItem.marker, markerItem.umkm);
-        });
-    }
-
-    function renderDetailPanel(umkm) {
-        createDetailPanel();
-
-        const image = umkm.cover || umkm.logo;
-        const isMobileBusiness = umkm.business_type === 'keliling';
-        const locations = getRelatedLocations(umkm);
-
-        const locationButtons = isMobileBusiness && locations.length > 1
-            ? locations.map(function (item) {
-                const current = String(item.umkm.location_id) === String(umkm.location_id);
-
-                return `
-                    <button type="button"
-                        class="radar-detail-location-button${current ? ' active' : ''}"
-                        data-umkm-id="${escapeHtml(item.umkm.umkm_id)}"
-                        data-location-id="${escapeHtml(item.umkm.location_id)}"
-                        ${current ? 'disabled' : ''}>
-                        Titik ${escapeHtml(item.umkm.location_number)}
-                        ${current ? '<span>✓</span>' : ''}
-                    </button>
-                `;
-            }).join('')
-            : '';
-
-        detailPanel.innerHTML = `
-            <button type="button" class="radar-detail-close" aria-label="Tutup detail">×</button>
-
-            <div class="radar-detail-scroll">
-                <div class="radar-detail-image">
-                    ${
-                        image
-                            ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(umkm.name)}">`
-                            : '<div class="radar-detail-placeholder">UMKMKita</div>'
-                    }
-                </div>
-
-                <div class="radar-detail-body">
-                    <div class="radar-detail-badges">
-                        <span class="radar-detail-category">${escapeHtml(umkm.category)}</span>
-
-                        ${
-                            isMobileBusiness
-                                ? `<span class="radar-detail-type mobile">Keliling · Titik ${escapeHtml(umkm.location_number)}</span>`
-                                : '<span class="radar-detail-type fixed">Di Tempat</span>'
-                        }
-                    </div>
-
-                    <h3>${escapeHtml(umkm.name)}</h3>
-
-                    <div class="radar-detail-distance">
-                        ${formatDistance(umkm.distance)} dari lokasi kamu
-                    </div>
-
-                    ${
-                        locationButtons
-                            ? `
-                                <div class="radar-detail-locations">
-                                    <div class="radar-detail-section-title">
-                                        Titik Standby
-                                        <span>${locations.length} lokasi</span>
-                                    </div>
-
-                                    <div class="radar-detail-location-list">
-                                        ${locationButtons}
-                                    </div>
-                                </div>
-                            `
-                            : ''
-                    }
-
-                    <div class="radar-detail-info">
-                        <div class="radar-detail-info-item">
-                            <span class="radar-detail-info-icon">⌖</span>
-
-                            <div>
-                                <small>Alamat</small>
-                                <p>${escapeHtml(umkm.address || 'Alamat belum tersedia')}</p>
-                            </div>
-                        </div>
-
-                        ${
-                            umkm.start_time && umkm.end_time
-                                ? `
-                                    <div class="radar-detail-info-item">
-                                        <span class="radar-detail-info-icon">◷</span>
-
-                                        <div>
-                                            <small>Jam Standby</small>
-                                            <p>${escapeHtml(umkm.start_time)} - ${escapeHtml(umkm.end_time)}</p>
-                                        </div>
-                                    </div>
-                                `
-                                : ''
-                        }
-
-                        ${
-                            umkm.landmark
-                                ? `
-                                    <div class="radar-detail-info-item">
-                                        <span class="radar-detail-info-icon">◎</span>
-
-                                        <div>
-                                            <small>Patokan</small>
-                                            <p>${escapeHtml(umkm.landmark)}</p>
-                                        </div>
-                                    </div>
-                                `
-                                : ''
-                        }
-                    </div>
-
-                    <a href="${escapeHtml(umkm.url)}" class="radar-detail-button">
-                        Lihat Website
-                        <span>→</span>
-                    </a>
-                </div>
-            </div>
-        `;
-
-        detailPanel.hidden = false;
-        detailPanel.classList.add('show');
-    }
-
-    function closeDetailPanel() {
-        focusRequestId++;
-
-        if (detailPanel) {
-            detailPanel.classList.remove('show');
-            detailPanel.hidden = true;
-            detailPanel.innerHTML = '';
-        }
-
-        resetUmkmHighlights();
-    }
-
-    function focusUmkm(marker, umkm) {
-        if (!marker || !umkm) return;
-
-        const requestId = ++focusRequestId;
-        const target = marker.getLatLng();
-        const targetZoom = Math.max(map.getZoom(), FOCUS_ZOOM);
-
-        highlightUmkmLocations(marker, umkm);
-        renderDetailPanel(umkm);
-
-        map.stop();
-
-        const targetPoint = map.latLngToContainerPoint(target);
-        const size = map.getSize();
-        const desktopPanelWidth = window.innerWidth > 700 ? 350 : 0;
-
-        const idealPoint = L.point(
-            desktopPanelWidth ? (size.x - desktopPanelWidth) / 2 : size.x / 2,
-            size.y / 2
-        );
-
-        const offset = idealPoint.subtract(targetPoint);
-
-        if (map.getZoom() >= FOCUS_ZOOM) {
-            map.panBy([-offset.x, -offset.y], {
-                animate: true,
-                duration: 0.4
-            });
-            return;
-        }
-
-        map.once('moveend', function () {
-            if (requestId !== focusRequestId) return;
-
-            if (window.innerWidth <= 700) return;
-
-            const currentPoint = map.latLngToContainerPoint(target);
-            const currentSize = map.getSize();
-            const desiredPoint = L.point((currentSize.x - 350) / 2, currentSize.y / 2);
-            const pan = currentPoint.subtract(desiredPoint);
-
-            if (Math.abs(pan.x) < 5 && Math.abs(pan.y) < 5) return;
-
-            map.panBy(pan, {
-                animate: true,
-                duration: 0.3
-            });
-        });
-
-        map.flyTo(target, targetZoom, {
-            animate: true,
-            duration: 0.55
-        });
+        activeUmkmMarker = null;
+        closeDetailPanel();
     }
 
     function renderPinLegend() {
@@ -426,11 +305,16 @@ document.addEventListener('DOMContentLoaded', function () {
             .map(function (umkm) {
                 return {
                     ...umkm,
-                    distance: distanceKm(userLat, userLng, Number(umkm.latitude), Number(umkm.longitude))
+                    distance: distanceKm(
+                        userLat,
+                        userLng,
+                        Number(umkm.latitude),
+                        Number(umkm.longitude)
+                    )
                 };
             })
             .filter(function (umkm) {
-                return umkm.distance <= SEARCH_RADIUS_KM;
+                return Number.isFinite(umkm.distance) && umkm.distance <= SEARCH_RADIUS_KM;
             })
             .sort(function (a, b) {
                 return a.distance - b.distance;
@@ -481,15 +365,25 @@ document.addEventListener('DOMContentLoaded', function () {
         nearbyEmpty.hidden = true;
 
         visibleNearby.forEach(function (umkm) {
-            const marker = L.marker([Number(umkm.latitude), Number(umkm.longitude)], {
+            const lat = Number(umkm.latitude);
+            const lng = Number(umkm.longitude);
+
+            if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+            const marker = L.marker([lat, lng], {
                 icon: createUmkmIcon('normal', umkm.business_type)
             }).addTo(map);
 
+            const markerItem = {
+                marker: marker,
+                umkm: umkm
+            };
+
             marker.on('click', function () {
-                focusUmkm(marker, umkm);
+                focusMarker(markerItem, false);
             });
 
-            umkmMarkers.push({ marker: marker, umkm: umkm });
+            umkmMarkers.push(markerItem);
         });
 
         groupedNearby.forEach(function (group) {
@@ -500,6 +394,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             const isMobile = umkm.business_type === 'keliling';
+            const image = umkm.cover || umkm.logo;
 
             const card = document.createElement('article');
             card.className = 'nearby-card nearby-card-group';
@@ -510,11 +405,22 @@ document.addEventListener('DOMContentLoaded', function () {
                         <button type="button" class="nearby-location-item"
                             data-umkm-id="${escapeHtml(location.umkm_id)}"
                             data-location-id="${escapeHtml(location.location_id)}">
-                            <span>
-                                <strong>Titik ${escapeHtml(location.location_number)}</strong>
+
+                            <span class="nearby-location-copy">
+                                <strong>
+                                    ${
+                                        location.landmark
+                                            ? escapeHtml(location.landmark)
+                                            : `Titik ${escapeHtml(location.location_number)}`
+                                    }
+                                </strong>
+
                                 <small>${escapeHtml(location.address || 'Alamat belum tersedia')}</small>
                             </span>
-                            <span>${formatDistance(location.distance)}</span>
+
+                            <span class="nearby-location-distance">
+                                ${formatDistance(location.distance)}
+                            </span>
                         </button>
                     `;
                 }).join('')
@@ -522,41 +428,82 @@ document.addEventListener('DOMContentLoaded', function () {
 
             card.innerHTML = `
                 <div class="nearby-card-main">
-                    <div class="nearby-card-top">
-                        <div class="nearby-card-icon">U</div>
-
-                        <div>
-                            <h3>${escapeHtml(umkm.name)}</h3>
-                            <span class="nearby-card-category">${escapeHtml(umkm.category)}</span>
-                        </div>
+                    <div class="nearby-card-cover">
+                        ${
+                            image
+                                ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(umkm.name)}">`
+                                : `<div class="nearby-card-cover-placeholder">
+                                    <span>${escapeHtml(umkm.category || 'UMKM')}</span>
+                                    <strong>${escapeHtml(umkm.name)}</strong>
+                                </div>`
+                        }
                     </div>
 
-                    <div class="nearby-card-bottom">
-                        <div class="nearby-card-distance">${formatDistance(umkm.distance)}</div>
+                    <div class="nearby-card-content">
+                        <div class="nearby-card-top">
+                            <div class="nearby-card-info">
+                                <span class="nearby-card-category">${escapeHtml(umkm.category)}</span>
+                                <h3>${escapeHtml(umkm.name)}</h3>
 
-                        ${
-                            isMobile
-                                ? `<button type="button" class="nearby-expand-button">
-                                    ${locations.length} titik standby
-                                    <span>⌄</span>
-                                </button>`
-                                : ''
-                        }
+                                <span class="nearby-card-type">
+                                    ${
+                                        isMobile
+                                            ? `UMKM Keliling · ${locations.length} titik standby`
+                                            : 'UMKM Di Tempat'
+                                    }
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="nearby-card-bottom">
+                            <div class="nearby-card-distance">
+                                ${formatDistance(umkm.distance)} dari kamu
+                            </div>
+
+                            ${
+                                isMobile
+                                    ? `<button type="button" class="nearby-expand-button">
+                                        Lihat titik
+                                        <span>⌄</span>
+                                    </button>`
+                                    : `<button type="button" class="nearby-focus-button">
+                                        Lihat di peta →
+                                    </button>`
+                            }
+                        </div>
                     </div>
                 </div>
 
-                ${isMobile ? `<div class="nearby-locations" hidden>${locationsHtml}</div>` : ''}
+                ${
+                    isMobile
+                        ? `<div class="nearby-locations" hidden>${locationsHtml}</div>`
+                        : ''
+                }
             `;
 
-            card.querySelector('.nearby-card-main').addEventListener('click', function () {
-                const nearestMarker = umkmMarkers.find(function (item) {
-                    return String(item.umkm.umkm_id) === String(umkm.umkm_id) &&
-                        String(item.umkm.location_id) === String(umkm.location_id);
-                });
+            const main = card.querySelector('.nearby-card-main');
+            const focusButton = card.querySelector('.nearby-focus-button');
 
-                if (!nearestMarker) return;
+            function focusNearestLocation() {
+                const markerItem = umkmMarkers
+                    .filter(function (item) {
+                        return String(item.umkm.umkm_id) === String(umkm.umkm_id);
+                    })
+                    .sort(function (a, b) {
+                        return Number(a.umkm.distance) - Number(b.umkm.distance);
+                    })[0];
 
-                focusUmkm(nearestMarker.marker, nearestMarker.umkm);
+                focusMarker(markerItem);
+            }
+
+            main.addEventListener('click', function (event) {
+                if (event.target.closest('button')) return;
+                focusNearestLocation();
+            });
+
+            focusButton?.addEventListener('click', function (event) {
+                event.stopPropagation();
+                focusNearestLocation();
             });
 
             const expandButton = card.querySelector('.nearby-expand-button');
@@ -581,138 +528,19 @@ document.addEventListener('DOMContentLoaded', function () {
                             String(item.umkm.location_id) === String(button.dataset.locationId);
                     });
 
-                    if (!markerItem) return;
-
-                    focusUmkm(markerItem.marker, markerItem.umkm);
+                    focusMarker(markerItem);
                 });
             });
 
             nearbyGrid.appendChild(card);
         });
-    }
 
-    function createManualSearchBox() {
-        if (manualSearchBox) return;
-
-        manualSearchBox = document.createElement('div');
-        manualSearchBox.className = 'manual-search-box';
-
-        manualSearchBox.innerHTML = `
-            <div class="manual-search-input-wrap">
-                <input type="text" id="manualSearchInput" placeholder="Cari alamat, kecamatan, atau kota...">
-                <button type="button" id="manualSearchButton">Cari</button>
-                <button type="button" id="manualCancelButton" class="manual-cancel-button">Batal</button>
-            </div>
-
-            <div id="manualSearchMessage" class="manual-search-message">
-                Cari area terlebih dahulu, lalu klik titik yang tepat di peta.
-            </div>
-        `;
-
-        manualLocationInfo.insertAdjacentElement('afterend', manualSearchBox);
-
-        const input = document.getElementById('manualSearchInput');
-        const searchButton = document.getElementById('manualSearchButton');
-        const cancelButton = document.getElementById('manualCancelButton');
-
-        searchButton.addEventListener('click', searchManualLocation);
-        cancelButton.addEventListener('click', cancelManualLocation);
-
-        input.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape') {
-                cancelManualLocation();
-                return;
-            }
-
-            if (event.key !== 'Enter') return;
-
-            event.preventDefault();
-            searchManualLocation();
-        });
-    }
-
-    async function searchManualLocation() {
-        const input = document.getElementById('manualSearchInput');
-        const message = document.getElementById('manualSearchMessage');
-        const searchButton = document.getElementById('manualSearchButton');
-        const query = input.value.trim();
-
-        if (!query) {
-            message.textContent = 'Masukkan alamat atau nama daerah yang ingin dicari.';
-            return;
-        }
-
-        message.textContent = 'Mencari lokasi...';
-        searchButton.disabled = true;
-
-        try {
-            const params = new URLSearchParams({
-                format: 'json',
-                q: query,
-                countrycodes: 'id',
-                limit: '1',
-                addressdetails: '1'
-            });
-
-            const response = await fetch(`https://nominatim.openstreetmap.org/search?${params}`);
-
-            if (!response.ok) throw new Error('Gagal mengambil data lokasi');
-
-            const results = await response.json();
-
-            if (!results.length) {
-                message.textContent = 'Lokasi tidak ditemukan. Coba gunakan nama tempat yang lebih lengkap.';
-                return;
-            }
-
-            const lat = Number(results[0].lat);
-            const lng = Number(results[0].lon);
-
-            map.stop();
-
-            map.flyTo([lat, lng], 16, {
-                animate: true,
-                duration: 0.8
-            });
-
-            message.textContent = 'Lokasi ditemukan. Klik titik yang tepat di peta untuk mulai mencari UMKM.';
-        } catch (error) {
-            console.error('Location search error:', error);
-            message.textContent = 'Gagal mencari lokasi. Coba lagi beberapa saat.';
-        } finally {
-            searchButton.disabled = false;
-        }
-    }
-
-    function cancelManualLocation() {
-        disableManualLocationMode();
-
-        if (previousMapCenter && previousMapZoom !== null) {
-            map.stop();
-
-            map.flyTo(previousMapCenter, previousMapZoom, {
-                animate: true,
-                duration: 0.6
-            });
-        }
-
-        if (previousLocationStatus !== null) {
-            locationStatus.textContent = previousLocationStatus;
-        }
-
-        if (previousRadarSummary !== null) {
-            radarSummary.textContent = previousRadarSummary;
-        }
-
-        statusDot.classList.toggle('active', Boolean(userMarker));
-        clearPreviousMapState();
+        refreshMapSize();
     }
 
     function activateLocation(position, source = 'automatic') {
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
-
-        closeDetailPanel();
 
         if (userMarker) {
             userMarker.setLatLng([lat, lng]);
@@ -721,8 +549,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 icon: createUserIcon(),
                 zIndexOffset: 1000
             }).addTo(map);
-
-            userMarker.bindPopup('Lokasi pencarian kamu');
         }
 
         if (radiusCircle) {
@@ -739,64 +565,42 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         map.setView([lat, lng], 14);
+        refreshMapSize();
 
         statusDot.classList.add('active');
         mapLoading.classList.add('hidden');
+
         manualLocationMode = false;
         manualLocationInfo.hidden = true;
-
-        if (manualSearchBox) manualSearchBox.hidden = true;
-
-        mapContainer.classList.remove('manual-location-mode');
+        map.getContainer().classList.remove('manual-location-mode');
 
         locationStatus.textContent = source === 'manual'
             ? 'Lokasi manual digunakan'
             : 'Lokasi berhasil ditemukan';
 
-        clearPreviousMapState();
         renderNearby(lat, lng);
     }
 
     function enableManualLocationMode() {
-        closeDetailPanel();
-
-        if (!manualLocationMode) {
-            previousMapCenter = map.getCenter();
-            previousMapZoom = map.getZoom();
-            previousLocationStatus = locationStatus.textContent;
-            previousRadarSummary = radarSummary.textContent;
-        }
-
         manualLocationMode = true;
 
         mapLoading.classList.add('hidden');
         locationStatus.textContent = 'Pilih lokasi di peta';
-        radarSummary.textContent = 'Cari area tujuan, lalu klik titik yang ingin digunakan sebagai lokasi pencarian.';
+        radarSummary.textContent = 'Klik titik di peta untuk menentukan lokasi pencarian.';
         statusDot.classList.remove('active');
         manualLocationInfo.hidden = false;
 
-        createManualSearchBox();
-        manualSearchBox.hidden = false;
-
-        mapContainer.classList.add('manual-location-mode');
-
-        setTimeout(function () {
-            document.getElementById('manualSearchInput')?.focus();
-        }, 100);
+        map.getContainer().classList.add('manual-location-mode');
+        refreshMapSize();
     }
 
     function disableManualLocationMode() {
         manualLocationMode = false;
         manualLocationInfo.hidden = true;
-
-        if (manualSearchBox) manualSearchBox.hidden = true;
-
-        mapContainer.classList.remove('manual-location-mode');
+        map.getContainer().classList.remove('manual-location-mode');
     }
 
     function locationError(error) {
-        console.error('Geolocation error:', error.code, error.message);
-
         mapLoading.classList.add('hidden');
         statusDot.classList.remove('active');
 
@@ -815,9 +619,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function requestLocation() {
-        closeDetailPanel();
         disableManualLocationMode();
-        clearPreviousMapState();
+
+        const requestId = ++locationRequestId;
 
         if (!navigator.geolocation) {
             locationStatus.textContent = 'Browser tidak mendukung lokasi';
@@ -827,30 +631,50 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         mapLoading.classList.remove('hidden');
-        locationStatus.textContent = 'Menunggu lokasi...';
-        radarSummary.textContent = 'Browser sedang mencoba menentukan posisi kamu.';
+        locationStatus.textContent = 'Menunggu izin lokasi...';
+        radarSummary.textContent = 'Izinkan akses lokasi atau pilih titik secara manual.';
+
+        const fallbackTimer = setTimeout(function () {
+            if (requestId !== locationRequestId) return;
+
+            mapLoading.classList.add('hidden');
+            locationStatus.textContent = 'Belum mendapat izin lokasi';
+            radarSummary.textContent = 'Pilih lokasi secara manual di peta.';
+            enableManualLocationMode();
+        }, 8000);
 
         navigator.geolocation.getCurrentPosition(
             function (position) {
+                if (requestId !== locationRequestId) return;
+
+                clearTimeout(fallbackTimer);
                 activateLocation(position, 'automatic');
             },
-            locationError,
+            function (error) {
+                if (requestId !== locationRequestId) return;
+
+                clearTimeout(fallbackTimer);
+                locationError(error);
+            },
             {
                 enableHighAccuracy: false,
-                timeout: 60000,
+                timeout: 12000,
                 maximumAge: 120000
             }
         );
     }
 
-    locateAgainButton.addEventListener('click', requestLocation);
+    locateAgainButton?.addEventListener('click', requestLocation);
 
-    manualLocationButton.addEventListener('click', function () {
+    manualLocationButton?.addEventListener('click', function () {
+        locationRequestId++;
         enableManualLocationMode();
     });
 
     map.on('click', function (event) {
         if (!manualLocationMode) return;
+
+        locationRequestId++;
 
         activateLocation({
             coords: {
@@ -858,29 +682,25 @@ document.addEventListener('DOMContentLoaded', function () {
                 longitude: event.latlng.lng
             }
         }, 'manual');
+
+        disableManualLocationMode();
     });
 
     document.addEventListener('keydown', function (event) {
-        if (event.key !== 'Escape') return;
-
-        if (manualLocationMode) {
-            cancelManualLocation();
-            return;
-        }
-
-        if (detailPanel && !detailPanel.hidden) {
-            closeDetailPanel();
-        }
+        if (event.key === 'Escape') closeDetailPanel();
     });
 
-    window.addEventListener('resize', function () {
-        map.invalidateSize();
-
-        if (!detailPanel || detailPanel.hidden || !activeUmkmMarker || !activeUmkmData) return;
-
-        renderDetailPanel(activeUmkmData);
+    tileLayer.on('tileerror', function (event) {
+        console.warn('Tile peta gagal dimuat:', event.coords);
     });
 
-    createDetailPanel();
+    window.addEventListener('load', function () {
+        setTimeout(refreshMapSize, 100);
+        setTimeout(refreshMapSize, 500);
+    });
+
+    window.addEventListener('resize', refreshMapSize);
+
+    setTimeout(refreshMapSize, 100);
     requestLocation();
 });

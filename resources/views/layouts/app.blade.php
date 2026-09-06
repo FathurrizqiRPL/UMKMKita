@@ -28,13 +28,13 @@
     <link rel="stylesheet" href="{{ asset('css/umkm-edit.css') }}?v={{ filemtime(public_path('css/umkm-edit.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/create.css') }}?v={{ filemtime(public_path('css/create.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/brand.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 </head>
 <body>
 <header class="topbar">
-    <x-brand-logo :href="route('dashboard')" />
+    <x-brand-logo :href="route('home')" />
     <nav>
         @if(auth()->user()->umkm)
-
             <a href="{{ route('umkm.show', auth()->user()->umkm->slug) }}" target="_blank">
                 Lihat Website
             </a>
@@ -43,15 +43,14 @@
                 Dashboard UMKM
             </a>
         @endif
-        <form method="POST" action="{{ route('logout') }}" style="display:inline">
-            @csrf
-            <button class="logout-btn" type="submit">
-                Logout
-            </button>
-        </form>
+
+       <x-profile-menu />
+
     </nav>
 </header>
 
 @yield('content')
+
+<script src="{{ asset('js/profile.js') }}"></script>
 </body>
 </html>

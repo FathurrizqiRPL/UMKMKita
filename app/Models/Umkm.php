@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Umkm extends Model
 {
+
+
     protected $fillable = [
         'user_id',
         'name',
@@ -24,14 +26,14 @@ class Umkm extends Model
         'cover',
         'latitude',
         'longitude',
-        'is_manual_closed', // <-- Tambahkan baris ini
+        'is_manual_closed',
     ];
 
     protected $casts = [
         'latitude' => 'float',
         'longitude' => 'float',
-        'is_manual_closed' => 'boolean', // <-- Disarankan juga di-cast sebagai boolean agar mudah dibaca
-    ];  
+        'is_manual_closed' => 'boolean',
+    ];
 
     public function user(): BelongsTo
     {
@@ -47,5 +49,10 @@ class Umkm extends Model
     {
         return $this->hasMany(UmkmLocation::class)
             ->orderBy('sort_order');
+    }
+
+    public function posters(): HasMany
+    {
+        return $this->hasMany(UmkmPoster::class)->orderBy('sort_order');
     }
 }

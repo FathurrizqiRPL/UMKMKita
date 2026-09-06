@@ -27,54 +27,32 @@
         <form action="{{ route('umkm.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
-            <div class="form-section">
-                <div class="section-header">
-                    <h3>Pilih Template</h3>
-                    <span class="step-number">01</span>
-                </div>
-
-                <div class="template-navbar">
-                    <label class="template-item">
-                        <input type="radio" name="template" value="template1" {{ old('template', 'template1') === 'template1' ? 'checked' : '' }}>
-                        <div class="template-content">
-                            <span class="template-title">Klasik</span>
-                            <a href="{{ route('preview.template', 'template1') }}" target="_blank" class="btn-preview">👁️ Lihat Desain</a>
-                        </div>
-                    </label>
-
-                    <label class="template-item">
-                        <input type="radio" name="template" value="template2" {{ old('template') === 'template2' ? 'checked' : '' }}>
-                        <div class="template-content">
-                            <span class="template-title">Modern</span>
-                            <a href="{{ route('preview.template', 'template2') }}" target="_blank" class="btn-preview">👁️ Lihat Desain</a>
-                        </div>
-                    </label>
-                </div>
-            </div>
-
             <section class="form-card">
-                <span class="step-number">02</span>
+                <span class="step-number">01</span>
 
                 <div class="card-header-title">
                     <h2>Informasi Usaha</h2>
                     <p>Masukkan informasi dasar mengenai usaha kamu.</p>
                 </div>
 
-            
-<div class="form-group">
-    <label for="name">Nama UMKM</label>
-    <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Contoh: Kedai Senja" required>
-</div>
+                <div class="form-group">
+                    <label for="name">Nama UMKM</label>
+                    <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Contoh: Kedai Senja" required>
+                </div>
 
-<!-- INPUT URL WEBSITE UMKM -->
-<div class="form-group">
-    <label for="slug">URL Website UMKM</label>
-    <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="color: #666; font-size: 14px; background: #f3f4f6; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px;">umkmkita.com/</span>
-        <input type="text" id="slug" name="slug" value="{{ old('slug') }}" placeholder="kedai-senja" style="flex: 1;" required>
-    </div>
-    <small class="field-help" style="margin-top: 4px; display: block; color: #666;">Gunakan huruf kecil dan tanda hubung (-) tanpa spasi. Contoh: <code>kedai-senja</code></small>
-</div>
+                <div class="form-group">
+                    <label for="slug">URL Website UMKM</label>
+
+                    <div style="display:flex;align-items:center;gap:8px;">
+                        <span style="color:#666;font-size:14px;background:#f3f4f6;padding:10px 12px;border:1px solid #d1d5db;border-radius:6px;">umkmkita.com/</span>
+                        <input type="text" id="slug" name="slug" value="{{ old('slug') }}" placeholder="kedai-senja" style="flex:1;" required>
+                    </div>
+
+                    <small class="field-help" style="margin-top:4px;display:block;color:#666;">
+                        Gunakan huruf kecil dan tanda hubung (-) tanpa spasi. Contoh: <code>kedai-senja</code>
+                    </small>
+                </div>
+
                 <div class="form-group">
                     <label for="category">Kategori UMKM</label>
                     <select id="category" name="category" required>
@@ -95,7 +73,10 @@
                         <option value="tetap" @selected(old('business_type', 'tetap') === 'tetap')>Di Tempat</option>
                         <option value="keliling" @selected(old('business_type') === 'keliling')>Keliling</option>
                     </select>
-                    <small class="field-help">Pilih "Di Tempat" untuk satu lokasi tetap, atau "Keliling" untuk beberapa titik standby.</small>
+
+                    <small class="field-help">
+                        Pilih "Di Tempat" untuk satu lokasi tetap, atau "Keliling" untuk beberapa titik standby.
+                    </small>
                 </div>
 
                 <div class="form-group">
@@ -110,7 +91,7 @@
             </section>
 
             <section class="form-card" id="fixedBusinessSection">
-                <span class="step-number">03</span>
+                <span class="step-number">02</span>
 
                 <div class="card-header-title">
                     <h2>Lokasi & Jam Operasional</h2>
@@ -136,18 +117,24 @@
                 <div class="operating-hours-grid">
                     <div class="form-group">
                         <label for="opening_time">Jam Buka</label>
-                        <input type="time" id="opening_time" name="opening_time" value="{{ old('opening_time') }}">
+                        <input type="text" id="opening_time" name="opening_time" class="time-24-input"
+                            value="{{ old('opening_time') }}" placeholder="07:00"
+                            inputmode="numeric" maxlength="5" autocomplete="off">
+                        <small class="field-help">Format 24 jam, contoh: 07:00</small>
                     </div>
 
                     <div class="form-group">
                         <label for="closing_time">Jam Tutup</label>
-                        <input type="time" id="closing_time" name="closing_time" value="{{ old('closing_time') }}">
+                        <input type="text" id="closing_time" name="closing_time" class="time-24-input"
+                            value="{{ old('closing_time') }}" placeholder="22:00"
+                            inputmode="numeric" maxlength="5" autocomplete="off">
+                        <small class="field-help">Format 24 jam, contoh: 22:00</small>
                     </div>
                 </div>
             </section>
 
             <section class="form-card" id="mobileBusinessSection">
-                <span class="step-number">03</span>
+                <span class="step-number">02</span>
 
                 <div class="mobile-business-heading">
                     <span class="eyebrow">UMKM KELILING</span>
@@ -174,14 +161,22 @@
                                     <span class="mobile-location-number">TITIK STANDBY {{ $index + 1 }}</span>
                                     <h3 class="mobile-location-title">Lokasi {{ $index + 1 }}</h3>
                                 </div>
+
                                 <button type="button" class="remove-mobile-location">Hapus</button>
                             </div>
 
                             <div class="form-group">
-                                <label>Cari Lokasi</label>
+                                <label>Pilih Lokasi</label>
+
                                 <div class="mobile-map-search">
-                                    <input type="text" class="mobile-search-input" placeholder="Cari jalan, tempat, atau wilayah..." autocomplete="off">
+                                    <input type="text" class="mobile-search-input"
+                                        placeholder="Cari jalan, tempat, atau wilayah..." autocomplete="off">
+
                                     <button type="button" class="mobile-search-button">Cari</button>
+
+                                    <button type="button" class="mobile-search-button mobile-locate-button">
+                                        Cari Lokasi Saya
+                                    </button>
                                 </div>
                             </div>
 
@@ -189,32 +184,109 @@
 
                             <div class="form-group">
                                 <label>Alamat</label>
-                                <input type="text" class="mobile-address" name="locations[{{ $index }}][address]" value="{{ $location['address'] ?? '' }}" placeholder="Alamat akan muncul setelah memilih titik di peta" readonly>
-                                <input type="hidden" class="mobile-latitude" name="locations[{{ $index }}][latitude]" value="{{ $location['latitude'] ?? '' }}">
-                                <input type="hidden" class="mobile-longitude" name="locations[{{ $index }}][longitude]" value="{{ $location['longitude'] ?? '' }}">
+                                <input type="text" class="mobile-address"
+                                    name="locations[{{ $index }}][address]"
+                                    value="{{ $location['address'] ?? '' }}"
+                                    placeholder="Alamat akan muncul setelah memilih titik di peta" readonly>
+
+                                <input type="hidden" class="mobile-latitude"
+                                    name="locations[{{ $index }}][latitude]"
+                                    value="{{ $location['latitude'] ?? '' }}">
+
+                                <input type="hidden" class="mobile-longitude"
+                                    name="locations[{{ $index }}][longitude]"
+                                    value="{{ $location['longitude'] ?? '' }}">
                             </div>
 
                             <div class="form-group">
                                 <label>Patokan / Keterangan Rute</label>
-                                <input type="text" class="mobile-landmark" name="locations[{{ $index }}][landmark]" value="{{ $location['landmark'] ?? '' }}" placeholder="Contoh: Depan Alfamart, lewat Jalan Melati">
+                                <input type="text" class="mobile-landmark"
+                                    name="locations[{{ $index }}][landmark]"
+                                    value="{{ $location['landmark'] ?? '' }}"
+                                    placeholder="Contoh: Depan Alfamart, lewat Jalan Melati">
                             </div>
 
                             <div class="mobile-time-grid">
                                 <div class="form-group">
                                     <label>Mulai Berjualan</label>
-                                    <input type="time" class="mobile-start-time" name="locations[{{ $index }}][start_time]" value="{{ $location['start_time'] ?? '' }}">
+                                    <input type="text" class="mobile-start-time time-24-input"
+                                        name="locations[{{ $index }}][start_time]"
+                                        value="{{ $location['start_time'] ?? '' }}"
+                                        placeholder="07:00" inputmode="numeric"
+                                        maxlength="5" autocomplete="off">
                                 </div>
 
                                 <div class="form-group">
                                     <label>Selesai</label>
-                                    <input type="time" class="mobile-end-time" name="locations[{{ $index }}][end_time]" value="{{ $location['end_time'] ?? '' }}">
+                                    <input type="text" class="mobile-end-time time-24-input"
+                                        name="locations[{{ $index }}][end_time]"
+                                        value="{{ $location['end_time'] ?? '' }}"
+                                        placeholder="17:00" inputmode="numeric"
+                                        maxlength="5" autocomplete="off">
                                 </div>
                             </div>
                         </div>
                     @endforeach
                 </div>
 
-                <button type="button" id="addMobileLocationButton" class="add-location-button">+ Tambah Lokasi</button>
+                <button type="button" id="addMobileLocationButton" class="add-location-button">
+                    + Tambah Lokasi
+                </button>
+            </section>
+
+            <section class="form-card poster-manager-card">
+                <span class="step-number">03</span>
+
+                <div class="card-header-title">
+                    <h2>Poster Menu / Katalog <span class="optional-badge">Opsional</span></h2>
+                    <p>Sudah punya poster menu, daftar harga, atau paket layanan? Upload di sini. Kamu tetap bisa menambahkan produk manual dari dashboard.</p>
+                </div>
+
+                @php $oldPosters = old('posters', []); @endphp
+
+                <div class="poster-list" data-poster-container data-next-index="{{ count($oldPosters) }}">
+                    @foreach ($oldPosters as $index => $poster)
+                        <div class="poster-field-card" data-poster-card>
+                            <div class="poster-field-head">
+                                <div>
+                                    <span class="poster-kicker">POSTER {{ $index + 1 }}</span>
+                                    <strong class="poster-field-title">Poster / Katalog</strong>
+                                </div>
+
+                                <button type="button" class="poster-remove" data-remove-poster>Hapus</button>
+                            </div>
+
+                            <div class="poster-field-grid">
+                                <div class="form-group">
+                                    <label>Judul Poster <span>(opsional)</span></label>
+                                    <input type="text" name="posters[{{ $index }}][title]"
+                                        value="{{ $poster['title'] ?? '' }}"
+                                        placeholder="Contoh: Menu Minuman, Paket Pijat A">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Gambar Poster</label>
+
+                                    <label class="poster-upload">
+                                        <span class="poster-upload-icon">↑</span>
+
+                                        <span>
+                                            <strong>Pilih gambar</strong>
+                                            <small data-poster-file-name>JPG, PNG, atau WEBP · maks. 5 MB</small>
+                                        </span>
+
+                                        <input type="file" name="posters[{{ $index }}][image]"
+                                            accept="image/jpeg,image/png,image/webp" data-poster-file>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <button type="button" class="add-poster-button" data-add-poster>
+                    + Tambah Poster
+                </button>
             </section>
 
             <section class="form-card">
@@ -228,32 +300,75 @@
                 <div class="two-col">
                     <div class="form-group">
                         <label>Logo UMKM</label>
+
                         <div class="file-upload-box">
                             <div class="upload-icon">↑</div>
                             <strong>Pilih Logo</strong>
                             <span class="file-name" id="logo-name">JPG atau PNG, maksimal 2 MB</span>
-                            <input type="file" name="logo" accept="image/*" onchange="document.getElementById('logo-name').innerText = this.files[0]?.name || 'JPG atau PNG, maksimal 2 MB'">
+
+                            <input type="file" name="logo" accept="image/*"
+                                onchange="document.getElementById('logo-name').innerText = this.files[0]?.name || 'JPG atau PNG, maksimal 2 MB'">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Foto Sampul</label>
+
                         <div class="file-upload-box">
                             <div class="upload-icon">↑</div>
                             <strong>Pilih Sampul</strong>
                             <span class="file-name" id="cover-name">JPG atau PNG, maksimal 4 MB</span>
-                            <input type="file" name="cover" accept="image/*" onchange="document.getElementById('cover-name').innerText = this.files[0]?.name || 'JPG atau PNG, maksimal 4 MB'">
+
+                            <input type="file" name="cover" accept="image/*"
+                                onchange="document.getElementById('cover-name').innerText = this.files[0]?.name || 'JPG atau PNG, maksimal 4 MB'">
                         </div>
                     </div>
                 </div>
             </section>
 
             <div class="form-submit">
-                <button class="primary-btn" type="submit">Buat Website Saya <span>→</span></button>
+                <button class="primary-btn" type="submit">
+                    Buat Website Saya <span>→</span>
+                </button>
             </div>
         </form>
     </div>
 </div>
+
+<template id="posterFieldTemplate">
+    <div class="poster-field-card" data-poster-card>
+        <div class="poster-field-head">
+            <div>
+                <span class="poster-kicker"></span>
+                <strong class="poster-field-title">Poster / Katalog</strong>
+            </div>
+
+            <button type="button" class="poster-remove" data-remove-poster>Hapus</button>
+        </div>
+
+        <div class="poster-field-grid">
+            <div class="form-group">
+                <label>Judul Poster <span>(opsional)</span></label>
+                <input type="text" data-poster-title placeholder="Contoh: Menu Minuman, Paket Pijat A">
+            </div>
+
+            <div class="form-group">
+                <label>Gambar Poster</label>
+
+                <label class="poster-upload">
+                    <span class="poster-upload-icon">↑</span>
+
+                    <span>
+                        <strong>Pilih gambar</strong>
+                        <small data-poster-file-name>JPG, PNG, atau WEBP · maks. 5 MB</small>
+                    </span>
+
+                    <input type="file" accept="image/jpeg,image/png,image/webp" data-poster-file>
+                </label>
+            </div>
+        </div>
+    </div>
+</template>
 
 <template id="mobileLocationTemplate">
     <div class="mobile-location-card">
@@ -262,14 +377,22 @@
                 <span class="mobile-location-number"></span>
                 <h3 class="mobile-location-title"></h3>
             </div>
+
             <button type="button" class="remove-mobile-location">Hapus</button>
         </div>
 
         <div class="form-group">
-            <label>Cari Lokasi</label>
+            <label>Pilih Lokasi</label>
+
             <div class="mobile-map-search">
-                <input type="text" class="mobile-search-input" placeholder="Cari jalan, tempat, atau wilayah..." autocomplete="off">
+                <input type="text" class="mobile-search-input"
+                    placeholder="Cari jalan, tempat, atau wilayah..." autocomplete="off">
+
                 <button type="button" class="mobile-search-button">Cari</button>
+
+                <button type="button" class="mobile-search-button mobile-locate-button">
+                    Cari Lokasi Saya
+                </button>
             </div>
         </div>
 
@@ -277,25 +400,32 @@
 
         <div class="form-group">
             <label>Alamat</label>
-            <input type="text" class="mobile-address" placeholder="Alamat akan muncul setelah memilih titik di peta" readonly>
+            <input type="text" class="mobile-address"
+                placeholder="Alamat akan muncul setelah memilih titik di peta" readonly>
+
             <input type="hidden" class="mobile-latitude">
             <input type="hidden" class="mobile-longitude">
         </div>
 
         <div class="form-group">
             <label>Patokan / Keterangan Rute</label>
-            <input type="text" class="mobile-landmark" placeholder="Contoh: Depan Alfamart, lewat Jalan Melati">
+            <input type="text" class="mobile-landmark"
+                placeholder="Contoh: Depan Alfamart, lewat Jalan Melati">
         </div>
 
         <div class="mobile-time-grid">
             <div class="form-group">
                 <label>Mulai Berjualan</label>
-                <input type="time" class="mobile-start-time">
+                <input type="text" class="mobile-start-time time-24-input"
+                    placeholder="07:00" inputmode="numeric"
+                    maxlength="5" autocomplete="off">
             </div>
 
             <div class="form-group">
                 <label>Selesai</label>
-                <input type="time" class="mobile-end-time">
+                <input type="text" class="mobile-end-time time-24-input"
+                    placeholder="17:00" inputmode="numeric"
+                    maxlength="5" autocomplete="off">
             </div>
         </div>
     </div>
@@ -303,5 +433,6 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="{{ asset('js/umkm-mobile-locations.js') }}?v={{ filemtime(public_path('js/umkm-mobile-locations.js')) }}"></script>
+<script src="{{ asset('js/umkm-posters.js') }}?v={{ filemtime(public_path('js/umkm-posters.js')) }}"></script>
 
 @endsection

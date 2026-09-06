@@ -51,7 +51,7 @@
             <div class="dashboard-hero-content">
 
                 <span class="section-label">
-                    DASHBOARD PEMILIK UMKM
+                   
                 </span>
 
                 <h1>
@@ -68,22 +68,7 @@
             </div>
 
 
-            @if($umkm)
-
-                <div class="dashboard-hero-action">
-
-                    <a
-                        href="{{ route('umkm.show', $umkm->slug) }}"
-                        target="_blank"
-                        class="dashboard-primary-button"
-                    >
-                        Lihat Website
-                        <span>↗</span>
-                    </a>
-
-                </div>
-
-            @endif
+            
 
         </section>
 
@@ -138,21 +123,38 @@
 
             <section class="dashboard-stats">
 
-                <div class="dashboard-stat">
+<div class="dashboard-stat">
     <div class="stat-top">
         <span>STATUS WEBSITE</span>
-        <span class="{{ $umkm->is_manual_closed ? 'status-suspended' : 'status-online' }}">
+        <span class="{{ $umkm->status === 'active' ? 'status-online' : 'status-suspended' }}">
             <i></i>
-            {{ $umkm->is_manual_closed ? 'Tutup Manual' : 'Online / Otomatis' }}
+            {{ $umkm->status === 'active' ? 'Aktif' : 'Ditangguhkan' }}
         </span>
     </div>
 
+    <strong>{{ $umkm->status === 'active' ? 'Aktif' : 'Ditangguhkan' }}</strong>
+
+    <div style="margin-top: 10px;">
+        <form action="{{ route('umkm.toggle-website-status') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn-copy" style="cursor: pointer;">
+                {{ $umkm->status === 'active' ? 'Tangguhkan Website' : 'Aktifkan Kembali' }}
+            </button>
+        </form>
+    </div>
+</div>
+
+                {{-- Container 1: Status Operasional Toko --}}
+<div class="dashboard-stat">
+    <div class="stat-top">
+        <span>STATUS OPERASIONAL</span>
+        <span class="{{ $umkm->is_manual_closed ? 'status-suspended' : 'status-online' }}">
+            <i></i>
+            {{ $umkm->is_manual_closed ? 'Tutup' : 'Buka' }}
+        </span>
+    </div>
 
     <strong>{{ $umkm->is_manual_closed ? 'Tutup' : 'Buka' }}</strong>
-
-                    <strong>
-                        {{ $umkm->status === 'active' ? 'Buka' : 'Ditangguhkan' }}
-                    </strong>
 
     <div style="margin-top: 10px;">
         <form action="{{ route('umkm.toggle-status') }}" method="POST">
@@ -163,6 +165,9 @@
         </form>
     </div>
 </div>
+
+{{-- Container 2: Status Akun / Website --}}
+
 
 
                 <div class="dashboard-stat">
@@ -180,49 +185,27 @@
                     </small>
 
                 </div>
-<div class="dashboard-stat">
-    <div class="stat-top">
-        <span>JUMLAH DISUKAI</span>
-    </div>
 
-    <strong>
-        {{ $umkm->likes_count ?? 0 }}
-    </strong>
+        <div class="dashboard-stat">
+            <div class="stat-top">
+                <span>JUMLAH DISUKAI</span>
+            </div>
 
-    <small>
-        Orang menyukai website kamu
-    </small>
-</div>
+            <strong>
+                {{ $umkm->likes_count ?? 0 }}
+            </strong>
+
+            <small>
+                Orang menyukai website kamu
+            </small>
+        </div>
 
 
                 @php
                     $websiteUrl = route('umkm.show', $umkm->slug);
                 @endphp
 
-                <div class="dashboard-stat">
-                    <div class="stat-top">
-                        <span>ALAMAT WEBSITE</span>
-                    </div>
-
-                    <div class="website-url-box">
-                        <input
-                            type="text"
-                            class="website-url-input"
-                            value="{{ $websiteUrl }}"
-                            readonly
-                        >
-
-                        <button
-                            type="button"
-                            class="copy-url-button"
-                            data-url="{{ $websiteUrl }}"
-                        >
-                            Copy
-                        </button>
-                    </div>
-
-                    <small>Alamat website kamu</small>
-                </div>
+                
             </section>
 
 
@@ -323,20 +306,59 @@
                     </div>
 
 
-                    <div class="card-actions">
+                    <div class="card-actions" style="display: flex; gap: 12px; align-items: center; margin-top: 20px;">
 
-                        <a
-                            href="{{ route('umkm.show', $umkm->slug) }}"
-                            target="_blank"
-                        >
-                            Lihat Detail
-                        </a>
+    {{-- Tombol Utama: Lihat Detail --}}
+    <a
+        href="{{ route('umkm.show', $umkm->slug) }}"
+        target="_blank"
+        style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: #5848e8;
+            color: #ffffff;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(88, 72, 232, 0.2);
+            transition: background 0.2s, transform 0.1s;
+        "
+        onmouseover="this.style.background='#4838d8'"
+        onmouseout="this.style.background='#5848e8'"
+    >
+        Lihat Detail <span>↗</span>
+    </a>
 
-                        <a href="{{ route('umkm.delete.website') }}" class="delete-umkm-link">
-                            Hapus Website
-                        </a>
+    {{-- Tombol Bahaya: Hapus Website --}}
+    <a 
+        href="{{ route('umkm.delete.website') }}" 
+        class="delete-umkm-link"
+        style="
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff0f3;
+            color: #ff3366;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            border: 1px solid rgba(255, 51, 102, 0.2);
+            transition: background 0.2s;
+        "
+        onmouseover="this.style.background='#ffe0e6'"
+        onmouseout="this.style.background='#fff0f3'"
+    >
+        Hapus Website
+    </a>
 
-                    </div>
+</div>
+                    
 
                 </div>
 
@@ -377,44 +399,50 @@
                                             <div class="dashboard-item-list">
                             @forelse($umkm->items->take(5) as $item)
                                 <div class="dashboard-item">
-                                    <div class="item-icon">
-                                        @if($item->type === 'service')
-                                            ✦
-                                        @else
-                                            □
-                                        @endif
-                                    </div>
+    <div class="item-icon">
+        @if($item->type === 'service')
+            ✦
+        @else
+            □
+        @endif
+    </div>
 
-                                    <div class="item-info">
-                                        <span>
-                                            {{ $item->type === 'service' ? 'LAYANAN' : 'PRODUK' }}
-                                        </span>
-                                        <strong>
-                                            {{ $item->name }}
-                                        </strong>
-                                    </div>
+    <div class="item-info">
+        <span>
+            {{ $item->type === 'service' ? 'LAYANAN' : 'PRODUK' }}
+        </span>
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+            <strong>
+                {{ $item->name }}
+            </strong>
+            {{-- Badge Status Unggulan --}}
+            @if($item->is_favorite)
+                <span style="background: #fff8e6; color: #b7791f; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 4px; border: 1px solid #feebc8;">⭐ FAVORIT</span>
+            @endif
+           
+        </div>
+    </div>
 
-                                    <div class="item-price">
-                                        {{ $item->price ? 'Rp ' . number_format($item->price, 0, ',', '.') : 'Hubungi' }}
-                                    </div>
+    <div class="item-price">
+        {{ $item->price ? 'Rp ' . number_format($item->price, 0, ',', '.') : 'Hubungi' }}
+    </div>
 
-                                    <div class="item-action">
-                                    <form
-                                        action="{{ route('items.destroy', $item->id) }}"
-                                        method="POST"
-                                        class="item-delete-form"
-                                        onsubmit="return confirm('Apakah kamu yakin ingin menghapus {{ $item->name }}?');"
-                                    >
-                                        @csrf
-                                        @method('DELETE')
+    <div class="item-action">
+        <form
+            action="{{ route('items.destroy', $item->id) }}"
+            method="POST"
+            class="item-delete-form"
+            onsubmit="return confirm('Apakah kamu yakin ingin menghapus {{ $item->name }}?');"
+        >
+            @csrf
+            @method('DELETE')
 
-                                        <button type="submit" class="item-delete-button" title="Hapus Item">
-                                            ✖
-                                        </button>
-                                    </form>
-                                </div>
-
-                                </div>
+            <button type="submit" class="item-delete-button" title="Hapus Item">
+                ✖
+            </button>
+        </form>
+    </div>
+</div>
                             @empty
                                 <div class="items-empty">
                                     <div>+</div>
@@ -427,19 +455,18 @@
 
                     {{-- QUICK ADD --}}
 
-                    <div class="quick-add">
-                        <span class="quick-add-label">
-                            TAMBAH ITEM
-                        </span>
+                    {{-- QUICK ADD / TAMBAH MENU MANUAL --}}
+<div class="quick-add">
+    <span class="quick-add-label">
+        TAMBAH MENU / LAYANAN
+    </span>
 
-                        <form
-                            action="{{ route('items.store') }}"
-                            method="POST"
-                            enctype="multipart/form-data"
-                        >
-
-                            @csrf
-
+    <form
+        action="{{ route('items.store') }}"
+        method="POST"
+        enctype="multipart/form-data"
+    >
+        @csrf
 
                             <div class="quick-form-grid">
 
@@ -456,15 +483,14 @@
                                 </select>
 
 
-                                <input
-                                    type="text"
-                                    name="name"
-                                    placeholder="Nama produk / layanan"
-                                    required
-                                />
-
-                            </div>
-
+            <input
+                type="text"
+                name="name"
+                value="{{ old('name') }}"
+                placeholder="Nama menu / produk / layanan"
+                required
+            />
+        </div>
 
                             <div class="quick-form-grid">
 
@@ -483,11 +509,27 @@
                             </div>
 
 
-                            <textarea
-                                name="description"
-                                placeholder="Deskripsi singkat (opsional)"
-                            ></textarea>
+        <textarea
+            name="description"
+            placeholder="Deskripsi singkat menu (opsional)"
+        >{{ old('description') }}</textarea>
 
+        <!-- PILIHAN TANDA / BADGE UNGGULAN -->
+        <div style="background: #f8f9fc; border: 1px solid #e7e7ef; padding: 14px 18px; border-radius: 14px; margin: 16px 0; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s ease;"
+     onmouseover="this.style.borderColor='#5848e8'; this.style.background='#f3f2ff';"
+     onmouseout="this.style.borderColor='#e7e7ef'; this.style.background='#f8f9fc';"
+     onclick="const cb = this.querySelector('input[type=&quot;checkbox&quot;]'); cb.checked = !cb.checked;"
+>
+    <input 
+        type="checkbox" 
+        name="is_favorite" 
+        value="1" 
+        style="width: 18px; height: 18px; accent-color: #5848e8; cursor: pointer;"
+    >
+    <span style="font-weight: 700; font-size: 14px; color: #333748; user-select: none;">
+        ⭐ Jadikan Menu Favorit
+    </span>
+</div>
 
                             <div class="quick-form-bottom">
 
@@ -531,37 +573,109 @@
                 BOTTOM CTA
             ====================================== --}}
 
-            <section class="dashboard-bottom-cta">
+            <section class="dashboard-bottom-cta" style="display: flex; justify-content: space-between; align-items: center; gap: 30px; flex-wrap: wrap;">
+    
+    <div>
+        <span class="section-label">
+            WEBSITE KAMU SUDAH ONLINE
+        </span>
 
-                <div>
+        <h2>
+            Cerita usahamu sudah<br>
+            <em>bisa ditemukan orang.</em>
+        </h2>
 
-                    <span class="section-label">
-                        WEBSITE KAMU SUDAH ONLINE
-                    </span>
+        <p>
+            Salin dan bagikan alamat website UMKM kamu kepada pelanggan, teman, dan media sosial.
+        </p>
+    </div>
 
-                    <h2>
-                        Cerita usahamu sudah<br>
-                        <em>bisa ditemukan orang.</em>
-                    </h2>
+    {{-- Kotak Salin URL di dalam CTA Bawah --}}
+    @php
+        $websiteUrl = route('umkm.show', $umkm->slug);
+    @endphp
 
-                    <p>
-                        Bagikan website UMKM kamu kepada pelanggan,
-                        teman, dan media sosial.
-                    </p>
+    <div style="background: rgba(255, 255, 255, 0.1); padding: 16px; border-radius: 18px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); min-width: 320px; flex: 1; max-width: 450px;">
+        <span style="display: block; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; letter-spacing: 0.05em;">ALAMAT WEBSITE KAMU</span>
+        
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <input 
+                type="text" 
+                id="bottomWebsiteUrl"
+                value="{{ $websiteUrl }}" 
+                readonly 
+                style="width: 100%; padding: 12px 16px; background: #fff; border: none; border-radius: 10px; font-size: 14px; color: #15182b; font-weight: 600; outline: none;"
+            >
+            <button 
+                type="button" 
+                id="bottomCopyBtn"
+                data-url="{{ $websiteUrl }}"
+                style="background: #5848e8; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background 0.2s;"
+                onmouseover="this.style.background='#4838d8'"
+                onmouseout="this.style.background='#5848e8'"
+            >
+                Salin
+            </button>
+        </div>
+    </div>
 
-                </div>
+</section>
 
+{{-- Script Pendukung untuk Fungsi Tombol Salin --}}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const copyBtn = document.getElementById("bottomCopyBtn");
+        const urlInput = document.getElementById("bottomWebsiteUrl");
 
-                <a
-                    href="{{ route('umkm.show', $umkm->slug) }}"
-                    target="_blank"
-                    class="cta-white-button"
-                >
-                    Buka Website
-                    <span>↗</span>
-                </a>
+        if (copyBtn && urlInput) {
+            copyBtn.addEventListener("click", () => {
+                urlInput.select();
+                urlInput.setSelectionRange(0, 99999);
 
-            </section>
+                navigator.clipboard.writeText(urlInput.value).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = "Berhasil Disalin! ✓";
+                    copyBtn.style.background = "#10b981";
+
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.background = "#5848e8";
+                    }, 2000);
+                }).catch(err => {
+                    console.error("Gagal menyalin teks: ", err);
+                });
+            });
+        }
+    });
+</script>
+
+{{-- Script Pendukung untuk Fungsi Tombol Salin --}}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const copyBtn = document.getElementById("bottomCopyBtn");
+        const urlInput = document.getElementById("bottomWebsiteUrl");
+
+        if (copyBtn && urlInput) {
+            copyBtn.addEventListener("click", () => {
+                urlInput.select();
+                urlInput.setSelectionRange(0, 99999); // Untuk perangkat mobile
+
+                navigator.clipboard.writeText(urlInput.value).then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = "Berhasil Disalin! ✓";
+                    copyBtn.style.background = "#10b981"; // Warna hijau sukses
+
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.background = "#5848e8";
+                    }, 2000);
+                }).catch(err => {
+                    console.error("Gagal menyalin teks: ", err);
+                });
+            });
+        }
+    });
+</script>
 
         @endif
 
@@ -616,7 +730,47 @@
         });
     });
 
-    
+    const quickItemType = document.getElementById('quickItemType');
+    const quickDurationField = document.getElementById('quickDurationField');
+
+    function updateQuickDuration() {
+        quickDurationField.hidden = quickItemType.value !== 'service';
+    }
+
+    quickItemType.addEventListener('change', updateQuickDuration);
+    updateQuickDuration();
+
+    const quickItemImage = document.getElementById('quickItemImage');
+    const quickPhotoPreview = document.getElementById('quickPhotoPreview');
+    const quickPhotoImage = document.getElementById('quickPhotoImage');
+    const quickPhotoName = document.getElementById('quickPhotoName');
+    const quickPhotoRemove = document.getElementById('quickPhotoRemove');
+
+    let quickPhotoUrl = null;
+
+    quickItemImage?.addEventListener('change', () => {
+        const file = quickItemImage.files[0];
+        if (!file) return;
+
+        if (quickPhotoUrl) URL.revokeObjectURL(quickPhotoUrl);
+
+        quickPhotoUrl = URL.createObjectURL(file);
+        quickPhotoImage.src = quickPhotoUrl;
+        quickPhotoName.textContent = file.name;
+        quickPhotoPreview.hidden = false;
+    });
+
+    quickPhotoRemove?.addEventListener('click', () => {
+        quickItemImage.value = '';
+        quickPhotoPreview.hidden = true;
+        quickPhotoImage.src = '';
+        quickPhotoName.textContent = '';
+
+        if (quickPhotoUrl) {
+            URL.revokeObjectURL(quickPhotoUrl);
+            quickPhotoUrl = null;
+        }
+    });
 </script>
 
 @endsection

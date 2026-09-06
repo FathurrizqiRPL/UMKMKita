@@ -16,6 +16,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/home.css') }}?v={{ filemtime(public_path('css/home.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/brand.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 
     <style>
 
@@ -161,26 +162,12 @@
         </nav>
 
         <div class="nav-actions">
-
             @auth
-
-
-                <a href="{{ route('dashboard') }}" class="nav-button">
-                    Kelola UMKM
-                </a>
-
+                <x-profile-menu />
             @else
-
-                <a href="{{ route('login') }}" class="login-btn">
-                    Masuk
-                </a>
-
-                <a href="{{ route('register') }}" class="nav-button">
-                    Buat Website
-                </a>
-
+                <a href="{{ route('login') }}" class="login-btn">Masuk</a>
+                <a href="{{ route('register') }}" class="nav-button">Buat Website</a>
             @endauth
-
         </div>
 
         <button class="mobile-menu-btn" id="mobileMenuBtn">
@@ -721,7 +708,18 @@
 
             @forelse ($umkms as $umkm)
 
-                <article class="umkm-card" data-category="{{ strtolower($umkm->category) }}" data-opening="{{ $umkm->opening_time }}" data-closing="{{ $umkm->closing_time }}" data-manual="{{ $umkm->is_manual_closed ? '1' : '0' }}">
+                @php
+                    $locationSchedule = $umkm->locations
+                        ->filter(fn ($loc) => $loc->start_time && $loc->end_time)
+                        ->map(fn ($loc) => [
+                            'open' => substr((string) $loc->start_time, 0, 5),
+                            'close' => substr((string) $loc->end_time, 0, 5),
+                        ])
+                        ->values()
+                        ->toJson();
+                @endphp
+
+                <article class="umkm-card" data-category="{{ strtolower($umkm->category) }}" data-opening="{{ $umkm->opening_time }}" data-closing="{{ $umkm->closing_time }}" data-manual="{{ $umkm->is_manual_closed ? '1' : '0' }}" data-schedule="{{ $locationSchedule }}">
                     <div class="umkm-image image-{{ strtolower($umkm->category) }}">
 
                         @if ($umkm->cover)
@@ -751,7 +749,11 @@
                             </h3>
 
                             <span class="location">
-                                {{ $umkm->address ?: 'Lokasi belum ditambahkan' }}
+                                @if($umkm->business_type === 'keliling')
+                                    UMKM Keliling · {{ $umkm->locations_count }} titik standby
+                                @else
+                                    {{ $umkm->address ?: 'Lokasi belum ditambahkan' }}
+                                @endif
                             </span>
 
                         </div>
@@ -995,97 +997,7 @@
 
 {{-- FOOTER --}}
 
-<footer>
-
-    <div class="container footer-container">
-
-        <div class="footer-brand">
-
-            <x-brand-logo :href="route('home')" class="footer-logo" />
-
-            <p>
-                Membantu UMKM Indonesia membangun
-                kehadiran digital dengan lebih mudah.
-            </p>
-
-        </div>
-
-
-        <div class="footer-column">
-
-            <strong>
-                Platform
-            </strong>
-
-            <a href="#beranda">
-                Beranda
-            </a>
-
-            <a href="#cara-kerja">
-                Cara Kerja
-            </a>
-
-            <a href="#umkm">
-                Jelajahi UMKM
-            </a>
-
-        </div>
-
-
-        <div class="footer-column">
-
-            <strong>
-                Bantuan
-            </strong>
-
-            <a href="#">
-                Panduan
-            </a>
-
-            <a href="#">
-                FAQ
-            </a>
-
-            <a href="#">
-                Kontak
-            </a>
-
-        </div>
-
-
-        <div class="footer-column">
-
-            <strong>
-                Legal
-            </strong>
-
-            <a href="#">
-                Kebijakan Privasi
-            </a>
-
-            <a href="#">
-                Ketentuan
-            </a>
-
-        </div>
-
-    </div>
-
-
-    <div class="container footer-bottom">
-
-        <span>
-            © {{ date('Y') }} UMKMKita.
-            Semua hak dilindungi.
-        </span>
-
-        <span>
-            Dibuat untuk UMKM Indonesia 🇮🇩
-        </span>
-
-    </div>
-
-</footer>
+@include('partials.footer')
 
 
 <script src="{{ asset('js/home.js') }}?v={{ filemtime(public_path('js/home.js')) }}"></script>
@@ -1166,6 +1078,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 </script>
+<script src="{{ asset('js/profile.js') }}"></script>
 </body>
 
 </html>
