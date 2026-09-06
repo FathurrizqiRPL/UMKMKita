@@ -9,6 +9,63 @@
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="{{ asset('css/umkm-show.css') }}?v={{ filemtime(public_path('css/umkm-show.css')) }}">
+</head>
+<body>
+@php
+    $isMobile = $umkm->business_type === 'keliling';
+    $phone = preg_replace('/\D+/', '', (string) $umkm->phone);
+
+    if (str_starts_with($phone, '0')) {
+        $phone = '62' . substr($phone, 1);
+    }
+
+    $waLink = $phone ? 'https://wa.me/' . $phone : null;
+    $locations = $isMobile ? $umkm->locations->values() : collect();
+
+    $mapPoints = $isMobile
+        ? $locations->map(fn ($location, $index) => [
+            'number' => $index + 1,
+            'name' => $location->landmark ?: 'Titik Standby ' . ($index + 1),
+            'address' => $location->address,
+            'latitude' => (float) $location->latitude,
+            'longitude' => (float) $location->longitude,
+        ])->values()
+        : collect($umkm->latitude !== null && $umkm->longitude !== null ? [[
+            'number' => null,
+            'name' => $umkm->name,
+            'address' => $umkm->address,
+            'latitude' => (float) $umkm->latitude,
+            'longitude' => (float) $umkm->longitude,
+        ]] : []);
+
+    $hasProducts = $umkm->items->isNotEmpty();
+    $hasPosters = $umkm->posters->isNotEmpty();
+    $hasLocation = $isMobile
+        ? $locations->isNotEmpty()
+        : ($umkm->address || $mapPoints->isNotEmpty());
+@endphp
+
+<header class="business-navbar">
+    <div class="site-shell navbar-inner">
+        <a href="#beranda" class="business-brand">
+            @if($umkm->logo)
+                <img src="{{ asset('storage/' . $umkm->logo) }}" alt="Logo {{ $umkm->name }}">
+            @endif
+            <span>{{ $umkm->name }}</span>
+        </a>
+
+        <button type="button" class="mobile-menu-button" id="mobileMenuButton" aria-label="Buka navigasi">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav class="business-navigation" id="businessNavigation">
+            <a href="#beranda">Beranda</a>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/brand.css') }}">
     <style>
@@ -86,18 +143,165 @@
         </div>
     </section>
 
-    <section class="items">
-        <span class="eyebrow">YANG KAMI TAWARKAN</span>
-        <h2>{{ $umkm->category === 'Jasa' || $umkm->category === 'Kecantikan' || $umkm->category === 'Otomotif' ? 'Layanan Kami' : 'Produk Kami' }}</h2>
+            @if($hasProducts)
+                <a href="#produk">Produk</a>
+            @endif
 
-        <div class="grid">
-            @forelse($umkm->items as $item)
-                <article class="card">
-                    @if($item->image)
-                        <img src="{{ asset('storage/'.$item->image) }}" alt="{{ $item->name }}">
-                    @else
-                        <div style="height:210px;background:#f0edff;"></div>
+            @if($hasPosters)
+                <a href="#katalog">Katalog</a>
+            @endif
+
+            @if($hasLocation)
+                <a href="#lokasi">Lokasi</a>
+            @endif
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="hero" id="beranda">
+        <div class="site-shell hero-layout">
+            <div class="hero-content">
+                <div class="business-badges">
+                    <span>{{ $umkm->category }}</span>
+                    <span>{{ $isMobile ? 'UMKM Keliling' : 'UMKM Tetap' }}</span>
+                </div>
+
+                <h1>{{ $umkm->name }}</h1>
+
+                @if($umkm->description)
+                    <p class="hero-description">{{ $umkm->description }}</p>
+                @else
+                    <p class="hero-description">Temukan produk, layanan, dan informasi {{ $umkm->name }} di sini.</p>
+                @endif
+
+                <div class="hero-actions">
+                    @if($waLink)
+                        <a href="{{ $waLink }}" target="_blank" rel="noopener" class="whatsapp-button">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.4-4.1A8 8 0 1 1 20 11.5Z"></path>
+                                <path d="M8.7 8.6c.2 2 2.3 4.2 4.4 4.8.4.1.8-.2 1-.5l.6-.9"></path>
+                            </svg>
+                            WhatsApp
+                        </a>
                     @endif
+
+                    @if($hasLocation)
+                        <a href="#lokasi" class="location-button">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"></path>
+                                <circle cx="12" cy="10" r="2.5"></circle>
+                            </svg>
+                            Lokasi
+                        </a>
+                    @endif
+                </div>
+
+                <div class="business-facts">
+                    <div>
+                        <span>Model Usaha</span>
+                        <strong>{{ $isMobile ? 'UMKM Keliling' : 'UMKM Tetap' }}</strong>
+                    </div>
+
+                    <div class="business-hours-fact">
+                        <span>Jam Operasional</span>
+
+                        @if($isMobile)
+                            @if($locations->count() === 1)
+                                @php $singleLocation = $locations->first(); @endphp
+
+                                <strong>
+                                    @if($singleLocation->start_time || $singleLocation->end_time)
+                                        {{ $singleLocation->start_time ? substr($singleLocation->start_time, 0, 5) : '--:--' }}
+                                        –
+                                        {{ $singleLocation->end_time ? substr($singleLocation->end_time, 0, 5) : '--:--' }}
+                                    @else
+                                        Belum tersedia
+                                    @endif
+                                </strong>
+                            @elseif($locations->count() > 1)
+                                <button type="button" class="hours-dropdown-trigger" id="hoursDropdownTrigger">
+                                    <strong>Lihat jadwal</strong>
+                                    <i class="hours-chevron"></i>
+                                </button>
+
+                                <div class="hours-dropdown" id="hoursDropdown" hidden>
+                                    <div class="hours-dropdown-head">
+                                        <strong>Jam Operasional</strong>
+                                        <small>{{ $locations->count() }} titik standby</small>
+                                    </div>
+
+                                    <div class="hours-dropdown-list">
+                                        @foreach($locations as $location)
+                                            <div class="hours-dropdown-item">
+                                                <div>
+                                                    <strong>{{ $location->landmark ?: 'Titik Standby ' . $loop->iteration }}</strong>
+
+                                                    @if($location->address)
+                                                        <small>{{ $location->address }}</small>
+                                                    @endif
+                                                </div>
+
+                                                <span>
+                                                    @if($location->start_time || $location->end_time)
+                                                        {{ $location->start_time ? substr($location->start_time, 0, 5) : '--:--' }}
+                                                        –
+                                                        {{ $location->end_time ? substr($location->end_time, 0, 5) : '--:--' }}
+                                                    @else
+                                                        Belum tersedia
+                                                    @endif
+                                                </span>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @else
+                                <strong>Belum tersedia</strong>
+                            @endif
+                        @elseif($umkm->opening_time && $umkm->closing_time)
+                            <strong>
+                                {{ substr($umkm->opening_time, 0, 5) }}
+                                –
+                                {{ substr($umkm->closing_time, 0, 5) }}
+                            </strong>
+                        @else
+                            <strong>Belum tersedia</strong>
+                        @endif
+                    </div>
+
+                    <div>
+                        <span>Kategori</span>
+                        <strong>{{ $umkm->category }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-media">
+                @if($umkm->cover)
+                    <img src="{{ asset('storage/' . $umkm->cover) }}" alt="Foto {{ $umkm->name }}">
+                @else
+                    <div class="hero-cover-placeholder">
+                        <span>{{ $umkm->category }}</span>
+                        <strong>{{ $umkm->name }}</strong>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </section>
+
+    <section class="product-section" id="produk">
+        <div class="site-shell">
+            <div class="section-heading product-heading">
+                <div>
+                    <span class="section-kicker">PRODUK & LAYANAN</span>
+                    <h2>Pilihan dari {{ $umkm->name }}</h2>
+                </div>
+
+                @if($umkm->items->count() > 3)
+                    <div class="carousel-controls">
+                        <button type="button" class="carousel-button" id="productPrev" aria-label="Produk sebelumnya">←</button>
+                        <button type="button" class="carousel-button" id="productNext" aria-label="Produk berikutnya">→</button>
+                    </div>
                    <div class="card-body">
     <!-- TAMBAHAN BADGE FAVORIT & TERLARIS -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -180,6 +384,81 @@
             </div>
         </section>
     @endif
+
+    @if($waLink)
+        <section class="contact-section">
+            <div class="site-shell">
+                <div class="contact-banner">
+                    <div class="contact-text">
+                        <span class="contact-icon">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M20 11.5a8 8 0 0 1-11.8 7L4 20l1.4-4.1A8 8 0 1 1 20 11.5Z"></path>
+                                <path d="M8.7 8.6c.2 2 2.3 4.2 4.4 4.8.4.1.8-.2 1-.5l.6-.9"></path>
+                            </svg>
+                        </span>
+
+                        <div>
+                            <small>HUBUNGI USAHA</small>
+                            <h2>Mau pesan atau tanya langsung?</h2>
+                            <p>Chat dengan {{ $umkm->name }} melalui WhatsApp.</p>
+                        </div>
+                    </div>
+
+                    <a href="{{ $waLink }}" target="_blank" rel="noopener">Hubungi Sekarang ↗</a>
+                </div>
+            </div>
+        </section>
+    @endif
+</main>
+
+<footer class="business-footer">
+    <div class="site-shell footer-inner">
+        <div>
+            <strong>{{ $umkm->name }}</strong>
+            <span>{{ $umkm->category }} · {{ $isMobile ? 'UMKM Keliling' : 'UMKM Tetap' }}</span>
+        </div>
+
+        <span>© {{ date('Y') }} {{ $umkm->name }}</span>
+
+        <a href="{{ route('home') }}">Dibuat dengan UMKMKita</a>
+    </div>
+</footer>
+
+@if($hasPosters)
+    <div class="poster-modal" id="posterModal" hidden>
+        <div class="poster-modal-backdrop" data-close-poster></div>
+
+        <div class="poster-modal-window">
+            <div class="poster-modal-header">
+                <strong id="posterModalTitle">Poster</strong>
+
+                <div class="poster-modal-actions">
+                    <button type="button" id="posterZoomOut" aria-label="Zoom out">−</button>
+                    <span id="posterZoomValue">100%</span>
+                    <button type="button" id="posterZoomIn" aria-label="Zoom in">+</button>
+                    <button type="button" id="posterZoomReset">Reset</button>
+                    <button type="button" class="poster-modal-close" data-close-poster aria-label="Tutup">×</button>
+                </div>
+            </div>
+
+            <div class="poster-modal-stage" id="posterModalStage">
+                <img src="" alt="" id="posterModalImage" draggable="false">
+            </div>
+
+            <div class="poster-modal-help">
+                Scroll untuk zoom · drag gambar untuk menggeser · Esc untuk menutup
+            </div>
+        </div>
+    </div>
+@endif
+
+<script>
+    window.umkmMapData = @json($mapPoints);
+    window.umkmBusinessType = @json($umkm->business_type);
+</script>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ asset('js/umkm-show.js') }}?v={{ filemtime(public_path('js/umkm-show.js')) }}"></script>
 </div>
 
 <!-- Script AJAX untuk menangani tombol Like/Favorit tanpa login -->

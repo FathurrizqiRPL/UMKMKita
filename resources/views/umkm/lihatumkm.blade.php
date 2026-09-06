@@ -54,6 +54,14 @@
 
             <div class="nav-actions">
 
+            @auth
+                <x-profile-menu />
+            @else
+                <div class="nav-actions">
+                    <a href="{{ route('login') }}" class="login-btn">Masuk</a>
+                    <a href="{{ route('register') }}" class="nav-button">Buat Website</a>
+                </div>
+            @endauth
                 @auth
 
                     <a href="{{ route('dashboard') }}" class="nav-button">
@@ -103,6 +111,14 @@
 
             @auth
 
+        @auth
+            <x-profile-menu />
+        @else
+            <div class="nav-actions">
+                <a href="{{ route('login') }}" class="login-btn">Masuk</a>
+                <a href="{{ route('register') }}" class="nav-button">Buat Website</a>
+            </div>
+        @endauth
                 <a href="{{ route('dashboard') }}" class="mobile-cta">
                     Kelola UMKM
                 </a>
@@ -480,6 +496,8 @@
     @include('partials.footer')
 
 
+<script src="{{ asset('js/umkms.js') }}?v={{ filemtime(public_path('js/umkms.js')) }}"></script>
+<script src="{{ asset('js/profile.js') }}"></script>
     <script src="{{ asset('js/umkms.js') }}?v={{ filemtime(public_path('js/umkms.js')) }}"></script>
 
 </body>
