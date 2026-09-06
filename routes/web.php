@@ -58,6 +58,8 @@ Route::get('/umkm/produk/edit-semua', [App\Http\Controllers\ItemController::clas
 Route::put('/umkm/produk/edit-semua', [App\Http\Controllers\ItemController::class, 'updateSemua'])->name('umkm.update.semua.produk');
 });
 
+Route::post('/umkm/{id}/toggle-like', [\App\Http\Controllers\UmkmController::class, 'toggleLike'])->name('umkm.toggle-like');
+
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
 
@@ -71,3 +73,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 Route::get('/umkm/{slug}', [UmkmController::class, 'show'])->name('umkm.show');
 
 require __DIR__.'/auth.php';
+
+

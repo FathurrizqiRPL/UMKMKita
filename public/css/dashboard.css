@@ -32,29 +32,7 @@ a {
     backdrop-filter: blur(12px);
 }
 
-.brand {
-    display: flex;
-    align-items: center;
-    font-family: "Plus Jakarta Sans", sans-serif;
-    font-size: 22px;
-    font-weight: 800;
-    color: #171a2c;
-}
 
-.brand span {
-    display: grid;
-    place-items: center;
-    width: 38px;
-    height: 38px;
-    background: #5848e8;
-    color: #fff;
-    border-radius: 12px;
-    margin-right: 8px;
-}
-
-.brand b {
-    color: #5848e8;
-}
 
 .topbar nav {
     display: flex;
@@ -337,29 +315,6 @@ a {
     box-shadow: 0 0 0 3px rgba(88, 72, 232, .08);
 }
 
-.copy-url-button {
-    flex-shrink: 0;
-    padding: 10px 12px;
-    border: 1px solid #dedaf8;
-    border-radius: 9px;
-    background: #f4f2ff;
-    color: #5848e8;
-    font-size: 10px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: .2s ease;
-}
-
-.copy-url-button:hover {
-    border-color: #5848e8;
-    background: #ebe8ff;
-}
-
-.copy-url-button.copied {
-    border-color: #c8ecd8;
-    background: #e9f9f0;
-    color: #187849;
-}
 
 .copy-url-button {
     flex-shrink: 0;
@@ -811,15 +766,6 @@ a {
         padding: 0 18px;
     }
 
-    .brand {
-        font-size: 19px;
-    }
-
-    .brand span {
-        width: 34px;
-        height: 34px;
-        border-radius: 10px;
-    }
 
     .topbar nav {
         gap: 10px;
@@ -904,3 +850,45 @@ a {
     color: #b91c1c !important;
 }
 
+.status-suspended {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 10px;
+    border-radius: 999px;
+    background: #fff1f1;
+    color: #c73b3b !important;
+    font-size: 11px !important;
+    letter-spacing: 0 !important;
+}
+
+.status-suspended i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #dc3545;
+}
+
+.stat-slug {
+    font-size: 20px !important;
+    word-break: break-all;
+}
+
+.item-delete-form {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.item-delete-button {
+    border: 0;
+    background: transparent;
+    color: #a1a1aa;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.item-delete-button:hover {
+    color: #dc3545;
+}

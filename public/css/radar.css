@@ -48,28 +48,7 @@ button {
     backdrop-filter: blur(12px);
 }
 
-.radar-brand {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    font-family: "Plus Jakarta Sans", sans-serif;
-    font-size: 21px;
-    font-weight: 800;
-}
 
-.radar-logo {
-    width: 39px;
-    height: 39px;
-    display: grid;
-    place-items: center;
-    border-radius: 12px;
-    background: var(--primary);
-    color: white;
-}
-
-.purple {
-    color: var(--primary);
-}
 
 .back-home {
     color: #62677a;

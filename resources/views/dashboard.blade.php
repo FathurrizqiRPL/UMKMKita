@@ -1,6 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    .btn-copy {
+        background: #f0edff;
+        color: #5848e8;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+
+    }
+    @media (min-width: 1024px) {
+    .dashboard-stats {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+}
+    .btn-copy:hover {
+        background: #5848e8;
+        color: #ffffff;
+    }
+</style>
 
 <div class="dashboard-page">
 
@@ -115,22 +139,22 @@
             <section class="dashboard-stats">
 
                 <div class="dashboard-stat">
-
                     <div class="stat-top">
                         <span>STATUS WEBSITE</span>
 
-                        <span class="status-online">
+                        <span class="{{ $umkm->status === 'active' ? 'status-online' : 'status-suspended' }}">
                             <i></i>
-                            Online
+                            {{ $umkm->status === 'active' ? 'Online' : 'Nonaktif' }}
                         </span>
                     </div>
 
-                    <strong>Aktif</strong>
+                    <strong>
+                        {{ $umkm->status === 'active' ? 'Aktif' : 'Ditangguhkan' }}
+                    </strong>
 
                     <small>
                         Website {{ $umkm->name }}
                     </small>
-
                 </div>
 
 
@@ -149,7 +173,41 @@
                     </small>
 
                 </div>
+<div class="dashboard-stat">
+    <div class="stat-top">
+        <span>JUMLAH DISUKAI</span>
+    </div>
 
+    <strong>
+        {{ $umkm->likes_count ?? 0 }}
+    </strong>
+
+    <small>
+        Orang menyukai website kamu
+    </small>
+</div>
+<div class="dashboard-stat">
+
+    <div class="stat-top" style="display: flex; justify-content: space-between; align-items: center;">
+        <span>ALAMAT WEBSITE</span>
+
+        <!-- Tombol dipindah ke sini -->
+        <button type="button" onclick="copyUrl('{{ url('/' . $umkm->slug) }}', this)" class="btn-copy">
+            Salin Link
+        </button>
+    </div>
+
+    <div style="margin: 8px 0;">
+        <strong class="stat-slug">
+            /{{ $umkm->slug }}
+        </strong>
+    </div>
+
+    <small>
+        Alamat website kamu
+    </small>
+
+</div>
 
                 @php
                     $websiteUrl = route('umkm.show', $umkm->slug);
@@ -241,7 +299,7 @@
                             </div>
 
                             <div class="browser-url">
-                                umkmkita.local/{{ $umkm->slug }}
+                                {{ $websiteUrl }}
                             </div>
 
                         </div>
@@ -355,14 +413,20 @@
                                     </div>
 
                                     <div class="item-action">
-                                        <form action="{{ route('items.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Apakah kamu yakin ingin menghapus {{ $item->name }}?');" style="display: inline-block; margin-left: 15px;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" title="Hapus Item" style="background: transparent; border: none; color: #a1a1aa; cursor: pointer; font-size: 16px; font-weight: bold;">
-                                                ✖
-                                            </button>
-                                        </form>
-                                    </div>
+                                    <form
+                                        action="{{ route('items.destroy', $item->id) }}"
+                                        method="POST"
+                                        class="item-delete-form"
+                                        onsubmit="return confirm('Apakah kamu yakin ingin menghapus {{ $item->name }}?');"
+                                    >
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit" class="item-delete-button" title="Hapus Item">
+                                            ✖
+                                        </button>
+                                    </form>
+                                </div>
 
                                 </div>
                             @empty
@@ -520,32 +584,51 @@
 </div>
 
 <script>
+    function copyUrl(url, button) {
+        navigator.clipboard.writeText(url).then(() => {
+            const originalText = button.innerText;
+            button.innerText = 'Tersalin! ✓';
+            button.style.backgroundColor = '#10b981';
+            button.style.color = 'white';
+
+            setTimeout(() => {
+                button.innerText = originalText;
+                button.style.backgroundColor = '';
+                button.style.color = '';
+            }, 2000);
+        }).catch(err => {
+            alert('Gagal menyalin link.');
+            console.error(err);
+        });
+    }
+</script>
+
+<script>
     document.querySelectorAll('.copy-url-button').forEach(function (button) {
-    button.addEventListener('click', async function () {
-        const originalText = button.textContent;
+        button.addEventListener('click', async function () {
+            const originalText = button.textContent;
 
-        try {
-            await navigator.clipboard.writeText(button.dataset.url);
+            try {
+                await navigator.clipboard.writeText(button.dataset.url);
 
-            button.textContent = 'Tersalin ✓';
-            button.classList.add('copied');
+                button.textContent = 'Tersalin ✓';
+                button.classList.add('copied');
 
-            setTimeout(function () {
-                button.textContent = originalText;
-                button.classList.remove('copied');
-            }, 1800);
-        } catch (error) {
-            console.error('Gagal menyalin URL:', error);
-        }
+                setTimeout(function () {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 1800);
+            } catch (error) {
+                console.error('Gagal menyalin URL:', error);
+            }
+        });
     });
-});
 
-document.querySelectorAll('.website-url-input').forEach(function (input) {
-    input.addEventListener('click', function () {
-        input.select();
+    document.querySelectorAll('.website-url-input').forEach(function (input) {
+        input.addEventListener('click', function () {
+            input.select();
+        });
     });
-});
-
 </script>
 
 @endsection
