@@ -434,5 +434,19 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="{{ asset('js/umkm-mobile-locations.js') }}?v={{ filemtime(public_path('js/umkm-mobile-locations.js')) }}"></script>
 <script src="{{ asset('js/umkm-posters.js') }}?v={{ filemtime(public_path('js/umkm-posters.js')) }}"></script>
+<script>
+    const createUmkmForm = document.querySelector('form');
 
+    if (createUmkmForm) {
+        createUmkmForm.addEventListener('keydown', function (event) {
+            if (event.key !== 'Enter') return;
+            if (event.target.tagName === 'TEXTAREA') return;
+            if (event.target.tagName === 'BUTTON') return;
+
+            event.preventDefault();
+        });
+    }
+
+
+</script>
 @endsection
