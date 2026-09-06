@@ -18,6 +18,41 @@ class UmkmController extends Controller
         return view('dashboard', compact('umkm'));
     }
 
+    public function index(Request $request)
+    {
+        $categories = ['Kuliner', 'Fashion', 'Jasa', 'Kerajinan', 'Kecantikan', 'Otomotif', 'Lainnya'];
+
+        $query = Umkm::withCount('locations')->where('status', 'active');
+
+        if ($search = trim((string) $request->query('search'))) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('category', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhere('address', 'like', "%{$search}%")
+                    ->orWhereHas('locations', function ($location) use ($search) {
+                        $location->where('address', 'like', "%{$search}%");
+                    });
+            });
+        }
+
+        if ($category = $request->query('category')) {
+            if (in_array($category, $categories)) {
+                $query->where('category', $category);
+            }
+        }
+
+        if ($type = $request->query('type')) {
+            if (in_array($type, ['tetap', 'keliling'])) {
+                $query->where('business_type', $type);
+            }
+        }
+
+        $umkms = $query->latest()->paginate(12)->withQueryString();
+
+        return view('umkm.lihatumkm', compact('umkms', 'categories'));
+    }
+
     public function create(Request $request)
     {
         abort_if($request->user()->umkm()->exists(), 403, 'Kamu sudah memiliki website UMKM.');

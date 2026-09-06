@@ -5,16 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @php
-        $pageTitle = match (true) {
-            request()->routeIs('login') => 'Masuk — UMKMKita',
-            request()->routeIs('register') => 'Daftar — UMKMKita',
-            request()->routeIs('password.request') => 'Lupa Password — UMKMKita',
-            request()->routeIs('password.reset') => 'Reset Password — UMKMKita',
-            request()->routeIs('password.confirm') => 'Konfirmasi Password — UMKMKita',
-            request()->routeIs('verification.notice') => 'Verifikasi Email — UMKMKita',
-            default => 'UMKMKita',
-        };
+   @php
+    $pageTitle = match (true) {
+        request()->routeIs('login') => 'Masuk — UMKMKita',
+        request()->routeIs('register') => 'Daftar — UMKMKita',
+        request()->routeIs('password.confirm') => 'Konfirmasi Password — UMKMKita',
+        request()->routeIs('verification.notice') => 'Verifikasi Email — UMKMKita',
+        default => 'UMKMKita',
+    };
     @endphp
 
     <title>{{ $pageTitle }}</title>

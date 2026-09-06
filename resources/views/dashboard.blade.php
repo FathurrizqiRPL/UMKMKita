@@ -51,7 +51,7 @@
             <div class="dashboard-hero-content">
 
                 <span class="section-label">
-                    DASHBOARD PEMILIK UMKM
+                   
                 </span>
 
                 <h1>
@@ -178,19 +178,20 @@
                     </small>
 
                 </div>
-<div class="dashboard-stat">
-    <div class="stat-top">
-        <span>JUMLAH DISUKAI</span>
-    </div>
 
-    <strong>
-        {{ $umkm->likes_count ?? 0 }}
-    </strong>
+        <div class="dashboard-stat">
+            <div class="stat-top">
+                <span>JUMLAH DISUKAI</span>
+            </div>
 
-    <small>
-        Orang menyukai website kamu
-    </small>
-</div>
+            <strong>
+                {{ $umkm->likes_count ?? 0 }}
+            </strong>
+
+            <small>
+                Orang menyukai website kamu
+            </small>
+        </div>
 
 
                 @php
@@ -460,11 +461,20 @@
     >
         @csrf
 
-        <div class="quick-form-grid">
-            <select name="type" required>
-                <option value="product">Produk / Makanan</option>
-                <option value="service">Layanan / Jasa</option>
-            </select>
+                            <div class="quick-form-grid">
+
+                                <select name="type" required>
+
+                                    <option value="product">
+                                        Produk
+                                    </option>
+
+                                    <option value="service">
+                                        Layanan
+                                    </option>
+
+                                </select>
+
 
             <input
                 type="text"
@@ -475,21 +485,22 @@
             />
         </div>
 
-        <div class="quick-form-grid">
-            <input
-                type="number"
-                name="price"
-                value="{{ old('price') }}"
-                placeholder="Harga (Contoh: 15000)"
-            />
+                            <div class="quick-form-grid">
 
-            <input
-                type="text"
-                name="duration"
-                value="{{ old('duration') }}"
-                placeholder="Durasi (opsional, cth: 15 Menit)"
-            />
-        </div>
+                                <input
+                                    type="number"
+                                    name="price"
+                                    placeholder="Harga"
+                                />
+
+                                <input
+                                    type="text"
+                                    name="duration"
+                                    placeholder="Durasi (opsional)"
+                                />
+
+                            </div>
+
 
         <textarea
             name="description"
@@ -513,28 +524,38 @@
     </span>
 </div>
 
-        <div class="quick-form-bottom">
-            <label class="file-input" style="cursor: pointer;">
-                <span>+</span>
-                <span id="item-file-label">Masukkan foto menu</span>
-                <input
-                    type="file"
-                    name="image"
-                    accept="image/*"
-                    style="display: none;"
-                    onchange="document.getElementById('item-file-label').innerText = this.files[0]?.name || 'Masukkan foto menu'"
-                />
-            </label>
+                            <div class="quick-form-bottom">
 
-            <button
-                type="submit"
-                class="dashboard-secondary-button"
-            >
-                Simpan & Tambah Menu <span>→</span>
-            </button>
-        </div>
-    </form>
-</div>
+                                <label class="file-input">
+
+                                    <span>+</span>
+
+                                    <span>
+                                        Tambahkan foto
+                                    </span>
+
+                                    <input
+                                        type="file"
+                                        name="image"
+                                        accept="image/*"
+                                    />
+
+                                </label>
+
+
+                                <button
+                                    type="submit"
+                                    class="dashboard-secondary-button"
+                                >
+                                    Tambah Item
+                                    <span>→</span>
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
 
                 </div>
 
@@ -562,34 +583,15 @@
         </p>
     </div>
 
-    {{-- Kotak Salin URL di dalam CTA Bawah --}}
-    @php
-        $websiteUrl = route('umkm.show', $umkm->slug);
-    @endphp
 
-    <div style="background: rgba(255, 255, 255, 0.1); padding: 16px; border-radius: 18px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); min-width: 320px; flex: 1; max-width: 450px;">
-        <span style="display: block; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; letter-spacing: 0.05em;">ALAMAT WEBSITE KAMU</span>
-        
-        <div style="display: flex; gap: 8px; align-items: center;">
-            <input 
-                type="text" 
-                id="bottomWebsiteUrl"
-                value="{{ $websiteUrl }}" 
-                readonly 
-                style="width: 100%; padding: 12px 16px; background: #fff; border: none; border-radius: 10px; font-size: 14px; color: #15182b; font-weight: 600; outline: none;"
-            >
-            <button 
-                type="button" 
-                id="bottomCopyBtn"
-                data-url="{{ $websiteUrl }}"
-                style="background: #5848e8; color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background 0.2s;"
-                onmouseover="this.style.background='#4838d8'"
-                onmouseout="this.style.background='#5848e8'"
-            >
-                Salin
-            </button>
-        </div>
-    </div>
+                <a
+                    href="{{ route('umkm.show', $umkm->slug) }}"
+                    target="_blank"
+                    class="cta-white-button"
+                >
+                    Buka Website
+                    <span>↗</span>
+                </a>
 
 </section>
 
@@ -674,7 +676,47 @@
         });
     });
 
-    
+    const quickItemType = document.getElementById('quickItemType');
+    const quickDurationField = document.getElementById('quickDurationField');
+
+    function updateQuickDuration() {
+        quickDurationField.hidden = quickItemType.value !== 'service';
+    }
+
+    quickItemType.addEventListener('change', updateQuickDuration);
+    updateQuickDuration();
+
+    const quickItemImage = document.getElementById('quickItemImage');
+    const quickPhotoPreview = document.getElementById('quickPhotoPreview');
+    const quickPhotoImage = document.getElementById('quickPhotoImage');
+    const quickPhotoName = document.getElementById('quickPhotoName');
+    const quickPhotoRemove = document.getElementById('quickPhotoRemove');
+
+    let quickPhotoUrl = null;
+
+    quickItemImage?.addEventListener('change', () => {
+        const file = quickItemImage.files[0];
+        if (!file) return;
+
+        if (quickPhotoUrl) URL.revokeObjectURL(quickPhotoUrl);
+
+        quickPhotoUrl = URL.createObjectURL(file);
+        quickPhotoImage.src = quickPhotoUrl;
+        quickPhotoName.textContent = file.name;
+        quickPhotoPreview.hidden = false;
+    });
+
+    quickPhotoRemove?.addEventListener('click', () => {
+        quickItemImage.value = '';
+        quickPhotoPreview.hidden = true;
+        quickPhotoImage.src = '';
+        quickPhotoName.textContent = '';
+
+        if (quickPhotoUrl) {
+            URL.revokeObjectURL(quickPhotoUrl);
+            quickPhotoUrl = null;
+        }
+    });
 </script>
 
 @endsection

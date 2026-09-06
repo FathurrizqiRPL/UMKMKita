@@ -1653,35 +1653,114 @@ button {
 ===================================================== */
 
 footer {
-    background: #111422;
+    position: relative;
+
+    background:
+        radial-gradient(
+            640px 360px at 12% -20%,
+            rgba(88, 72, 232, .32),
+            transparent 62%
+        ),
+        radial-gradient(
+            760px 400px at 90% -20%,
+            rgba(88, 72, 232, .24),
+            transparent 62%
+        ),
+        radial-gradient(
+            520px 320px at 50% 130%,
+            rgba(88, 72, 232, .14),
+            transparent 65%
+        ),
+        #0c0f22;
 
     color: white;
 
-    padding-top: 65px;
+    padding-top: 78px;
+
+    overflow: hidden;
+}
+
+footer::after {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 2px;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(88, 72, 232, .95) 35%,
+        rgba(140, 126, 255, .55) 70%,
+        transparent
+    );
+
+    pointer-events: none;
 }
 
 .footer-container {
+    position: relative;
+
     display: grid;
 
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1.6fr 1fr 1fr 1fr;
 
-    gap: 60px;
+    gap: 40px;
 
-    padding-bottom: 55px;
+    padding-bottom: 62px;
 }
 
 .footer-brand {
     max-width: 300px;
 }
 
+.footer-brand .brand-logo-text {
+    color: #ffffff;
+}
+
+.footer-brand .brand-logo-text span {
+    color: #8d7cff;
+}
+
 .footer-brand p {
-    color: #858b9d;
+    color: #9aa0b4;
 
     font-size: 11px;
 
-    line-height: 1.8;
+    line-height: 1.9;
 
-    margin-top: 17px;
+    margin-top: 18px;
+}
+
+.footer-title {
+    display: block;
+
+    font-family: "Plus Jakarta Sans", sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    letter-spacing: .02em;
+
+    color: #ffffff;
+
+    margin-bottom: 4px;
+}
+
+.footer-about p {
+    max-width: 300px;
+
+    color: #9aa0b4;
+
+    font-size: 11px;
+
+    line-height: 1.9;
+
+    margin: 14px 0 0;
 }
 
 .footer-column {
@@ -1690,38 +1769,86 @@ footer {
     flex-direction: column;
 
     gap: 12px;
+
+    padding-top: 2px;
 }
 
 .footer-column strong {
     font-size: 11px;
 
     margin-bottom: 5px;
+
+    color: #ffffff;
 }
 
 .footer-column a {
-    color: #858b9d;
+    color: #9aa0b4;
 
-    font-size: 10px;
+    font-size: 11px;
 
-    transition: .2s;
+    text-decoration: none;
+
+    transition: color .2s, transform .2s;
 }
 
 .footer-column a:hover {
-    color: white;
+    color: #ffffff;
+
+    transform: translateX(3px);
 }
 
 .footer-bottom {
-    border-top: 1px solid #292d3b;
+    border-top: 1px solid rgba(255, 255, 255, .09);
 
-    padding: 20px 0;
+    background: rgba(6, 8, 18, .55);
 
+    padding: 22px 0;
+}
+
+.footer-bottom-inner {
     display: flex;
+
+    align-items: center;
 
     justify-content: space-between;
 
-    color: #73798b;
+    gap: 14px;
 
-    font-size: 9px;
+    flex-wrap: wrap;
+
+    color: #7c8296;
+
+    font-size: 10px;
+}
+
+@media (max-width: 980px) {
+
+    .footer-container {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+
+}
+
+@media (max-width: 640px) {
+
+    .footer-container {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .footer-bottom-inner {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
 }
 
 
@@ -2123,4 +2250,206 @@ footer {
     margin: 0;
     color: #777b8c;
     font-size: 13px;
+}
+
+/* =====================================================
+   FOOTER PREMIUM - OVERRIDE RESPONSIVE
+   (media query 600px di atas memaksa 2 kolom;
+    aturan ini dipastikan menang untuk tata letak 1 kolom)
+===================================================== */
+
+@media (max-width: 600px) {
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .footer-brand,
+    .footer-about {
+        grid-column: 1 / -1;
+    }
+
+}
+
+/* =====================================================
+   FOOTER PREMIUM - FAQ ACCORDION
+===================================================== */
+
+.footer-faq {
+    border-top: 1px solid rgba(255, 255, 255, .09);
+
+    padding: 54px 0 12px;
+}
+
+.footer-faq-heading {
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+    flex-wrap: wrap;
+
+    margin-bottom: 30px;
+}
+
+.footer-faq-heading h3 {
+    margin: 0;
+
+    font-family: "Plus Jakarta Sans", sans-serif;
+
+    font-size: 22px;
+
+    font-weight: 800;
+
+    letter-spacing: -.5px;
+
+    color: #ffffff;
+}
+
+.footer-faq-desc {
+    max-width: 400px;
+
+    margin: 8px 0 0;
+
+    color: #9aa0b4;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+}
+
+.footer-faq-list {
+    border-top: 1px solid rgba(255, 255, 255, .09);
+}
+
+.footer-faq-item {
+    border-bottom: 1px solid rgba(255, 255, 255, .09);
+}
+
+.footer-faq-item summary {
+    list-style: none;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 22px;
+
+    cursor: pointer;
+
+    padding: 22px 4px;
+
+    color: #cdd0de;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    user-select: none;
+
+    transition: color .2s;
+}
+
+.footer-faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.footer-faq-item summary:hover {
+    color: #ffffff;
+}
+
+.footer-faq-item summary::after {
+    content: "";
+
+    flex-shrink: 0;
+
+    width: 9px;
+    height: 9px;
+
+    border-right: 2px solid currentColor;
+
+    border-bottom: 2px solid currentColor;
+
+    color: #7c8296;
+
+    transform: rotate(45deg) translateY(-2px);
+
+    transition: color .2s, transform .3s ease;
+}
+
+.footer-faq-item summary:hover::after {
+    color: #ffffff;
+}
+
+.footer-faq-item[open] summary {
+    color: #ffffff;
+}
+
+.footer-faq-item[open] summary::after {
+    color: #8d7cff;
+
+    transform: rotate(225deg) translateY(2px);
+}
+
+.footer-faq-item p {
+    margin: 0;
+
+    padding: 0 44px 24px 4px;
+
+    max-width: 640px;
+
+    color: #9aa0b4;
+
+    font-size: 12.5px;
+
+    line-height: 1.85;
+
+    animation: faq-fade .3s ease;
+}
+
+@keyframes faq-fade {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .footer-faq-item summary::after {
+        transition: none;
+    }
+
+    .footer-faq-item p {
+        animation: none;
+    }
+
+}
+
+@media (max-width: 640px) {
+
+    .footer-faq {
+        padding-top: 42px;
+    }
+
+    .footer-faq-item summary {
+        padding: 18px 2px;
+
+        font-size: 13px;
+    }
+
+    .footer-faq-item p {
+        padding: 0 22px 20px 2px;
+    }
+
 }
