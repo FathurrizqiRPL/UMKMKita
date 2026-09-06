@@ -16,6 +16,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
 
+
     public function umkm(): HasOne
 {
     return $this->hasOne(\App\Models\Umkm::class);
