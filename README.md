@@ -37,7 +37,7 @@
 |------|-------|--------|
 | **Fathurrizqi Hidayat** | Project Lead & Full Stack Developer | [GitHub](https://github.com/FathurrizqiRPL) |
 | **Harun** | Frontend Developer | [GitHub](https://github.com/Runtax-html) |
-| **Luthfi Daffa Nur Syafaat** | Backend Developer | [GitHub](https://github.com/[username3]) |
+| **Luthfi Daffa Nur Syafaat** | Backend Developer | [GitHub](https://github.com/noerdaffa) |
 
 
 ---
