@@ -9,26 +9,28 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Umkm extends Model
 {
     protected $fillable = [
-    'user_id',
-    'name',
-    'slug',
-    'category',
-    'business_type',
-    'description',
-    'phone',
-    'address',
-    'landmark',
-    'opening_time',
-    'closing_time',
-    'logo',
-    'cover',
-    'latitude',
-    'longitude',
-];
+        'user_id',
+        'name',
+        'slug',
+        'category',
+        'business_type',
+        'description',
+        'phone',
+        'address',
+        'landmark',
+        'opening_time',
+        'closing_time',
+        'logo',
+        'cover',
+        'latitude',
+        'longitude',
+        'is_manual_closed', // <-- Tambahkan baris ini
+    ];
 
     protected $casts = [
-    'latitude' => 'float',
-    'longitude' => 'float',
+        'latitude' => 'float',
+        'longitude' => 'float',
+        'is_manual_closed' => 'boolean', // <-- Disarankan juga di-cast sebagai boolean agar mudah dibaca
     ];  
 
     public function user(): BelongsTo

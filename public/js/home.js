@@ -107,27 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
     |--------------------------------------------------------------------------
     */
 
-    document
-        .querySelectorAll(".favorite")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                event => {
-
-                    event.preventDefault();
-
-                    button.classList.toggle("liked");
-
-                    button.innerHTML =
-                        button.classList.contains("liked")
-                            ? "♥"
-                            : "♡";
-
-                }
-            );
-
-        });
+    
 
 
     /*
@@ -426,6 +406,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 badge.closest(".umkm-card");
 
             if (!card) return;
+
+            // CEK STATUS MANUAL TERLEBIH DAHULU
+            const isManualClosed = card.dataset.manual === "1";
+
+            if (isManualClosed) {
+                badge.textContent = "Tutup";
+                badge.className = "umkm-status status-closed";
+                return; // Lewati pengecekan jam jika sudah ditutup manual
+            }
 
             const opening =
                 parseTime(
