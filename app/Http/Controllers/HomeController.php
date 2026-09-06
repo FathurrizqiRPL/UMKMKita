@@ -8,7 +8,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $umkms = Umkm::where('status', 'active')
+        $umkms = Umkm::withCount('locations')->where('status', 'active')
             ->latest()
             ->get();
 

@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ asset('css/home.css') }}?v={{ filemtime(public_path('css/home.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/brand.css') }}">
     <link rel="stylesheet" href="{{ asset('css/umkms.css') }}?v={{ filemtime(public_path('css/umkms.css')) }}">
+    <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 </head>
 
 <body>
@@ -52,21 +53,12 @@
         <div class="nav-actions">
 
             @auth
-
-                <a href="{{ route('dashboard') }}" class="nav-button">
-                    Kelola UMKM
-                </a>
-
+                <x-profile-menu />
             @else
-
-                <a href="{{ route('login') }}" class="login-btn">
-                    Masuk
-                </a>
-
-                <a href="{{ route('register') }}" class="nav-button">
-                    Buat Website
-                </a>
-
+                <div class="nav-actions">
+                    <a href="{{ route('login') }}" class="login-btn">Masuk</a>
+                    <a href="{{ route('register') }}" class="nav-button">Buat Website</a>
+                </div>
             @endauth
 
         </div>
@@ -106,23 +98,13 @@
     <div class="mobile-menu-buttons">
 
         @auth
-
-            <a href="{{ route('dashboard') }}" class="mobile-cta">
-                Kelola UMKM
-            </a>
-
+            <x-profile-menu />
         @else
-
-            <a href="{{ route('login') }}">
-                Masuk
-            </a>
-
-            <a href="{{ route('register') }}" class="mobile-cta">
-                Buat Website
-            </a>
-
+            <div class="nav-actions">
+                <a href="{{ route('login') }}" class="login-btn">Masuk</a>
+                <a href="{{ route('register') }}" class="nav-button">Buat Website</a>
+            </div>
         @endauth
-
     </div>
 
 </div>
@@ -569,7 +551,7 @@
 
 
 <script src="{{ asset('js/umkms.js') }}?v={{ filemtime(public_path('js/umkms.js')) }}"></script>
-
+<script src="{{ asset('js/profile.js') }}"></script>
 </body>
 
 </html>

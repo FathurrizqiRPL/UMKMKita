@@ -5,27 +5,48 @@ document.addEventListener('DOMContentLoaded', function () {
     const container = document.getElementById('mobileLocationsContainer');
     const addButton = document.getElementById('addMobileLocationButton');
     const template = document.getElementById('mobileLocationTemplate');
-
-    if (!businessType || !fixedSection || !mobileSection || !container) {
-        return;
-    }
-
     const maps = new Map();
 
-    function toggleBusinessType() {
-        const isMobile = businessType.value === 'keliling';
+    function setupTimeInputs(root = document) {
+        root.querySelectorAll('.time-24-input').forEach(function (input) {
+            if (input.dataset.timeReady) return;
+            input.dataset.timeReady = 'true';
 
-        fixedSection.style.display = isMobile ? 'none' : '';
-        mobileSection.style.display = isMobile ? '' : 'none';
+            input.addEventListener('input', function () {
+                let value = input.value.replace(/\D/g, '').slice(0, 4);
 
-        setFixedInputsDisabled(isMobile);
-        setMobileInputsDisabled(!isMobile);
+                if (value.length >= 3) {
+                    value = value.slice(0, 2) + ':' + value.slice(2);
+                }
 
-        if (isMobile) {
-            setTimeout(function () {
-                initializeAllMaps();
-            }, 100);
-        }
+                input.value = value;
+                input.setCustomValidity('');
+            });
+
+            input.addEventListener('blur', function () {
+                if (!input.value) return;
+
+                const match = input.value.match(/^(\d{1,2}):(\d{1,2})$/);
+
+                if (!match || Number(match[1]) > 23 || Number(match[2]) > 59) {
+                    input.setCustomValidity('Gunakan format jam 24 jam, contoh 07:00.');
+                    input.reportValidity();
+                    return;
+                }
+
+                input.value =
+                    String(Number(match[1])).padStart(2, '0') +
+                    ':' +
+                    String(Number(match[2])).padStart(2, '0');
+
+                input.setCustomValidity('');
+            });
+        });
+    }
+
+    if (!businessType || !fixedSection || !mobileSection || !container || !addButton || !template) {
+        setupTimeInputs();
+        return;
     }
 
     function setFixedInputsDisabled(disabled) {
@@ -39,46 +60,71 @@ document.addEventListener('DOMContentLoaded', function () {
             input.disabled = disabled;
         });
 
-        if (!disabled) {
-            addButton.disabled = false;
+        if (!disabled) addButton.disabled = false;
+    }
+
+    function toggleBusinessType() {
+        const isMobile = businessType.value === 'keliling';
+
+        fixedSection.style.display = isMobile ? 'none' : '';
+        mobileSection.style.display = isMobile ? '' : 'none';
+
+        setFixedInputsDisabled(isMobile);
+        setMobileInputsDisabled(!isMobile);
+
+        if (isMobile) {
+            setTimeout(initializeAllMaps, 100);
         }
     }
 
     async function reverseGeocode(lat, lng, addressInput) {
         try {
+            const params = new URLSearchParams({
+                format: 'jsonv2',
+                lat: lat,
+                lon: lng
+            });
+
             const response = await fetch(
-                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+                `https://nominatim.openstreetmap.org/reverse?${params}`
             );
 
             const data = await response.json();
 
-            if (data && data.display_name) {
-                addressInput.value = data.display_name;
-            } else {
-                addressInput.value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
-            }
+            addressInput.value =
+                data?.display_name ||
+                `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
         } catch (error) {
             console.error(error);
 
-            addressInput.value = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+            addressInput.value =
+                `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
         }
     }
 
     async function searchLocation(card) {
         const input = card.querySelector('.mobile-search-input');
+        const button = card.querySelector(
+            '.mobile-search-button:not(.mobile-locate-button)'
+        );
 
-        if (!input.value.trim()) {
-            return;
-        }
+        const query = input.value.trim();
 
-        const button = card.querySelector('.mobile-search-button');
+        if (!query) return;
 
         button.disabled = true;
         button.textContent = 'Mencari...';
 
         try {
+            const params = new URLSearchParams({
+                format: 'json',
+                q: query,
+                countrycodes: 'id',
+                limit: '1'
+            });
+
             const response = await fetch(
-                `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(input.value)}`
+                `https://nominatim.openstreetmap.org/search?${params}`
             );
 
             const results = await response.json();
@@ -88,13 +134,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            const lat = Number(results[0].lat);
-            const lng = Number(results[0].lon);
-
-            setLocation(card, lat, lng, results[0].display_name);
+            setLocation(
+                card,
+                Number(results[0].lat),
+                Number(results[0].lon),
+                results[0].display_name
+            );
         } catch (error) {
             console.error(error);
-
             alert('Gagal mencari lokasi.');
         } finally {
             button.disabled = false;
@@ -102,12 +149,44 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function locateMe(card) {
+        const button = card.querySelector('.mobile-locate-button');
+
+        if (!navigator.geolocation) {
+            alert('Browser tidak mendukung deteksi lokasi.');
+            return;
+        }
+
+        button.disabled = true;
+        button.textContent = 'Mencari...';
+
+        navigator.geolocation.getCurrentPosition(function (position) {
+            setLocation(
+                card,
+                position.coords.latitude,
+                position.coords.longitude
+            );
+
+            button.disabled = false;
+            button.textContent = 'Cari Lokasi Saya';
+        }, function () {
+            button.disabled = false;
+            button.textContent = 'Cari Lokasi Saya';
+
+            alert(
+                'Lokasi tidak dapat diambil. Pastikan izin lokasi browser sudah aktif.'
+            );
+        }, {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 60000
+        });
+    }
+
     function setLocation(card, lat, lng, address = null) {
         const mapData = maps.get(card);
 
-        if (!mapData) {
-            return;
-        }
+        if (!mapData) return;
 
         mapData.map.setView([lat, lng], 16);
 
@@ -116,9 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             mapData.marker = L.marker(
                 [lat, lng],
-                {
-                    draggable: true
-                }
+                { draggable: true }
             ).addTo(mapData.map);
 
             mapData.marker.on('dragend', function () {
@@ -132,10 +209,14 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
 
-        card.querySelector('.mobile-latitude').value = lat;
-        card.querySelector('.mobile-longitude').value = lng;
+        card.querySelector('.mobile-latitude').value =
+            lat.toFixed(7);
 
-        const addressInput = card.querySelector('.mobile-address');
+        card.querySelector('.mobile-longitude').value =
+            lng.toFixed(7);
+
+        const addressInput =
+            card.querySelector('.mobile-address');
 
         if (address) {
             addressInput.value = address;
@@ -145,12 +226,17 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateCoordinates(card, lat, lng) {
-        card.querySelector('.mobile-latitude').value = lat;
-        card.querySelector('.mobile-longitude').value = lng;
+        card.querySelector('.mobile-latitude').value =
+            lat.toFixed(7);
 
-        const addressInput = card.querySelector('.mobile-address');
+        card.querySelector('.mobile-longitude').value =
+            lng.toFixed(7);
 
-        reverseGeocode(lat, lng, addressInput);
+        reverseGeocode(
+            lat,
+            lng,
+            card.querySelector('.mobile-address')
+        );
     }
 
     function initializeMap(card) {
@@ -159,14 +245,16 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        const mapElement = card.querySelector('.mobile-map');
+        const mapElement =
+            card.querySelector('.mobile-map');
 
-        if (!mapElement) {
-            return;
-        }
+        if (!mapElement) return;
 
-        const latInput = card.querySelector('.mobile-latitude');
-        const lngInput = card.querySelector('.mobile-longitude');
+        const latInput =
+            card.querySelector('.mobile-latitude');
+
+        const lngInput =
+            card.querySelector('.mobile-longitude');
 
         const storedLat = Number(latInput.value);
         const storedLng = Number(lngInput.value);
@@ -177,22 +265,15 @@ document.addEventListener('DOMContentLoaded', function () {
             latInput.value !== '' &&
             lngInput.value !== '';
 
-        const defaultLat = hasStoredLocation
-            ? storedLat
-            : -2.5489;
+        const center = hasStoredLocation
+            ? [storedLat, storedLng]
+            : [-2.5489, 118.0149];
 
-        const defaultLng = hasStoredLocation
-            ? storedLng
-            : 118.0149;
-
-        const defaultZoom = hasStoredLocation
-            ? 16
-            : 5;
-
-        const map = L.map(mapElement).setView(
-            [defaultLat, defaultLng],
-            defaultZoom
-        );
+        const map = L.map(mapElement)
+            .setView(
+                center,
+                hasStoredLocation ? 16 : 5
+            );
 
         L.tileLayer(
             'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -212,13 +293,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (hasStoredLocation) {
             mapData.marker = L.marker(
                 [storedLat, storedLng],
-                {
-                    draggable: true
-                }
+                { draggable: true }
             ).addTo(map);
 
             mapData.marker.on('dragend', function () {
-                const position = mapData.marker.getLatLng();
+                const position =
+                    mapData.marker.getLatLng();
 
                 updateCoordinates(
                     card,
@@ -236,21 +316,28 @@ document.addEventListener('DOMContentLoaded', function () {
             );
         });
 
-        const searchButton = card.querySelector('.mobile-search-button');
-
-        searchButton.addEventListener('click', function () {
+        card.querySelector(
+            '.mobile-search-button:not(.mobile-locate-button)'
+        )?.addEventListener('click', function () {
             searchLocation(card);
         });
 
-        const searchInput = card.querySelector('.mobile-search-input');
-
-        searchInput.addEventListener('keydown', function (event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
-
-                searchLocation(card);
-            }
+        card.querySelector(
+            '.mobile-locate-button'
+        )?.addEventListener('click', function () {
+            locateMe(card);
         });
+
+        card.querySelector(
+            '.mobile-search-input'
+        )?.addEventListener('keydown', function (event) {
+            if (event.key !== 'Enter') return;
+
+            event.preventDefault();
+            searchLocation(card);
+        });
+
+        setupTimeInputs(card);
 
         setTimeout(function () {
             map.invalidateSize();
@@ -258,61 +345,63 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function initializeAllMaps() {
-        container.querySelectorAll('.mobile-location-card').forEach(function (card) {
-            initializeMap(card);
-        });
+        container.querySelectorAll(
+            '.mobile-location-card'
+        ).forEach(initializeMap);
     }
 
     function updateIndexes() {
-        const cards = container.querySelectorAll('.mobile-location-card');
+        const cards =
+            container.querySelectorAll(
+                '.mobile-location-card'
+            );
 
         cards.forEach(function (card, index) {
             card.dataset.locationIndex = index;
 
-            const number = card.querySelector('.mobile-location-number');
-            const title = card.querySelector('.mobile-location-title');
+            card.querySelector(
+                '.mobile-location-number'
+            ).textContent =
+                `TITIK STANDBY ${index + 1}`;
 
-            if (number) {
-                number.textContent = `TITIK STANDBY ${index + 1}`;
-            }
+            card.querySelector(
+                '.mobile-location-title'
+            ).textContent =
+                `Lokasi ${index + 1}`;
 
-            if (title) {
-                title.textContent = `Lokasi ${index + 1}`;
-            }
-
-            card.querySelector('.mobile-address').name =
+            card.querySelector(
+                '.mobile-address'
+            ).name =
                 `locations[${index}][address]`;
 
-            card.querySelector('.mobile-landmark').name =
+            card.querySelector(
+                '.mobile-landmark'
+            ).name =
                 `locations[${index}][landmark]`;
 
-            card.querySelector('.mobile-latitude').name =
+            card.querySelector(
+                '.mobile-latitude'
+            ).name =
                 `locations[${index}][latitude]`;
 
-            card.querySelector('.mobile-longitude').name =
+            card.querySelector(
+                '.mobile-longitude'
+            ).name =
                 `locations[${index}][longitude]`;
 
-            card.querySelector('.mobile-start-time').name =
+            card.querySelector(
+                '.mobile-start-time'
+            ).name =
                 `locations[${index}][start_time]`;
 
-            card.querySelector('.mobile-end-time').name =
+            card.querySelector(
+                '.mobile-end-time'
+            ).name =
                 `locations[${index}][end_time]`;
-        });
 
-        updateRemoveButtons();
-    }
-
-    function updateRemoveButtons() {
-        const cards = container.querySelectorAll('.mobile-location-card');
-
-        cards.forEach(function (card) {
-            const removeButton = card.querySelector('.remove-mobile-location');
-
-            if (!removeButton) {
-                return;
-            }
-
-            removeButton.style.display =
+            card.querySelector(
+                '.remove-mobile-location'
+            ).style.display =
                 cards.length === 1
                     ? 'none'
                     : '';
@@ -320,33 +409,44 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function addLocation() {
-        const clone = template.content.cloneNode(true);
-
-        container.appendChild(clone);
+        container.appendChild(
+            template.content.cloneNode(true)
+        );
 
         updateIndexes();
 
-        const cards = container.querySelectorAll('.mobile-location-card');
-        const newCard = cards[cards.length - 1];
+        const cards =
+            container.querySelectorAll(
+                '.mobile-location-card'
+            );
 
-        initializeMap(newCard);
+        initializeMap(
+            cards[cards.length - 1]
+        );
     }
 
     container.addEventListener('click', function (event) {
-        const button = event.target.closest('.remove-mobile-location');
+        const button =
+            event.target.closest(
+                '.remove-mobile-location'
+            );
 
-        if (!button) {
-            return;
-        }
+        if (!button) return;
 
-        const cards = container.querySelectorAll('.mobile-location-card');
+        const cards =
+            container.querySelectorAll(
+                '.mobile-location-card'
+            );
 
-        if (cards.length <= 1) {
-            return;
-        }
+        if (cards.length <= 1) return;
 
-        const card = button.closest('.mobile-location-card');
-        const mapData = maps.get(card);
+        const card =
+            button.closest(
+                '.mobile-location-card'
+            );
+
+        const mapData =
+            maps.get(card);
 
         if (mapData) {
             mapData.map.remove();
@@ -354,17 +454,20 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         card.remove();
-
         updateIndexes();
     });
 
-    addButton.addEventListener('click', addLocation);
+    addButton.addEventListener(
+        'click',
+        addLocation
+    );
 
     businessType.addEventListener(
         'change',
         toggleBusinessType
     );
 
+    setupTimeInputs();
     updateIndexes();
     toggleBusinessType();
 });
