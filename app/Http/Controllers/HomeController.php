@@ -8,9 +8,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $umkms = Umkm::withCount('locations')
-            ->with(['locations' => fn ($q) => $q->orderBy('sort_order')])
-            ->where('status', 'active')
+        $umkms = Umkm::with('locations')->where('status', 'active')
             ->latest()
             ->get();
 
