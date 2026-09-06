@@ -38,10 +38,6 @@
             <a href="{{ route('umkm.show', auth()->user()->umkm->slug) }}" target="_blank">
                 Lihat Website
             </a>
-
-            <a href="{{ route('dashboard') }}">
-                Dashboard UMKM
-            </a>
         @endif
 
        <x-profile-menu />
