@@ -708,7 +708,18 @@
 
             @forelse ($umkms as $umkm)
 
-                <article class="umkm-card" data-category="{{ strtolower($umkm->category) }}" data-opening="{{ $umkm->opening_time }}" data-closing="{{ $umkm->closing_time }}" data-manual="{{ $umkm->is_manual_closed ? '1' : '0' }}">
+                @php
+                    $locationSchedule = $umkm->locations
+                        ->filter(fn ($loc) => $loc->start_time && $loc->end_time)
+                        ->map(fn ($loc) => [
+                            'open' => substr((string) $loc->start_time, 0, 5),
+                            'close' => substr((string) $loc->end_time, 0, 5),
+                        ])
+                        ->values()
+                        ->toJson();
+                @endphp
+
+                <article class="umkm-card" data-category="{{ strtolower($umkm->category) }}" data-opening="{{ $umkm->opening_time }}" data-closing="{{ $umkm->closing_time }}" data-manual="{{ $umkm->is_manual_closed ? '1' : '0' }}" data-schedule="{{ $locationSchedule }}">
                     <div class="umkm-image image-{{ strtolower($umkm->category) }}">
 
                         @if ($umkm->cover)
