@@ -744,20 +744,11 @@
                                 {{ ucfirst($umkm->category) }}
                             </span>
 
-<<<<<<< HEAD
-                            <button type="button" class="btn-favorit-modern {{ $umkm->isLikedByCurrentUser() ? 'liked' : '' }}" data-id="{{ $umkm->id }}" aria-label="Favorit {{ $umkm->name }}">
-    <span class="heart-icon">{{ $umkm->isLikedByCurrentUser() ? '♥' : '♡' }}</span>
-    <span class="like-count">{{ $umkm->likes_count ?? 0 }}</span>
-</button>
-
-
-=======
                             <button type="button" class="btn-favorit-baru" data-id="{{ $umkm->id }}"
                                 aria-label="Favorit {{ $umkm->name }}">
                                 <span class="heart-icon">♡</span>
                                 <span class="like-count">{{ $umkm->likes_count ?? 0 }}</span>
                             </button>
->>>>>>> origin/main
                             <span class="umkm-status" data-status="checking">...</span>
 
                         </div>
@@ -1022,58 +1013,65 @@
     @include('partials.footer')
 
 
-<<<<<<< HEAD
-   <script src="{{ asset('js/home.js') }}?v={{ filemtime(public_path('js/home.js')) }}"></script>
-=======
     <script src="{{ asset('js/home.js') }}?v={{ filemtime(public_path('js/home.js')) }}"></script>
->>>>>>> origin/main
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
             // ==========================================
             // 1. LOGIKA TOMBOL FAVORIT / LIKE
             // ==========================================
-<<<<<<< HEAD
-            // Diperbarui menggunakan class .btn-favorit-modern agar terdeteksi
-            document.querySelectorAll('.btn-favorit-modern').forEach(button => {
-=======
             // (SUDAH DIPERBAIKI: Hapus DOMContentLoaded yang dobel di sini)
-            document.querySelectorAll('.btn-favorit-baru').forEach(button => {
->>>>>>> origin/main
-                button.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
+           document.querySelectorAll('.btn-favorit-baru').forEach(button => {
+    button.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
 
-                    let umkmId = this.dataset.id;
-                    let countSpan = this.querySelector('.like-count');
-                    let iconSpan = this.querySelector('.heart-icon');
-                    let isLiked = this.classList.contains('liked');
-                    let action = isLiked ? 'unlike' : 'like';
+        // 1. Cek apakah tombol sedang dalam proses (mencegah spam klik)
+        if (this.classList.contains('is-loading')) {
+            return;
+        }
 
-                    fetch(`/umkm/${umkmId}/toggle-like`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                        },
-                        body: JSON.stringify({ action: action })
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                if (action === 'like') {
-                                    this.classList.add('liked');
-                                    iconSpan.innerText = '♥';
-                                } else {
-                                    this.classList.remove('liked');
-                                    iconSpan.innerText = '♡';
-                                }
-                                countSpan.innerText = data.likes_count;
-                            }
-                        })
-                        .catch(error => console.error('Gagal memproses like:', error));
-                });
+        let umkmId = this.dataset.id;
+        let countSpan = this.querySelector('.like-count');
+        let iconSpan = this.querySelector('.heart-icon');
+        let isLiked = this.classList.contains('liked');
+        let action = isLiked ? 'unlike' : 'like';
+
+        // 2. Tandai tombol sedang memuat
+        this.classList.add('is-loading');
+        this.style.opacity = '0.7';
+        this.style.cursor = 'not-allowed';
+
+        fetch(`/umkm/${umkmId}/toggle-like`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ action: action })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (action === 'like') {
+                        this.classList.add('liked');
+                        iconSpan.innerText = '♥';
+                    } else {
+                        this.classList.remove('liked');
+                        iconSpan.innerText = '♡';
+                    }
+                    countSpan.innerText = data.likes_count;
+                }
+            })
+            .catch(error => console.error('Gagal memproses like:', error))
+            .finally(() => {
+                // 3. Buka kembali kunci tombol setelah selesai (baik sukses maupun gagal)
+                this.classList.remove('is-loading');
+                this.style.opacity = '1';
+                this.style.cursor = 'pointer';
             });
+    });
+});
 
             // ==========================================
             // 2. LOGIKA TOMBOL BACK TO TOP

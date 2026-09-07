@@ -119,6 +119,11 @@
                             Lokasi
                         </a>
                     @endif
+
+                   <button type="button" class="btn-favorit-baru {{ $umkm->isLikedByCurrentUser() ? 'liked' : '' }}" data-id="{{ $umkm->id }}" aria-label="Favorit {{ $umkm->name }}">
+        <span class="heart-icon">{{ $umkm->isLikedByCurrentUser() ? '♥' : '♡' }}</span>
+        <span class="like-count">{{ $umkm->likes_count ?? 0 }}</span>
+    </button>
                 </div>
 
                 <div class="business-facts">
@@ -278,8 +283,6 @@
         </div>
     </section>
 
-<<<<<<< HEAD
-=======
     @if($hasPosters)
         <section class="catalog-section" id="katalog">
             <div class="site-shell">
@@ -313,7 +316,6 @@
         </section>
     @endif
 
->>>>>>> origin/main
    @if($hasLocation)
         <section class="location-section" id="lokasi">
             <div class="site-shell">
@@ -487,7 +489,60 @@
     window.umkmMapData = @json($mapPoints);
     window.umkmBusinessType = @json($umkm->business_type);
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const favoritBtn = document.querySelector('.btn-favorit-baru');
 
+        if (favoritBtn) {
+            favoritBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                if (this.classList.contains('is-loading')) {
+                    return;
+                }
+
+                let umkmId = this.dataset.id;
+                let countSpan = this.querySelector('.like-count');
+                let iconSpan = this.querySelector('.heart-icon');
+                let isLiked = this.classList.contains('liked');
+                let action = isLiked ? 'unlike' : 'like';
+
+                this.classList.add('is-loading');
+                this.style.opacity = '0.7';
+                this.style.cursor = 'not-allowed';
+
+                fetch(`/umkm/${umkmId}/toggle-like`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({ action: action })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        if (action === 'like') {
+                            this.classList.add('liked');
+                            iconSpan.innerText = '♥';
+                        } else {
+                            this.classList.remove('liked');
+                            iconSpan.innerText = '♡';
+                        }
+                        countSpan.innerText = data.likes_count;
+                    }
+                })
+                .catch(error => console.error('Gagal memproses like:', error))
+                .finally(() => {
+                    this.classList.remove('is-loading');
+                    this.style.opacity = '1';
+                    this.style.cursor = 'pointer';
+                });
+            });
+        }
+    });
+</script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="{{ asset('js/umkm-show.js') }}?v={{ filemtime(public_path('js/umkm-show.js')) }}"></script>
 </body>

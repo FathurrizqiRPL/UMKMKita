@@ -9,7 +9,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Umkm extends Model
 {
 
-
+public function isLikedByCurrentUser()
+{
+    if (!auth()->check()) {
+        return false;
+    }
+    return $this->likes()->where('user_id', auth()->id())->exists();
+}
     protected $fillable = [
         'user_id',
         'name',
