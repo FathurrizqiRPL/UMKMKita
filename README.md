@@ -136,6 +136,11 @@ Platform mendukung dua jenis usaha, yaitu **UMKM Di Tempat** yang memiliki lokas
   <img width="1920" height="3692" alt="fullpage_snapshot_127_0_0_1_2026-09-07-16-01-27" src="https://github.com/user-attachments/assets/ea536c71-63c7-4027-80ac-760121472c0f" />
   <p><em>Edit Website - Pemilik UMKM</em></p>
 
+  <img width="1920" height="3345" alt="fullpage_snapshot_127_0_0_1_2026-09-07-16-21-15" src="https://github.com/user-attachments/assets/ac93f128-e583-4e1f-8951-84b26b331ca5" />
+    <p><em>Lihat Website - Pemilik UMKM</em></p>
+  
+
+
   <img width="1920" height="2551" alt="fullpage_snapshot_127_0_0_1_2026-09-07-15-47-38" src="https://github.com/user-attachments/assets/a2855808-6a56-46f5-b163-69653b00a72b" />
   <p><em>Radar UMKM - Tampilan Radar UMKM</em></p>
   
