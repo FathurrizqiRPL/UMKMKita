@@ -368,35 +368,60 @@
                 <div class="edit-card-title">
                     <span>IDENTITAS VISUAL</span>
                     <h2>Logo & Foto Sampul</h2>
+                    <p>Perbarui logo dan foto sampul usaha kamu.</p>
                 </div>
 
                 <div class="two-col">
                     <div class="form-group">
                         <label>Logo UMKM</label>
 
-                        @if ($umkm->logo)
-                            <div class="current-image">
-                                <img src="{{ asset('storage/' . $umkm->logo) }}"
-                                    alt="Logo {{ $umkm->name }}">
-                            </div>
-                        @endif
+                        <div class="file-upload-box image-upload-box" data-image-upload>
+                            <img
+                                src="{{ $umkm->logo ? asset('storage/' . $umkm->logo) : '' }}"
+                                data-image-preview
+                                data-original="{{ $umkm->logo ? asset('storage/' . $umkm->logo) : '' }}"
+                                alt=""
+                                @if(!$umkm->logo) hidden @endif>
 
-                        <input type="file" name="logo" accept="image/*">
-                        <small class="field-help">Kosongkan jika tidak ingin mengganti logo.</small>
+                            <div class="upload-content" data-upload-content @if($umkm->logo) hidden @endif>
+                                <div class="upload-icon">↑</div>
+                                <strong>Pilih Logo</strong>
+                                <span class="file-name">JPG, PNG, atau WEBP · maksimal 2 MB</span>
+                            </div>
+
+                            <input type="file" name="logo"
+                                accept="image/jpeg,image/png,image/webp" data-image-input>
+
+                            <button type="button" class="image-upload-cancel" data-image-cancel hidden>
+                                Batal
+                            </button>
+                        </div>
                     </div>
 
                     <div class="form-group">
                         <label>Foto Sampul</label>
 
-                        @if ($umkm->cover)
-                            <div class="current-image current-image-cover">
-                                <img src="{{ asset('storage/' . $umkm->cover) }}"
-                                    alt="Sampul {{ $umkm->name }}">
-                            </div>
-                        @endif
+                        <div class="file-upload-box image-upload-box" data-image-upload>
+                            <img
+                                src="{{ $umkm->cover ? asset('storage/' . $umkm->cover) : '' }}"
+                                data-image-preview
+                                data-original="{{ $umkm->cover ? asset('storage/' . $umkm->cover) : '' }}"
+                                alt=""
+                                @if(!$umkm->cover) hidden @endif>
 
-                        <input type="file" name="cover" accept="image/*">
-                        <small class="field-help">Kosongkan jika tidak ingin mengganti foto sampul.</small>
+                            <div class="upload-content" data-upload-content @if($umkm->cover) hidden @endif>
+                                <div class="upload-icon">↑</div>
+                                <strong>Pilih Sampul</strong>
+                                <span class="file-name">JPG, PNG, atau WEBP · maksimal 4 MB</span>
+                            </div>
+
+                            <input type="file" name="cover"
+                                accept="image/jpeg,image/png,image/webp" data-image-input>
+
+                            <button type="button" class="image-upload-cancel" data-image-cancel hidden>
+                                Batal
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>

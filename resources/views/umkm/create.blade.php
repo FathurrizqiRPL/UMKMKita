@@ -299,26 +299,40 @@
                     <div class="form-group">
                         <label>Logo UMKM</label>
 
-                        <div class="file-upload-box">
-                            <div class="upload-icon">↑</div>
-                            <strong>Pilih Logo</strong>
-                            <span class="file-name" id="logo-name">JPG atau PNG, maksimal 2 MB</span>
+                        <div class="file-upload-box image-upload-box" data-image-upload>
+                            <img data-image-preview data-original="" alt="" hidden>
 
-                            <input type="file" name="logo" accept="image/*"
-                                onchange="document.getElementById('logo-name').innerText = this.files[0]?.name || 'JPG atau PNG, maksimal 2 MB'">
+                            <div class="upload-content" data-upload-content>
+                                <div class="upload-icon">↑</div>
+                                <strong>Pilih Logo</strong>
+                                <span class="file-name">JPG, PNG, atau WEBP · maksimal 2 MB</span>
+                            </div>
+
+                            <input type="file" name="logo" accept="image/jpeg,image/png,image/webp" data-image-input>
+
+                            <button type="button" class="image-upload-cancel" data-image-cancel hidden>
+                                Batal
+                            </button>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Foto Sampul</label>
 
-                        <div class="file-upload-box">
-                            <div class="upload-icon">↑</div>
-                            <strong>Pilih Sampul</strong>
-                            <span class="file-name" id="cover-name">JPG atau PNG, maksimal 4 MB</span>
+                        <div class="file-upload-box image-upload-box" data-image-upload>
+                            <img data-image-preview data-original="" alt="" hidden>
 
-                            <input type="file" name="cover" accept="image/*"
-                                onchange="document.getElementById('cover-name').innerText = this.files[0]?.name || 'JPG atau PNG, maksimal 4 MB'">
+                            <div class="upload-content" data-upload-content>
+                                <div class="upload-icon">↑</div>
+                                <strong>Pilih Sampul</strong>
+                                <span class="file-name">JPG, PNG, atau WEBP · maksimal 4 MB</span>
+                            </div>
+
+                            <input type="file" name="cover" accept="image/jpeg,image/png,image/webp" data-image-input>
+
+                            <button type="button" class="image-upload-cancel" data-image-cancel hidden>
+                                Batal
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -428,7 +442,6 @@
         </div>
     </div>
 </template>
-
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="{{ asset('js/umkm-mobile-locations.js') }}?v={{ filemtime(public_path('js/umkm-mobile-locations.js')) }}"></script>
 <script src="{{ asset('js/umkm-posters.js') }}?v={{ filemtime(public_path('js/umkm-posters.js')) }}"></script>

@@ -48,5 +48,6 @@
 @yield('content')
 
 <script src="{{ asset('js/profile.js') }}"></script>
+<script src="{{ asset('js/umkm-image-upload.js') }}?v={{ filemtime(public_path('js/umkm-image-upload.js')) }}"></script>
 </body>
 </html>
