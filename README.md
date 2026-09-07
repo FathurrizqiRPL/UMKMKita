@@ -113,7 +113,7 @@ Platform mendukung dua jenis usaha, yaitu **UMKM Di Tempat** yang memiliki lokas
   <p><em>Homepage - Tampilan Cara Kerja Aplikasi</em></p> 
   
 
-  <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d3d11787-cd27-4d40-bcbd-528d159cffad" />
+  <img width="1920" height="2551" alt="fullpage_snapshot_127_0_0_1_2026-09-07-15-47-38" src="https://github.com/user-attachments/assets/2ad060f7-56e0-4c54-8e50-234b5ec40dad" />
   <p><em>Homepage - Tampilan Jelajahi UMKM</em></p>
   
 
