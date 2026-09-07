@@ -30,6 +30,7 @@ class AdminSeeder extends Seeder
             [
                 'name' => $name,
                 'password' => $password,
+                'has_password' => true,
                 'role' => 'admin',
                 'email_verified_at' => now(),
             ]

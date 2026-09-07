@@ -37,12 +37,11 @@
 
                         <div>
                             <h2>Informasi Profil</h2>
-                            <p>Perbarui foto, nama, dan email akun kamu.</p>
+                            <p>Perbarui foto dan nama akun kamu.</p>
                         </div>
                     </div>
 
-                    <form method="POST" action="{{ route('profile.update') }}"
-                        enctype="multipart/form-data" class="profile-form">
+                    <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="profile-form">
                         @csrf
                         @method('PATCH')
 
@@ -56,8 +55,7 @@
                                         {{ strtoupper(substr($user->name, 0, 1)) }}
                                     </div>
 
-                                    <img src="" alt="Preview foto profil"
-                                        id="profilePreviewImage" hidden>
+                                    <img src="" alt="Preview foto profil" id="profilePreviewImage" hidden>
                                 @endif
                             </div>
 
@@ -69,8 +67,7 @@
                                     Pilih Foto
                                 </label>
 
-                                <input type="file" id="profilePhotoInput"
-                                    name="profile_photo" accept="image/*" hidden>
+                                <input type="file" id="profilePhotoInput" name="profile_photo" accept="image/*" hidden>
                             </div>
                         </div>
 
@@ -80,8 +77,7 @@
 
                         <label class="profile-field">
                             <span>Nama</span>
-                            <input type="text" name="name"
-                                value="{{ old('name', $user->name) }}" required>
+                            <input type="text" name="name" value="{{ old('name', $user->name) }}" required>
 
                             @error('name')
                                 <small class="profile-error">{{ $message }}</small>
@@ -90,12 +86,8 @@
 
                         <label class="profile-field">
                             <span>Email</span>
-                            <input type="email" name="email"
-                                value="{{ old('email', $user->email) }}" required>
-
-                            @error('email')
-                                <small class="profile-error">{{ $message }}</small>
-                            @enderror
+                            <input type="email" value="{{ $user->email }}" readonly>
+                            <small>Email akun tidak dapat diubah.</small>
                         </label>
 
                         <div class="profile-form-action">
@@ -110,57 +102,69 @@
                     </form>
                 </section>
 
-                <section class="profile-card">
-                    <div class="profile-card-heading">
-                        <span>02</span>
+                @if($user->has_password)
+                    <section class="profile-card">
+                        <div class="profile-card-heading">
+                            <span>02</span>
 
-                        <div>
-                            <h2>Ubah Password</h2>
-                            <p>Perbarui password untuk menjaga keamanan akun.</p>
+                            <div>
+                                <h2>Ubah Password</h2>
+                                <p>Perbarui password untuk menjaga keamanan akun.</p>
+                            </div>
                         </div>
-                    </div>
 
-                    <form method="POST" action="{{ route('password.update') }}"
-                        class="profile-form">
-                        @csrf
-                        @method('PUT')
+                        <form method="POST" action="{{ route('password.update') }}" class="profile-form">
+                            @csrf
+                            @method('PUT')
 
-                        <label class="profile-field">
-                            <span>Password Saat Ini</span>
-                            <input type="password" name="current_password">
-
-                            @error('current_password', 'updatePassword')
-                                <small class="profile-error">{{ $message }}</small>
-                            @enderror
-                        </label>
-
-                        <div class="profile-two-col">
                             <label class="profile-field">
-                                <span>Password Baru</span>
-                                <input type="password" name="password">
+                                <span>Password Saat Ini</span>
+                                <input type="password" name="current_password">
 
-                                @error('password', 'updatePassword')
+                                @error('current_password', 'updatePassword')
                                     <small class="profile-error">{{ $message }}</small>
                                 @enderror
                             </label>
 
-                            <label class="profile-field">
-                                <span>Konfirmasi Password</span>
-                                <input type="password" name="password_confirmation">
-                            </label>
-                        </div>
+                            <div class="profile-two-col">
+                                <label class="profile-field">
+                                    <span>Password Baru</span>
+                                    <input type="password" name="password">
 
-                        <div class="profile-form-action">
-                            @if(session('status') === 'password-updated')
-                                <span class="profile-success">
-                                    Password berhasil diperbarui.
-                                </span>
-                            @endif
+                                    @error('password', 'updatePassword')
+                                        <small class="profile-error">{{ $message }}</small>
+                                    @enderror
+                                </label>
 
-                            <button type="submit">Ubah Password</button>
+                                <label class="profile-field">
+                                    <span>Konfirmasi Password</span>
+                                    <input type="password" name="password_confirmation">
+                                </label>
+                            </div>
+
+                            <div class="profile-form-action">
+                                @if(session('status') === 'password-updated')
+                                    <span class="profile-success">
+                                        Password berhasil diperbarui.
+                                    </span>
+                                @endif
+
+                                <button type="submit">Ubah Password</button>
+                            </div>
+                        </form>
+                    </section>
+                @else
+                    <section class="profile-card">
+                        <div class="profile-card-heading">
+                            <span>02</span>
+
+                            <div>
+                                <h2>Password</h2>
+                                <p>Akun ini menggunakan Google untuk masuk.</p>
+                            </div>
                         </div>
-                    </form>
-                </section>
+                    </section>
+                @endif
             </div>
         </div>
     </div>
@@ -178,9 +182,7 @@ profilePhotoInput?.addEventListener('change', () => {
     profilePreviewImage.src = URL.createObjectURL(file);
     profilePreviewImage.hidden = false;
 
-    if (profilePhotoPlaceholder) {
-        profilePhotoPlaceholder.hidden = true;
-    }
+    if (profilePhotoPlaceholder) profilePhotoPlaceholder.hidden = true;
 });
 </script>
 

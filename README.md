@@ -84,7 +84,7 @@ Platform mendukung dua jenis usaha, yaitu **UMKM Di Tempat** yang memiliki lokas
 - **Lokasi & Jam Operasional** - Menampilkan informasi lokasi dan waktu operasional UMKM.
 - **Panel Admin** - Admin dapat memantau pengguna dan UMKM serta mengatur status UMKM.
 - **Responsive Design** - Antarmuka dirancang agar dapat digunakan pada desktop maupun perangkat mobile.
-- **Google Authentication** - Pengguna dapat masuk menggunakan akun Google. Jika email Google sudah terdaftar secara manual, akun Google akan ditautkan ke akun yang sama tanpa membuat akun duplikat.
+- **Google Authentication** - Pengguna dapat masuk menggunakan akun Google. Jika email Google sudah terdaftar secara manual, akun Google akan ditautkan ke akun yang sama tanpa membuat akun duplikat. Akun yang pertama kali dibuat melalui Google tidak memiliki password manual (`has_password = false`), sehingga form perubahan password tidak ditampilkan. Akun yang sebelumnya dibuat secara manual tetap dapat menggunakan password meskipun kemudian ditautkan dengan akun Google.
 
 ---
 
@@ -242,16 +242,17 @@ erDiagram
     UMKMS ||--o{ UMKM_LOCATIONS : memiliki
 
     USERS {
-        bigint id PK
-        varchar name
-        varchar email
-        varchar google_id
-        varchar profile_photo
-        varchar password
-        varchar role
-        timestamp created_at
-        timestamp updated_at
-    }
+    bigint id PK
+    varchar name
+    varchar email
+    varchar google_id
+    varchar profile_photo
+    varchar password
+    boolean has_password
+    varchar role
+    timestamp created_at
+    timestamp updated_at
+}
 
     UMKMS {
         bigint id PK
@@ -455,7 +456,7 @@ Kemudian simpan `GOOGLE_CLIENT_ID` dan `GOOGLE_CLIENT_SECRET` sebagai environmen
 Dokumentasi resmi:
 - [Laravel Socialite](https://laravel.com/docs/socialite)
 - [Google OAuth 2.0](https://developers.google.com/identity/protocols/oauth2)
-```
+
 
 ```
 #### 6️⃣ Jalankan Migration & Seeder
@@ -539,7 +540,7 @@ http://127.0.0.1:8000
 
 #### Untuk Pemilik UMKM
 
-1. 1. **Registrasi/Login**: Buat akun menggunakan email dan password atau masuk menggunakan akun Google. Jika email Google sudah pernah terdaftar secara manual, sistem menggunakan akun yang sama tanpa membuat akun duplikat.
+1. **Registrasi/Login**: Buat akun menggunakan email dan password atau masuk menggunakan akun Google. Jika email Google sudah pernah terdaftar secara manual, sistem menggunakan akun yang sama tanpa membuat akun duplikat.
 2. **Buat Website UMKM**: Lengkapi informasi usaha untuk membuat halaman website UMKM.
 3. **Tentukan Jenis Usaha**: Pilih jenis usaha **Di Tempat** untuk UMKM dengan lokasi tetap atau **Keliling** untuk UMKM dengan beberapa titik standby.
 4. **Kelola Produk/Layanan**: Tambahkan dan kelola produk atau layanan yang akan ditampilkan pada website UMKM.

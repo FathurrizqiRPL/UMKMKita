@@ -40,6 +40,7 @@ class GoogleAuthController extends Controller
                     $user->email = $googleUser->getEmail();
                     $user->google_id = $googleUser->getId();
                     $user->password = Str::random(64);
+                    $user->has_password = false;
                     $user->email_verified_at = now();
                     $user->save();
                 }
