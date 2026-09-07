@@ -131,8 +131,12 @@ Platform mendukung dua jenis usaha, yaitu **UMKM Di Tempat** yang memiliki lokas
 
 
 
-  <img src="[URL_SCREENSHOT_2]" alt="Dashboard" width="800"/>
-  <p><em>Dashboard - Panel kontrol pengguna</em></p>
+  <img width="1920" height="1948" alt="fullpage_snapshot_127_0_0_1_2026-09-07-15-57-52" src="https://github.com/user-attachments/assets/bd80a50d-ca85-4372-a361-99f7ceba1235" />
+  <p><em>Dashboard - Pemilik UMKM</em></p>
+
+  <img width="1920" height="3692" alt="fullpage_snapshot_127_0_0_1_2026-09-07-16-01-27" src="https://github.com/user-attachments/assets/ea536c71-63c7-4027-80ac-760121472c0f" />
+  <p><em>Edit Website - Pemilik UMKM</em></p>
+
   
   <img src="[URL_SCREENSHOT_3]" alt="Feature" width="800"/>
   <p><em>[Nama Fitur] - [Deskripsi screenshot]</em></p>
