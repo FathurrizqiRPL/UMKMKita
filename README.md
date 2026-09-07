@@ -117,8 +117,7 @@ Platform mendukung dua jenis usaha, yaitu **UMKM Di Tempat** yang memiliki lokas
   <p><em>Homepage - Tampilan Jelajahi UMKM</em></p>
   
 
-  <img width="1920" height="2551" alt="fullpage_snapshot_127_0_0_1_2026-09-07-15-47-38" src="https://github.com/user-attachments/assets/a2855808-6a56-46f5-b163-69653b00a72b" />
-  <p><em>Homepage - Tampilan Radar UMKM</em></p>
+  
   
 
   <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/606ce123-5227-40a9-8d0f-53fe1ce02928" />
@@ -137,6 +136,8 @@ Platform mendukung dua jenis usaha, yaitu **UMKM Di Tempat** yang memiliki lokas
   <img width="1920" height="3692" alt="fullpage_snapshot_127_0_0_1_2026-09-07-16-01-27" src="https://github.com/user-attachments/assets/ea536c71-63c7-4027-80ac-760121472c0f" />
   <p><em>Edit Website - Pemilik UMKM</em></p>
 
+  <img width="1920" height="2551" alt="fullpage_snapshot_127_0_0_1_2026-09-07-15-47-38" src="https://github.com/user-attachments/assets/a2855808-6a56-46f5-b163-69653b00a72b" />
+  <p><em>Radar UMKM - Tampilan Radar UMKM</em></p>
   
   <img src="[URL_SCREENSHOT_3]" alt="Feature" width="800"/>
   <p><em>[Nama Fitur] - [Deskripsi screenshot]</em></p>
