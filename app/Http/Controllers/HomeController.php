@@ -1,20 +1,24 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Auth;
 use App\Models\Umkm;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $umkms = Umkm::withCount('locations')
-            ->with(['locations' => fn ($q) => $q->orderBy('sort_order')])
-            ->where('status', 'active')
-            ->latest()
-            ->get();
+         if (Auth::check() && Auth::user()->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
 
-        return view('home', compact('umkms'));
+    $umkms = Umkm::withCount('locations')
+        ->with(['locations' => fn ($q) => $q->orderBy('sort_order')])
+        ->where('status', 'active')
+        ->latest()
+        ->get();
+
+    return view('home', compact('umkms'));
     }
 
     public function radar()

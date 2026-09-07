@@ -35,7 +35,7 @@
 
         <div class="profile-dropdown-divider"></div>
 
-        <a href="{{ route('dashboard') }}" class="profile-dropdown-item">
+        <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('dashboard') }}">
             <span class="profile-item-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <rect x="4" y="4" width="6" height="6" rx="1"></rect>

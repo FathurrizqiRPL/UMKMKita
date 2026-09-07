@@ -36,6 +36,10 @@ public function toggleWebsiteStatus(Request $request)
 }
     public function dashboard(Request $request)
     {
+        if ($request->user()->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
         $umkm = $request->user()->umkm()->with(['items', 'locations', 'posters'])->first();
         return view('dashboard', compact('umkm'));
     }
