@@ -311,8 +311,8 @@
         </section>
     @endif
 
-    @if($waLink)
-        <section class="contact-section">
+   @if($hasLocation)
+        <section class="location-section" id="lokasi">
             <div class="site-shell">
                 <div class="section-heading location-heading">
                     <div>
@@ -401,7 +401,11 @@
                         @endif
                     </div>
 
-                    <a href="{{ $waLink }}" target="_blank" rel="noopener">Hubungi Sekarang ↗</a>
+                    @if($mapPoints->isNotEmpty())
+                        <div class="map-container">
+                            <div id="businessMap"></div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </section>
