@@ -773,3 +773,8 @@ textarea {
         border-radius: 0 0 11px 11px;
     }
 }
+
+.leaflet-container {
+    position: relative;
+    z-index: 1;
+}
