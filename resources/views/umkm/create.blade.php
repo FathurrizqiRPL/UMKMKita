@@ -24,7 +24,7 @@
             </div>
         @endif
 
-        <form action="{{ route('umkm.store') }}" method="POST" enctype="multipart/form-data">
+        <form id="createUmkmForm" action="{{ route('umkm.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <section class="form-card">
@@ -169,14 +169,12 @@
                                 <label>Pilih Lokasi</label>
 
                                 <div class="mobile-map-search">
-                                    <input type="text" class="mobile-search-input"
-                                        placeholder="Cari jalan, tempat, atau wilayah..." autocomplete="off">
-
-                                    <button type="button" class="mobile-search-button">Cari</button>
-
                                     <button type="button" class="mobile-search-button mobile-locate-button">
-                                        Cari Lokasi Saya
+                                        📍 Cari Lokasi Saya
                                     </button>
+
+                                    <input type="text" class="mobile-search-input"
+                                        placeholder="Cari nama jalan / daerah..." autocomplete="off">
                                 </div>
                             </div>
 
@@ -435,27 +433,37 @@
 <script src="{{ asset('js/umkm-mobile-locations.js') }}?v={{ filemtime(public_path('js/umkm-mobile-locations.js')) }}"></script>
 <script src="{{ asset('js/umkm-posters.js') }}?v={{ filemtime(public_path('js/umkm-posters.js')) }}"></script>
 <script>
-    const createUmkmForm = document.querySelector('form');
+    const createUmkmForm = document.getElementById('createUmkmForm');
 
-    if (createUmkmForm) {
+     if (createUmkmForm) {
         createUmkmForm.addEventListener('keydown', function (event) {
             if (event.key !== 'Enter') return;
             if (event.target.tagName === 'TEXTAREA') return;
             if (event.target.tagName === 'BUTTON') return;
 
             event.preventDefault();
+
+            const fields = [...createUmkmForm.querySelectorAll(
+                'input:not([type="hidden"]):not([type="file"]), select, textarea'
+            )].filter(field => !field.disabled && !field.readOnly && field.offsetParent !== null);
+
+            const currentIndex = fields.indexOf(event.target);
+            const nextField = fields[currentIndex + 1];
+
+            if (nextField) nextField.focus();
+            else event.target.blur();
         });
-    }
+     }
 
-const slugInput = document.getElementById('slug');
+    const slugInput = document.getElementById('slug');
 
-slugInput?.addEventListener('input', function () {
-    this.value = this.value
-        .toLowerCase()
-        .trimStart()
-        .replace(/\s+/g, '-')
-        .replace(/[^a-z0-9-]/g, '')
-        .replace(/-+/g, '-');
-});
+    slugInput?.addEventListener('input', function () {
+        this.value = this.value
+            .toLowerCase()
+            .trimStart()
+            .replace(/\s+/g, '-')
+            .replace(/[^a-z0-9-]/g, '')
+            .replace(/-+/g, '-');
+    });
 </script>
 @endsection

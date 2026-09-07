@@ -24,7 +24,7 @@
             </div>
         @endif
 
-        <form action="{{ route('umkm.update') }}" method="POST" enctype="multipart/form-data" class="edit-form">
+        <form id="editUmkmForm" action="{{ route('umkm.update') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -516,5 +516,27 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="{{ asset('js/umkm-mobile-locations.js') }}?v={{ filemtime(public_path('js/umkm-mobile-locations.js')) }}"></script>
 <script src="{{ asset('js/umkm-posters.js') }}?v={{ filemtime(public_path('js/umkm-posters.js')) }}"></script>
+<script>
+    const editUmkmForm = document.getElementById('editUmkmForm');
 
+    if (editUmkmForm) {
+        editUmkmForm.addEventListener('keydown', function (event) {
+            if (event.key !== 'Enter') return;
+            if (event.target.tagName === 'TEXTAREA') return;
+            if (event.target.tagName === 'BUTTON') return;
+
+            event.preventDefault();
+
+            const fields = [...editUmkmForm.querySelectorAll(
+                'input:not([type="hidden"]):not([type="file"]), select, textarea'
+            )].filter(field => !field.disabled && !field.readOnly && field.offsetParent !== null);
+
+            const currentIndex = fields.indexOf(event.target);
+            const nextField = fields[currentIndex + 1];
+
+            if (nextField) nextField.focus();
+            else event.target.blur();
+        });
+    }
+</script>
 @endsection

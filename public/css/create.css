@@ -495,8 +495,22 @@ textarea {
 }
 
 .mobile-map-search {
-    display: flex;
-    gap: 9px;
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.mobile-locate-button {
+    background: #fff;
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+}
+
+@media (max-width: 640px) {
+    .mobile-map-search {
+        grid-template-columns: 1fr;
+    }
 }
 
 .mobile-map-search input {
@@ -511,6 +525,19 @@ textarea {
     color: #fff;
     font-weight: 700;
     cursor: pointer;
+}
+
+.mobile-map-search .mobile-locate-button {
+    background: #fff;
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
+    box-shadow: none;
+}
+
+.mobile-map-search .mobile-locate-button:hover {
+    background: #f8f7ff;
+    color: var(--text-main);
+    border-color: var(--primary);
 }
 
 .mobile-map {
