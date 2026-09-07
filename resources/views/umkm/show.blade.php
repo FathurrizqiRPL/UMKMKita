@@ -213,40 +213,6 @@
         </div>
     </section>
 
-    
-
-    @if($hasPosters)
-        <section class="catalog-section" id="katalog">
-            <div class="site-shell">
-                <div class="section-heading catalog-heading">
-                    <div>
-                        <span class="section-kicker">POSTER & KATALOG</span>
-                        <h2>Menu & Katalog</h2>
-                    </div>
-                </div>
-
-                <div class="catalog-grid">
-                    @foreach($umkm->posters as $poster)
-                        <button type="button"
-                            class="catalog-card poster-open-button"
-                            data-src="{{ asset('storage/' . $poster->image) }}"
-                            data-title="{{ $poster->title ?: 'Poster ' . $loop->iteration }}">
-
-                            <div class="catalog-image">
-                                <img src="{{ asset('storage/' . $poster->image) }}"
-                                    alt="{{ $poster->title ?: 'Poster ' . $umkm->name }}">
-                            </div>
-
-                            <div class="catalog-info">
-                                <strong>{{ $poster->title ?: 'Poster ' . $loop->iteration }}</strong>
-                                <span>Lihat penuh ↗</span>
-                            </div>
-                        </button>
-                    @endforeach
-                </div>
-            </div>
-        </section>
-    @endif
     <section class="product-section" id="produk">
         <div class="site-shell">
             <div class="section-heading product-heading">
@@ -312,6 +278,42 @@
         </div>
     </section>
 
+<<<<<<< HEAD
+=======
+    @if($hasPosters)
+        <section class="catalog-section" id="katalog">
+            <div class="site-shell">
+                <div class="section-heading catalog-heading">
+                    <div>
+                        <span class="section-kicker">POSTER & KATALOG</span>
+                        <h2>Menu & Katalog</h2>
+                    </div>
+                </div>
+
+                <div class="catalog-grid">
+                    @foreach($umkm->posters as $poster)
+                        <button type="button"
+                            class="catalog-card poster-open-button"
+                            data-src="{{ asset('storage/' . $poster->image) }}"
+                            data-title="{{ $poster->title ?: 'Poster ' . $loop->iteration }}">
+
+                            <div class="catalog-image">
+                                <img src="{{ asset('storage/' . $poster->image) }}"
+                                    alt="{{ $poster->title ?: 'Poster ' . $umkm->name }}">
+                            </div>
+
+                            <div class="catalog-info">
+                                <strong>{{ $poster->title ?: 'Poster ' . $loop->iteration }}</strong>
+                                <span>Lihat penuh ↗</span>
+                            </div>
+                        </button>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
+>>>>>>> origin/main
    @if($hasLocation)
         <section class="location-section" id="lokasi">
             <div class="site-shell">

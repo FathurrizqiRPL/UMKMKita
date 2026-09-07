@@ -6,10 +6,6 @@ use App\Http\Controllers\UmkmController;
 use App\Http\Controllers\ItemController;
 use Illuminate\Support\Facades\Route;
 
-
-Route::middleware(['auth'])->group(function () {
-    Route::post('/umkm/{id}/toggle-like', [UmkmController::class, 'toggleLike']);
-});
 // ... (route milikmu yang lain di atasnya) ...
 
 

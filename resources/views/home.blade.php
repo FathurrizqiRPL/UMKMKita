@@ -21,51 +21,6 @@
     <link rel="stylesheet" href="{{ asset('css/profile.css') }}">
 
     <style>
-.btn-favorit-modern {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(4px);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    height: 38px;
-    padding: 0 14px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #2D3748;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 10;
-    pointer-events: auto !important;
-}
-
-.btn-favorit-modern:hover {
-    background: #ffffff;
-    transform: scale(1.08);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-}
-
-.btn-favorit-modern.liked {
-    background: #fff1f2;
-    border-color: #fecdd3;
-    color: #e11d48;
-}
-
-.btn-favorit-modern.liked .heart-icon {
-    color: #e11d48;
-    transform: scale(1.1);
-}
-
-.heart-icon {
-    font-size: 16px;
-    transition: transform 0.2s ease;
-}
         .umkm-image {
             position: relative;
         }
@@ -789,12 +744,20 @@
                                 {{ ucfirst($umkm->category) }}
                             </span>
 
+<<<<<<< HEAD
                             <button type="button" class="btn-favorit-modern {{ $umkm->isLikedByCurrentUser() ? 'liked' : '' }}" data-id="{{ $umkm->id }}" aria-label="Favorit {{ $umkm->name }}">
     <span class="heart-icon">{{ $umkm->isLikedByCurrentUser() ? '♥' : '♡' }}</span>
     <span class="like-count">{{ $umkm->likes_count ?? 0 }}</span>
 </button>
 
 
+=======
+                            <button type="button" class="btn-favorit-baru" data-id="{{ $umkm->id }}"
+                                aria-label="Favorit {{ $umkm->name }}">
+                                <span class="heart-icon">♡</span>
+                                <span class="like-count">{{ $umkm->likes_count ?? 0 }}</span>
+                            </button>
+>>>>>>> origin/main
                             <span class="umkm-status" data-status="checking">...</span>
 
                         </div>
@@ -1059,15 +1022,24 @@
     @include('partials.footer')
 
 
+<<<<<<< HEAD
    <script src="{{ asset('js/home.js') }}?v={{ filemtime(public_path('js/home.js')) }}"></script>
+=======
+    <script src="{{ asset('js/home.js') }}?v={{ filemtime(public_path('js/home.js')) }}"></script>
+>>>>>>> origin/main
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
             // ==========================================
             // 1. LOGIKA TOMBOL FAVORIT / LIKE
             // ==========================================
+<<<<<<< HEAD
             // Diperbarui menggunakan class .btn-favorit-modern agar terdeteksi
             document.querySelectorAll('.btn-favorit-modern').forEach(button => {
+=======
+            // (SUDAH DIPERBAIKI: Hapus DOMContentLoaded yang dobel di sini)
+            document.querySelectorAll('.btn-favorit-baru').forEach(button => {
+>>>>>>> origin/main
                 button.addEventListener('click', function (e) {
                     e.preventDefault();
                     e.stopPropagation();

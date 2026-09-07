@@ -13,8 +13,6 @@ use Illuminate\Support\Str;
 class UmkmController extends Controller
 {
 
-
-
 public function showw(string $slug)
 {
     $umkm = Umkm::with(['items', 'locations', 'posters'])->where('slug', $slug)->firstOrFail();
@@ -305,29 +303,21 @@ public function toggleWebsiteStatus(Request $request)
         abort(404);
     }
 
- public function toggleLike(Request $request, $id)
-{
-    $umkm = Umkm::findOrFail($id);
-    $user = auth()->user();
+   public function toggleLike(Request $request, $id)
+    {
+        $umkm = Umkm::findOrFail($id);
 
-    $existingLike = $umkm->likes()->where('user_id', $user->id)->first();
+        if ($request->action === 'like') {
+            $umkm->increment('likes_count');
+        } else {
+            $umkm->decrement('likes_count');
+        }
 
-    if ($existingLike) {
-        $existingLike->delete();
-        $action = 'unlike';
-    } else {
-        $umkm->likes()->create([
-            'user_id' => $user->id
+        return response()->json([
+            'success' => true,
+            'likes_count' => $umkm->likes_count,
         ]);
-        $action = 'like';
     }
-
-    return response()->json([
-        'success' => true,
-        'action' => $action,
-        'likes_count' => $umkm->likes()->count()
-    ]);
-}
 
     public function toggleStatus(Request $request)
     {
