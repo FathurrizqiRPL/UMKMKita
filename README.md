@@ -97,29 +97,37 @@ Platform mendukung dua jenis usaha, yaitu **UMKM Di Tempat** yang memiliki lokas
 ### Screenshot Aplikasi
 
 <div align="center">
-  <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/4ae00815-8284-47fd-9046-b2c9beda6846" />
-    <p><em>form login</em></p>
+  <img width="1920" height="1080" alt="Screenshot (519)" src="https://github.com/user-attachments/assets/e1cf17d3-12b1-44eb-95cb-f55f99a80c6c" />
+  <p><em>form login</em></p>
+  
 
   <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6d5ae671-294e-48fd-8eba-46ac551802a7" />
   <p><em>form registrasi</em></p>
   
+  
   <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/972d2617-a108-4e83-927d-e04bdd4f74d4" />
   <p><em>Homepage - Tampilan utama aplikasi</em></p>
+  
 
   <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d3d11787-cd27-4d40-bcbd-528d159cffad" />
   <p><em>Homepage - Tampilan Cara Kerja Aplikasi</em></p> 
+  
 
   <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d3d11787-cd27-4d40-bcbd-528d159cffad" />
   <p><em>Homepage - Tampilan Jelajahi UMKM</em></p>
+  
 
-  <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/d3d11787-cd27-4d40-bcbd-528d159cffad" />
+  <img width="1920" height="2551" alt="fullpage_snapshot_127_0_0_1_2026-09-07-15-47-38" src="https://github.com/user-attachments/assets/a2855808-6a56-46f5-b163-69653b00a72b" />
   <p><em>Homepage - Tampilan Radar UMKM</em></p>
+  
 
   <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/606ce123-5227-40a9-8d0f-53fe1ce02928" />
   <p><em>Homepage - Tampilan Tentang Aplikasi</em></p>
+  
 
   <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/8673b292-2bc5-4de0-8d01-65e88956f1ef" />
   <p><em>Homepage - Footer</em></p>
+  
 
 
 
