@@ -43,12 +43,12 @@
                 <div class="form-group">
                     <label for="slug">URL Website UMKM</label>
 
-                    <div style="display:flex;align-items:center;gap:8px;">
-                        <span style="color:#666;font-size:14px;background:#f3f4f6;padding:10px 12px;border:1px solid #d1d5db;border-radius:6px;">umkmkita.com/</span>
-                        <input type="text" id="slug" name="slug" value="{{ old('slug') }}" placeholder="kedai-senja" style="flex:1;" required>
+                    <div class="slug-input">
+                        <span class="slug-prefix">{{ rtrim(config('app.url'), '/') }}/umkm/</span>
+                        <input type="text" id="slug" name="slug" value="{{ old('slug') }}" placeholder="kedai-senja" required>
                     </div>
 
-                    <small class="field-help" style="margin-top:4px;display:block;color:#666;">
+                    <small class="field-help">
                         Gunakan huruf kecil dan tanda hubung (-) tanpa spasi. Contoh: <code>kedai-senja</code>
                     </small>
                 </div>
@@ -447,6 +447,15 @@
         });
     }
 
+const slugInput = document.getElementById('slug');
 
+slugInput?.addEventListener('input', function () {
+    this.value = this.value
+        .toLowerCase()
+        .trimStart()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9-]/g, '')
+        .replace(/-+/g, '-');
+});
 </script>
 @endsection

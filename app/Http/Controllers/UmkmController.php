@@ -7,8 +7,8 @@ use App\Models\Umkm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 
 class UmkmController extends Controller
 {
@@ -86,13 +86,17 @@ public function toggleWebsiteStatus(Request $request)
         return view('umkm.create');
     }
 
-    public function store(Request $request)
+   public function store(Request $request)
     {
         abort_if(
             $request->user()->umkm()->exists(),
             403,
             'Kamu sudah memiliki website UMKM.'
         );
+
+        $request->merge([
+            'slug' => Str::slug($request->slug),
+        ]);
 
         $data = $request->validate(
             $this->rules(),
@@ -110,7 +114,6 @@ public function toggleWebsiteStatus(Request $request)
         );
 
         $data['user_id'] = $request->user()->id;
-        $data['slug'] = Str::slug($data['slug']);
 
         $this->normalizeBusinessData($data);
 
