@@ -97,10 +97,10 @@ Platform mendukung dua jenis usaha, yaitu **UMKM Di Tempat** yang memiliki lokas
 ### Screenshot Aplikasi
 
 <div align="center">
-  <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/ddd175e8-72b8-47d0-a1d1-1d78a252b1b1" />
-  <p><em>form login</em></p>
+  <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/4ae00815-8284-47fd-9046-b2c9beda6846" />
+    <p><em>form login</em></p>
 
-  <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/df502c1e-0426-4112-9b61-2a6f11878731" />
+  <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/6d5ae671-294e-48fd-8eba-46ac551802a7" />
   <p><em>form registrasi</em></p>
   
   <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/972d2617-a108-4e83-927d-e04bdd4f74d4" />
