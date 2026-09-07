@@ -84,6 +84,7 @@ Platform mendukung dua jenis usaha, yaitu **UMKM Di Tempat** yang memiliki lokas
 - **Lokasi & Jam Operasional** - Menampilkan informasi lokasi dan waktu operasional UMKM.
 - **Panel Admin** - Admin dapat memantau pengguna dan UMKM serta mengatur status UMKM.
 - **Responsive Design** - Antarmuka dirancang agar dapat digunakan pada desktop maupun perangkat mobile.
+- **Google Authentication** - Pengguna dapat masuk menggunakan akun Google. Jika email Google sudah terdaftar secara manual, akun Google akan ditautkan ke akun yang sama tanpa membuat akun duplikat.
 
 ---
 
@@ -154,7 +155,7 @@ Map Data        : OpenStreetMap
 Runtime         : PHP 8.3+
 Framework       : Laravel
 ORM             : Eloquent ORM
-Authentication  : Laravel Breeze
+Authentication  : Laravel Breeze + Laravel Socialite (Google OAuth)
 Database        : MySQL
 ```
 
@@ -186,6 +187,7 @@ Testing         : PHPUnit
   "php": "^8.3",
   "laravel/framework": "^13.8",
   "laravel/tinker": "^3.0",
+  "laravel/socialite": "^5.31",
   "laravel/breeze": "^2.4",
   "phpunit/phpunit": "^12.5.12"
 }
@@ -211,16 +213,22 @@ UMKMkita menggunakan arsitektur **Model-View-Controller (MVC)** yang disediakan 
 ```mermaid
 flowchart LR
     A[Pengguna] --> B[Browser]
+
     B --> C[Laravel Routes]
     C --> D[Controller]
     D --> E[Model / Eloquent ORM]
     E --> F[(MySQL Database)]
+
     D --> G[Blade View]
     G --> B
 
     G --> H[JavaScript]
     H --> I[Leaflet.js]
     I --> J[OpenStreetMap]
+
+    B --> K[Google OAuth]
+    K --> L[Laravel Socialite]
+    L --> C
 ```
 
 ### Database Schema
@@ -237,6 +245,7 @@ erDiagram
         bigint id PK
         varchar name
         varchar email
+        varchar google_id
         varchar profile_photo
         varchar password
         varchar role
@@ -297,8 +306,6 @@ erDiagram
         timestamp updated_at
     }
 ```
-
-### Folder Structure
 
 ### Folder Structure
 
@@ -411,7 +418,47 @@ DB_PASSWORD=
 
 > Sesuaikan `DB_USERNAME` dan `DB_PASSWORD` dengan konfigurasi MySQL pada perangkat Anda.
 
-#### 5️⃣ Jalankan Migration & Seeder
+#### 5️⃣ Setup Google OAuth
+
+UMKMkita mendukung autentikasi menggunakan akun Google melalui **Laravel Socialite** dan **Google OAuth 2.0**.
+
+Untuk mengaktifkan fitur login dengan Google:
+
+1. Buka [Google Auth Platform](https://console.cloud.google.com/auth/clients).
+2. Buat atau pilih project Google Cloud.
+3. Konfigurasikan **Google Auth Platform** untuk aplikasi.
+4. Buat **OAuth Client ID** dengan tipe aplikasi **Web application**.
+5. Tambahkan **Authorized Redirect URI** untuk development:
+
+```text
+http://127.0.0.1:8000/auth/google/callback
+```
+
+6. Setelah OAuth Client berhasil dibuat, Google akan memberikan **Client ID** dan **Client Secret**. Salin credential tersebut ke file `.env`:
+
+```env
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REDIRECT_URI="${APP_URL}/auth/google/callback"
+```
+
+Ganti `your_google_client_id` dan `your_google_client_secret` dengan credential yang diperoleh dari Google Auth Platform.
+
+Untuk deployment, tambahkan juga callback sesuai domain aplikasi sebagai **Authorized Redirect URI**:
+
+```text
+https://your-domain.com/auth/google/callback
+```
+
+Kemudian simpan `GOOGLE_CLIENT_ID` dan `GOOGLE_CLIENT_SECRET` sebagai environment variables pada platform deployment.
+
+Dokumentasi resmi:
+- [Laravel Socialite](https://laravel.com/docs/socialite)
+- [Google OAuth 2.0](https://developers.google.com/identity/protocols/oauth2)
+```
+
+```
+#### 6️⃣ Jalankan Migration & Seeder
 
 Jalankan migration dan seeder untuk membuat struktur database sekaligus menyiapkan akun Admin Localhost:
 
@@ -428,7 +475,7 @@ Password : Admin12345
 
 > Admin Localhost digunakan untuk kebutuhan development dan pengujian project secara lokal. Admin Hosting menggunakan akun yang berbeda.
 
-#### 6️⃣ Buat Storage Link
+#### 7️⃣ Buat Storage Link
 
 Buat symbolic link agar file yang tersimpan pada storage dapat diakses melalui aplikasi:
 
@@ -436,7 +483,7 @@ Buat symbolic link agar file yang tersimpan pada storage dapat diakses melalui a
 php artisan storage:link
 ```
 
-#### 7️⃣ Jalankan Aplikasi
+#### 8️⃣ Jalankan Aplikasi
 
 Jalankan Laravel development server:
 
@@ -492,7 +539,7 @@ http://127.0.0.1:8000
 
 #### Untuk Pemilik UMKM
 
-1. **Registrasi/Login**: Buat akun atau masuk menggunakan akun yang telah terdaftar.
+1. 1. **Registrasi/Login**: Buat akun menggunakan email dan password atau masuk menggunakan akun Google. Jika email Google sudah pernah terdaftar secara manual, sistem menggunakan akun yang sama tanpa membuat akun duplikat.
 2. **Buat Website UMKM**: Lengkapi informasi usaha untuk membuat halaman website UMKM.
 3. **Tentukan Jenis Usaha**: Pilih jenis usaha **Di Tempat** untuk UMKM dengan lokasi tetap atau **Keliling** untuk UMKM dengan beberapa titik standby.
 4. **Kelola Produk/Layanan**: Tambahkan dan kelola produk atau layanan yang akan ditampilkan pada website UMKM.
@@ -532,7 +579,7 @@ Pengujian manual dilakukan melalui development server Laravel:
 http://127.0.0.1:8000
 ```
 
-Pengujian dilakukan dengan mencoba langsung berbagai alur dan fitur aplikasi, seperti autentikasi pengguna, pengelolaan data UMKM, pengelolaan produk atau layanan, Radar UMKM, serta tampilan website UMKM.
+Pengujian dilakukan dengan mencoba langsung berbagai alur dan fitur aplikasi, seperti autentikasi email/password, login Google OAuth, pembuatan akun melalui Google, penautan akun Google dengan akun manual yang memiliki email sama, pengelolaan data UMKM, pengelolaan produk atau layanan, Radar UMKM, serta tampilan website UMKM.
 
 ### Automated Testing
 
