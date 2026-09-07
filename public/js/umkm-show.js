@@ -4,7 +4,7 @@ const isMobileBusiness = window.umkmBusinessType === 'keliling';
 
 if (mapElement && points.length && typeof L !== 'undefined') {
     const map = L.map(mapElement, {
-        scrollWheelZoom: false,
+        scrollWheelZoom: true,
         zoomControl: true
     });
 
