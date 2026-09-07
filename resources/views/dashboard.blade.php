@@ -564,34 +564,6 @@
     </form>
 </div>
 
-                            <div class="quick-form-bottom">
-
-                                <label class="file-input">
-
-                                    <span>+</span>
-
-                                    <span>
-                                        Tambahkan foto
-                                    </span>
-
-                                    <input
-                                        type="file"
-                                        name="image"
-                                        accept="image/*"
-                                    />
-
-                                </label>
-
-
-                                <button
-                                    type="submit"
-                                    class="dashboard-secondary-button"
-                                >
-                                    Tambah Item
-                                    <span>→</span>
-                                </button>
-
-                            </div>
 
                         </form>
 
