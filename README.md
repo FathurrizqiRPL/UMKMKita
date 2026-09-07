@@ -151,8 +151,6 @@ Platform mendukung dua jenis usaha, yaitu **UMKM Di Tempat** yang memiliki lokas
   <img width="1920" height="2551" alt="fullpage_snapshot_127_0_0_1_2026-09-07-15-47-38" src="https://github.com/user-attachments/assets/a2855808-6a56-46f5-b163-69653b00a72b" />
   <p><em>Radar UMKM - Tampilan Radar UMKM</em></p>
   
-  <img src="[URL_SCREENSHOT_3]" alt="Feature" width="800"/>
-  <p><em>[Nama Fitur] - [Deskripsi screenshot]</em></p>
 </div>
 
 ### Video Demo
