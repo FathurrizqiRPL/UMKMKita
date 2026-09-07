@@ -1,0 +1,500 @@
+/* =====================================================
+   HALAMAN KATALOG: "Jelajahi UMKM"
+   Melengkapi home.css (navbar, grid kartu, footer dipakai dari sana)
+===================================================== */
+
+/* ---- HERO KATALOG ---- */
+
+.catalog-hero {
+    background:
+        radial-gradient(
+            circle at 85% 0%,
+            rgba(88, 72, 232, .10),
+            transparent 32%
+        ),
+        linear-gradient(
+            180deg,
+            #fbfbff 0%,
+            #ffffff 100%
+        );
+
+    padding: 68px 0 10px;
+}
+
+.catalog-heading {
+    max-width: 720px;
+}
+
+.catalog-label {
+    color: var(--primary);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.catalog-heading h1 {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: clamp(34px, 5vw, 48px);
+    line-height: 1.12;
+    letter-spacing: -2px;
+    margin: 16px 0 0;
+}
+
+.catalog-heading h1 span {
+    color: var(--primary);
+}
+
+.catalog-heading p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.8;
+    margin: 16px 0 0;
+}
+
+.catalog-heading-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    margin-top: 26px;
+}
+
+.catalog-map-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+
+    padding: 12px 18px;
+    border-radius: 13px;
+
+    background: #ffffff;
+    border: 1.5px solid #e2e2ec;
+
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 700;
+
+    box-shadow: 0 8px 24px rgba(30, 30, 70, .06);
+    transition: border-color .2s, color .2s, transform .2s, box-shadow .2s;
+}
+
+.catalog-map-btn svg {
+    color: var(--primary);
+}
+
+.catalog-map-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(88, 72, 232, .14);
+}
+
+.catalog-map-btn-arrow {
+    color: var(--primary);
+    margin-left: 2px;
+    transition: transform .2s;
+}
+
+.catalog-map-btn:hover .catalog-map-btn-arrow {
+    transform: translateX(3px);
+}
+
+.catalog-map-note {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* ---- TOOLBAR FILTER ---- */
+
+.catalog-toolbar {
+    margin: 42px 0 0;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 18px 45px rgba(30, 30, 70, .06);
+}
+
+.catalog-form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.catalog-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    border: 1.5px solid #e2e2ec;
+    border-radius: 14px;
+    padding: 6px 8px 6px 14px;
+
+    transition: border-color .2s;
+}
+
+.catalog-search:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(88, 72, 232, .10);
+}
+
+.catalog-search-icon {
+    display: flex;
+    color: #9a9fae;
+    flex-shrink: 0;
+}
+
+.catalog-search input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    padding: 10px 0;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text);
+}
+
+.catalog-search input::placeholder {
+    color: #a5a9b6;
+}
+
+.catalog-search input::-webkit-search-cancel-button {
+    display: none;
+}
+
+.catalog-reset {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.catalog-reset:hover {
+    color: var(--primary);
+}
+
+.catalog-search-btn {
+    background: var(--primary);
+    color: #ffffff;
+    border: 0;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s, transform .2s;
+    white-space: nowrap;
+}
+
+.catalog-search-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.catalog-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.filter-group {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+}
+
+.filter-label {
+    min-width: 92px;
+    padding-top: 8px;
+    color: #8a8f9e;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.chip {
+    border: 1px solid var(--border);
+    background: #ffffff;
+    padding: 8px 15px;
+    border-radius: 50px;
+    color: #707587;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.chip:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.chip.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+/* ---- META HASIL ---- */
+
+.catalog-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+
+    margin: 30px 0 22px;
+
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.catalog-meta strong {
+    color: var(--text);
+    font-size: 16px;
+}
+
+.catalog-meta em {
+    color: var(--muted);
+    font-style: normal;
+    font-size: 12px;
+}
+
+.catalog-meta-note {
+    font-size: 12px;
+}
+
+.catalog-meta-note a {
+    color: var(--primary);
+    font-weight: 700;
+}
+
+/* ---- SECTION GRID ---- */
+
+.catalog-section {
+    padding-bottom: 110px;
+}
+
+/* Placeholder gradient per kategori (dipakai kalau cover kosong) */
+
+.umkm-image.cover-kuliner   { background: linear-gradient(135deg, #e0a06b, #7a4325); }
+.umkm-image.cover-fashion   { background: linear-gradient(135deg, #9a7fb8, #43305e); }
+.umkm-image.cover-jasa      { background: linear-gradient(135deg, #58a6c9, #245269); }
+.umkm-image.cover-kerajinan { background: linear-gradient(135deg, #b98b5a, #4e3021); }
+.umkm-image.cover-kecantikan{ background: linear-gradient(135deg, #d8759a, #6e2b47); }
+.umkm-image.cover-otomotif  { background: linear-gradient(135deg, #6b7078, #1c1e21); }
+.umkm-image.cover-lainnya   { background: linear-gradient(135deg, #7f84b0, #2f3352); }
+
+/* Huruf awal sebagai watermark saat tidak ada cover */
+
+.umkm-initial {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 72px;
+    font-weight: 800;
+    color: rgba(255, 255, 255, .82);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, .14);
+}
+
+.umkm-image img {
+    position: relative;
+    z-index: 2;
+}
+
+/* Badge tipe usaha (Di Tempat / Keliling) */
+
+.type-pill {
+    position: absolute;
+    right: 14px;
+    top: 14px;
+
+    padding: 6px 10px;
+    border-radius: 50px;
+
+    background: var(--primary);
+    color: #ffffff;
+
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .03em;
+
+    box-shadow: 0 2px 8px rgba(88, 72, 232, .35);
+}
+
+/* Penghitung suka */
+
+.umkm-like {
+    position: absolute;
+    right: 14px;
+    top: 50px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    padding: 5px 9px;
+    border-radius: 50px;
+
+    background: rgba(255, 255, 255, .92);
+
+    color: #e05b6d;
+    font-size: 10px;
+    font-weight: 800;
+
+    box-shadow: 0 2px 8px rgba(20, 20, 50, .08);
+    backdrop-filter: blur(4px);
+}
+
+/* ---- EMPTY STATE ---- */
+
+.catalog-empty {
+    grid-column: 1 / -1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    padding: 70px 24px;
+    border: 1px dashed #dcdce8;
+    border-radius: 20px;
+
+    background: #fbfbff;
+}
+
+.catalog-empty-icon {
+    width: 64px;
+    height: 64px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 18px;
+    background: #f0edff;
+
+    color: var(--primary);
+    font-size: 26px;
+}
+
+.catalog-empty h3 {
+    font-family: "Plus Jakarta Sans", sans-serif;
+    font-size: 20px;
+    margin: 20px 0 8px;
+}
+
+.catalog-empty p {
+    max-width: 420px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.catalog-empty-button {
+    margin-top: 22px;
+
+    background: var(--primary);
+    color: #ffffff;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    transition: background .2s, transform .2s;
+}
+
+.catalog-empty-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+/* ---- PAGINATION ---- */
+
+.catalog-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+
+    margin-top: 48px;
+}
+
+.page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+
+    border: 1px solid var(--border);
+    border-radius: 11px;
+
+    background: #ffffff;
+    color: #5f6473;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+
+    transition: .2s;
+}
+
+.page-btn:hover:not(.disabled):not(.active) {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.page-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #ffffff;
+}
+
+.page-btn.disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+/* ---- RESPONSIVE ---- */
+
+@media (max-width: 800px) {
+
+    .catalog-toolbar {
+        padding: 16px;
+    }
+
+    .catalog-search {
+        flex-wrap: wrap;
+    }
+
+    .catalog-search input {
+        flex-basis: calc(100% - 28px);
+    }
+
+    .catalog-reset,
+    .catalog-search-btn {
+        margin-left: auto;
+    }
+
+    .filter-label {
+        min-width: 100%;
+    }
+}
